@@ -1,39 +1,11 @@
-# Current milestone: vertical card 01
-
-V2 failed the natural full-tube viewing requirement. The next implementation is a vertical illustrated backboard with manual two-point registration on a clipboard, viewed at about 50 cm. [Mobile calibration](https://yxie-disney.github.io/ar_tasting_animation/v3/) | [Geometry preview (not AR)](https://yxie-disney.github.io/ar_tasting_animation/v3/?preview=1). This page validates alignment at the base AND cap; it is not final garnish and has no automatic tube detection. Print page 1 of the separately delivered A4 PDF at actual size; page 2 is setup guidance. Paper bottom and tube base need not align. See [the current contract](docs/vertical-card-01.md). Old V2 remains below for history, not current design authority.
-
----
-
 # NOTERDAY AR tasting animation
 
-V2 phone test: https://yxie-disney.github.io/ar_tasting_animation/?sku=jiadi-2021
+用户已明确批准旧线上体验下线和旧实现清理。本目录只保留重建计划及用于撤下旧站点的最小发布页，不是新的消费者体验。
 
-The printed, standardized 64 × 48 mm module below the tube placement ring owns the AR coordinate frame. The decorative card artwork is not part of the target. A fixed transform places the garnish at the tube base and along the card normal.
+执行入口：[PROJECT.md](PROJECT.md)。最新实体方案：[PHYSICAL-DESIGN.md](PHYSICAL-DESIGN.md)。后者取代“先试窄酒标”的早期提议。
 
-## Current usable slice
+目标：真实酒管周围的 AR garnish，约 50 cm 自然观看，消费者无需手动定位。
 
-- Real 8th Wall planar recognition, using official Image Target CLI output.
-- Same-origin, pinned 8th Wall Engine 1.0.0 and Three.js 0.160.1 assets.
-- Outlined text and a decodable SKU QR in the printable v2 artwork.
-- Animated 2.5D flavor illustrations derived from the existing card.
-- A depth-only Ø29 mm × 215 mm tube hides garnish passing behind the bottle.
-- Explicit manual confirmation of tube placement for this P1 test. No automatic tube recognition is claimed.
-- Camera loss hides the stale pose immediately. A 1.2 s grace period preserves confirmation, not a frozen screen-space object.
+当前推荐：180×270 mm竖背卡，侧置120×160 mm完整图像目标与35×220 mm试管槽，通过底托/固定件确定相对位置。presence为独立待验证关卡；尚无经过验收的新AR实现。不要把维护页当成新的产品UX。
 
-## Phone test
-
-Print v2 using exactly the same settings as the previously measured v1. Place the tube at the ring. Scan/open the URL and allow the rear camera. Approach from the QR side at about 45°, keeping the entire black module and tube in frame. The upper-right flower may be fully occluded.
-
-First check that the green rectangle follows the black module and that the green circle overlaps the printed red ring. Press the clearly labeled placement-confirmation button to play. Move the phone slowly sideways and cover/uncover the module. A long loss should require confirmation again. Report first-lock time, visible drift, loss behavior, and a phone screen recording if the geometry is wrong.
-
-The preview link is a camera-free scene preview and is labeled as such. It cannot validate tracking.
-
-## Development
-
-`node --test tests/*.test.mjs`
-
-Serve `site/` using a static server for desktop checks. Phone camera access requires HTTPS. GitHub Pages deploys `site/` through the checked-in workflow. Print masters and personal local asset paths are excluded from the public deployment.
-
-See `docs/v2-contract.md` for geometry, evidence, and remaining work. The root `handover.md` in the local clone contains earlier project context; v2-contract supersedes its older whole-card targeting decisions.
-
-To regenerate the complete SVG/PNG, module, official target data and sprite assets: install dependencies, set `AR_CARD_SOURCE` to the original outlined SVG, and run `npm run build:card` from the repo root. `AR_PRINT_OUTPUT` defaults to `design/card-marker/v2`; font overrides are `AR_CJK_FONT` and `AR_LATIN_FONT` (Windows defaults are SimHei and Arial Bold). Source brand artwork is kept outside the public repository. The generator checks QR decoding and outlines new type. Revalidate the target whenever printed module content changes.
+原始品牌素材在用户素材库中，未删除、未上传。Git 历史保留恢复能力，但旧版本不再作为当前实现依赖。

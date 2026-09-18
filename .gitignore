@@ -1,4 +1,5 @@
 node_modules/
-.DS_Store
-*.y4m
-site/vendor/
+dist/
+.env
+.env.*
+!.env.example
