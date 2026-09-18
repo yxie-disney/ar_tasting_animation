@@ -28,7 +28,7 @@ function tick(t){
   const s=machine.snapshot(t)
   // Hide stale pose immediately; grace retains playback permission, never a screen-stuck object.
   model.root.visible=preview||s.visible
-  model.tick(t,preview||s.playing)
+  model.tick(t,preview||s.playing,preview||s.confirmed)
   if(preview)return
   $('#confirm').disabled=!s.locked||s.confirmed
   $('#confirm').textContent=s.confirmed?'香气正在生长':'试管已放好 · 播放'
@@ -85,3 +85,4 @@ $('#diagnostics').addEventListener('click',()=>{$('#metrics').hidden=!$('#metric
 window.__noterday={machine,records,get geometry(){return g},get model(){return model},get camera(){return camera}}
 if(preview)startPreview().catch(fatal)
 document.addEventListener('visibilitychange',()=>{if(document.hidden){machine.lost();if(model)model.root.visible=false}})
+

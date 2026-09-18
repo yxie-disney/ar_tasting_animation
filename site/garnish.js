@@ -25,5 +25,14 @@ export function createGarnish(THREE,geometry) {
   })
   const outline=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(64,48,.2)),new THREE.LineBasicMaterial({color:0x68e3ba}))
   outline.position.z=.3;card.add(outline)
-  return {root,ring,content,outline,tick(t,playing){content.visible=playing;ring.material.opacity=playing?.9:.6;ring.material.transparent=true;sprites.forEach(({sprite,a,h},i)=>{sprite.position.z=h+Math.sin(t*.0014+i)*3;sprite.material.rotation=Math.sin(t*.0007+i)*.09})}}
+  let started=null
+  return {root,ring,content,outline,tick(t,playing,confirmed=playing){
+    if(!confirmed)started=null
+    if(playing&&started===null)started=t
+    const growth=started===null?0:Math.min(1,(t-started)/2800)
+    vine.geometry.setDrawRange(0,Math.floor(vine.geometry.index.count*growth/3)*3)
+    content.visible=playing;ring.material.opacity=playing?.9:.6;ring.material.transparent=true
+    sprites.forEach(({sprite,a,h},i)=>{const reveal=Math.max(0,Math.min(1,(growth-i*.095)*4));sprite.scale.set(34*reveal,34*reveal,1);sprite.visible=reveal>0;sprite.position.z=h+Math.sin(t*.0014+i)*3;sprite.material.rotation=Math.sin(t*.0007+i)*.09})
+  }}
 }
+
