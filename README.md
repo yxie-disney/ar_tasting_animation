@@ -29,3 +29,5 @@ The preview link is a camera-free scene preview and is labeled as such. It canno
 Serve `site/` using a static server for desktop checks. Phone camera access requires HTTPS. GitHub Pages deploys `site/` through the checked-in workflow. Print masters and personal local asset paths are excluded from the public deployment.
 
 See `docs/v2-contract.md` for geometry, evidence, and remaining work. The root `handover.md` in the local clone contains earlier project context; v2-contract supersedes its older whole-card targeting decisions.
+
+To regenerate the complete SVG/PNG, module, official target data and sprite assets: install dependencies, set `AR_CARD_SOURCE` to the original outlined SVG, and run `npm run build:card` from the repo root. `AR_PRINT_OUTPUT` defaults to `design/card-marker/v2`; font overrides are `AR_CJK_FONT` and `AR_LATIN_FONT` (Windows defaults are SimHei and Arial Bold). Source brand artwork is kept outside the public repository. The generator checks QR decoding and outlines new type. Revalidate the target whenever printed module content changes.

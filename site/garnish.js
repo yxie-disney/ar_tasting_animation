@@ -35,4 +35,3 @@ export function createGarnish(THREE,geometry) {
     sprites.forEach(({sprite,a,h},i)=>{const reveal=Math.max(0,Math.min(1,(growth-i*.095)*4));sprite.scale.set(34*reveal,34*reveal,1);sprite.visible=reveal>0;sprite.position.z=h+Math.sin(t*.0014+i)*3;sprite.material.rotation=Math.sin(t*.0007+i)*.09})
   }}
 }
-

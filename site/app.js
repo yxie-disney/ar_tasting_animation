@@ -85,4 +85,3 @@ $('#diagnostics').addEventListener('click',()=>{$('#metrics').hidden=!$('#metric
 window.__noterday={machine,records,get geometry(){return g},get model(){return model},get camera(){return camera}}
 if(preview)startPreview().catch(fatal)
 document.addEventListener('visibilitychange',()=>{if(document.hidden){machine.lost();if(model)model.root.visible=false}})
-
