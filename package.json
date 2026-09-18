@@ -1,0 +1,1 @@
+{"name":"noterday-ar-tasting-animation","version":"0.2.0","private":true,"type":"module","scripts":{"test":"node --test tests/*.test.mjs","build":"node tools/vendor.mjs"},"dependencies":{"@8thwall/engine-binary":"1.0.0","three":"0.160.1"}}

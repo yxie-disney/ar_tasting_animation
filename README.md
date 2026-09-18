@@ -29,4 +29,3 @@ The preview link is a camera-free scene preview and is labeled as such. It canno
 Serve `site/` using a static server for desktop checks. Phone camera access requires HTTPS. GitHub Pages deploys `site/` through the checked-in workflow. Print masters and personal local asset paths are excluded from the public deployment.
 
 See `docs/v2-contract.md` for geometry, evidence, and remaining work. The root `handover.md` in the local clone contains earlier project context; v2-contract supersedes its older whole-card targeting decisions.
-

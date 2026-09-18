@@ -1,0 +1,23 @@
+{
+  "imagePath": "image-targets/noterday-jiadi-v2_luminance.png",
+  "metadata": null,
+  "name": "noterday-jiadi-v2",
+  "type": "PLANAR",
+  "properties": {
+    "left": 0,
+    "top": 0,
+    "width": 960,
+    "height": 1280,
+    "isRotated": false,
+    "originalWidth": 960,
+    "originalHeight": 1280
+  },
+  "resources": {
+    "originalImage": "noterday-jiadi-v2_original.png",
+    "croppedImage": "noterday-jiadi-v2_cropped.png",
+    "thumbnailImage": "noterday-jiadi-v2_thumbnail.png",
+    "luminanceImage": "noterday-jiadi-v2_luminance.png"
+  },
+  "created": 1789718490480,
+  "updated": 1789718490480
+}
