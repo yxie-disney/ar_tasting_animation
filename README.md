@@ -1,3 +1,9 @@
+# Current milestone: vertical card 01
+
+V2 failed the natural full-tube viewing requirement. The next implementation is a vertical illustrated backboard with manual two-point registration on a clipboard, viewed at about 50 cm. [Mobile calibration](https://yxie-disney.github.io/ar_tasting_animation/v3/) | [Geometry preview (not AR)](https://yxie-disney.github.io/ar_tasting_animation/v3/?preview=1). This page validates alignment at the base AND cap; it is not final garnish and has no automatic tube detection. Print page 1 of the separately delivered A4 PDF at actual size; page 2 is setup guidance. Paper bottom and tube base need not align. See [the current contract](docs/vertical-card-01.md). Old V2 remains below for history, not current design authority.
+
+---
+
 # NOTERDAY AR tasting animation
 
 V2 phone test: https://yxie-disney.github.io/ar_tasting_animation/?sku=jiadi-2021
