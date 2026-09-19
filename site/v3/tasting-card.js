@@ -3,7 +3,7 @@
 // Paper-local +Z is up; +X is the far artwork wing in the approved QR-side view.
 // Placement is a property of this printed layout, not the first camera frame.
 export const CARD_SPEC=Object.freeze({
- widthMm:95,heightMm:95*2480/1122,thicknessMm:1.2,
+ widthMm:144,heightMm:144*2480/1122,thicknessMm:1.2,
  baseHeightMm:35,centerX:55,centerY:-18,tubeLengthMm:215,tubeRadiusMm:14.5
 });
 export function createTastingCard(THREE,texture,renderer){

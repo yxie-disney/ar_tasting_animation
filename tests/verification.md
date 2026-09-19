@@ -1,6 +1,13 @@
 # Verification — existing printed card, automatic garnish
 
-## Current: smaller far-side card, real-tube depth, and guarded world continuation
+## Current: user-requested 66.7% size
+
+- User found 44% too small. Width and height are now exactly 2/3 of the 216 × 477.4mm trial: nominally 144 × 318.3mm, 1.516× the immediately previous card. Original texture, fixed far-side plane, raised bottom, depth proxy and tracking logic are unchanged. Only release keys change outside the size configuration.
+- The previous full-frame assertion no longer applies: with the same synthetic 70° portrait lens aimed at (20, −18, 80)mm, the new card top is outside view in five of six 40–50cm / 30–60° fixtures. Tests explicitly record this boundary and continue checking physical tube/near-artwork framing, no auto-fit, both artwork faces and camera-to-tube depth ordering. Do not describe enlargement as verified full-frame phone readability.
+- This is a size-only user-directed adjustment; no new mobile tracking or readability claim is made.
+- All 29 automated checks pass. Private browser WebGL inspection at the new dimensions shows complete, normally readable-direction front and back textures (35,069 colored pixels each; no GL error). The actual depth overlap check passes: camera-background color with the tube proxy, white card without it. This isolates rendering, not real-device tracking or text legibility.
+
+## Previous: smaller far-side card, real-tube depth, and guarded world continuation
 
 - User feedback rejected the large card and the obscured tube. Fixed size is now nominally 95 × 210mm (44% of the previous width/height), with original bytes/aspect/UVs unchanged. Far-side +X=55mm comes from the approved print/QR layout, not the acquisition camera azimuth. Bottom height is 35mm, above the 29mm tube.
 - Added a depth-only 215 × Ø29mm cylinder at the known tube position, rendered before the virtual card. Camera video alone does not supply physical-object depth. A private WebGL overlap test deliberately lowers the test card to exercise the actual production occluder: the sampled pixel is background `[22,56,68,255]` with depth, versus white card `[255,255,255,255]` without it. Both artwork faces still render normally. The temporary lowering is test-only, not production placement.

@@ -1,6 +1,6 @@
-import {ExperienceState,scaleFromTarget,occupancyEvidence} from './tracking.js?release=20260919-reading-space';
-import {createTastingCard} from './tasting-card.js?release=20260919-reading-space';
-import {createOccupancyProbe} from './occupancy.js?release=20260919-reading-space';
+import {ExperienceState,scaleFromTarget,occupancyEvidence} from './tracking.js?release=20260919-card-two-thirds';
+import {createTastingCard} from './tasting-card.js?release=20260919-card-two-thirds';
+import {createOccupancyProbe} from './occupancy.js?release=20260919-card-two-thirds';
 
 const $=s=>document.querySelector(s),state=new ExperienceState({worldEnabled:true});
 let targetSpecs=[],activeTarget=null;

@@ -64,13 +64,13 @@ test('reading plane is upright on the fixed FAR side, independent of first acqui
   }
  }
 });
-for(const aspect of [16/9,9/16])test(`full original card retains explicit smaller dimensions, not viewport-fit (${aspect})`,()=>{
- assert.equal(CARD_SPEC.widthMm,95);
+for(const aspect of [16/9,9/16])test(`full original card retains requested two-thirds dimensions, not viewport-fit (${aspect})`,()=>{
+ assert.equal(CARD_SPEC.widthMm,216*2/3);
  assert.ok(Math.abs(CARD_SPEC.heightMm/CARD_SPEC.widthMm-2480/1122)<1e-12);
  for(const distance of [.3,.4,.5])for(const elevation of [35,45,60])for(const azimuth of [160,180,200]){
   const {model}=setup(aspect,{distance,elevation,azimuth}),card=model.card;
   assert.equal(card.scale.x,1);assert.equal(card.scale.y,1);assert.equal(card.scale.z,1);
-  assert.equal(card.children[0].geometry.parameters.width,95);
+  assert.equal(card.children[0].geometry.parameters.width,144);
   assert.equal(card.children[0].geometry.parameters.height,CARD_SPEC.heightMm);
   assert.equal(card.position.z,CARD_SPEC.baseHeightMm+CARD_SPEC.heightMm/2);
  }
@@ -99,7 +99,7 @@ test('known physical tube writes invisible depth before the virtual card',()=>{
  assert.equal(tube.position.z,14.5);assert.equal(tube.position.y,CARD_SPEC.centerY);
 });
 
-test('portrait reading frame at 40–50cm retains the full card, tube and near artwork band',()=>{
+test('two-thirds enlargement preserves physical framing and records the upper-card boundary',()=>{
  // Explicit synthetic camera, not a measured phone lens or a recognition test.
  // Unlike the old tests, include BOTH the physical scene and virtual content.
  for(const distance of [.4,.5])for(const elevation of [30,45,60]){
@@ -108,8 +108,16 @@ test('portrait reading frame at 40–50cm retains the full card, tube and near a
   camera.position.set(-distance*Math.cos(e),CARD_SPEC.centerY*.001,distance*Math.sin(e));camera.up.set(0,0,1);
   camera.lookAt(.02,CARD_SPEC.centerY*.001,.08);camera.updateMatrixWorld(true);
   const model=createTastingCard(THREE,new THREE.Texture(),{capabilities:{getMaxAnisotropy:()=>8}});anchor.add(model.group);model.alignOnce();anchor.updateMatrixWorld(true);
+  const cardPoints=[];
+  for(const x of [-1,1])for(const y of [-1,1])cardPoints.push(new THREE.Vector3(x*CARD_SPEC.widthMm/2,y*CARD_SPEC.heightMm/2,0).applyMatrix4(model.card.matrixWorld).project(camera));
+  // User explicitly increased 44% to 66.7%. Do not silently auto-fit it back
+  // down or carry forward the smaller card's full-frame claim. At this SAME
+  // low aim, only the 50cm/30° fixture contains its new top edge.
+  const expectedTop=distance===.4?{30:1.157910,45:1.457989,60:1.827649}:{30:.910524,45:1.044413,60:1.113418};
+  assert.ok(Math.abs(Math.max(...cardPoints.map(p=>p.y))-expectedTop[elevation])<.00001);
+  assert.equal(cardPoints.every(p=>Math.abs(p.x)<.98&&Math.abs(p.y)<.98&&p.z>-1&&p.z<1),distance===.5&&elevation===30);
+  assert.equal(model.card.scale.x,1,'out-of-frame top must not undo the requested size');
   const points=[];
-  for(const x of [-1,1])for(const y of [-1,1])points.push(new THREE.Vector3(x*CARD_SPEC.widthMm/2,y*CARD_SPEC.heightMm/2,0).applyMatrix4(model.card.matrixWorld));
   for(const y of [-125.5,89.5])for(let a=0;a<Math.PI*2;a+=Math.PI/16)points.push(new THREE.Vector3(14.5*Math.cos(a),y,14.5+14.5*Math.sin(a)).applyMatrix4(anchor.matrixWorld));
   for(const x of [-88,-21])for(const y of [-130,80])points.push(new THREE.Vector3(x,y,0).applyMatrix4(anchor.matrixWorld));
   for(const p of points){p.project(camera);assert.ok(Math.abs(p.x)<.98&&Math.abs(p.y)<.98&&p.z>-1&&p.z<1,`scene must share the reading frame: ${distance}m / ${elevation}°`);}
