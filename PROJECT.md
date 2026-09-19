@@ -15,10 +15,10 @@ The pictured substitute SKU is acceptable. The card/URL selects this experience;
 1. Existing QR opens the stable HTTPS page. It is not the primary spatial tracker.
 2. Unmodified 8th Wall Engine 1.0.0 tracks unobscured artwork regions or the complete card. Target offsets map all references to one card coordinate system.
 3. Local framebuffer samples check broad, sustained dark occupancy in the pale tube corridor. At least 450 ms confirmation is required. This inexpensive evidence fits the pictured dark wine tube; it does not claim arbitrary tube detection or continuous bottle-pose estimation.
-4. Two botanical stems grow along the tube, with unfolding leaves, small grape clusters and flowers. The label corridor stays clear. Geometry is original Three.js work, not a commercial case's copied assets or orbiting ingredient sprites.
+4. Current content is the unchanged original tasting-card artwork on a thin 3D card floating above the tube. Its orientation is established once, then remains fixed relative to the physical card. The earlier botanical geometry is retained but not loaded. Dynamic asset production is a separate next task, defined in docs/ANIMATION-WORKFLOW.md.
 5. Brief evidence loss gets 1.7 seconds of grace. Loss of image pose hides geometry immediately and pauses the timeline; reacquisition can resume. Sustained absence resets the timeline. No unsupported world-anchor persistence is claimed.
 
-Image-only tracking is deliberately selected for this fixed card-in-frame experience. The application does not request motion sensors or make a consumer perform a SLAM scan. A browser-required camera-start gesture is the only optional button.
+Image-only tracking is deliberately selected for this fixed card-in-frame experience. The application does not request motion sensors or make a consumer perform a SLAM scan. A browser-required camera-start gesture is the only optional button. Camera occupancy is measured before virtual content rendering so an opaque virtual card cannot create or erase its own tube evidence.
 
 ## Reuse and responsibilities
 

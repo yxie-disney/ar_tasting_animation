@@ -1,6 +1,19 @@
 # Verification — existing printed card, automatic garnish
 
-## Implemented
+## Current increment: static floating tasting card
+
+- Uses the approved outlined tasting-card SVG as-is, rendered on white in sRGB to a 1853 × 4096 lossless WebP. Artwork, glyphs and text are not regenerated or rearranged.
+- A thin 3D card is initially oriented for reading, tilted at most 25 degrees from the physical plane, then fixed in card-local coordinates. Corners are kept above the tube; initial projected bounds are fitted without cropping the artwork. Camera motion changes perspective, not the card's own pose.
+- The original image targets, QR, tube gate and grace state are preserved. The probe now samples camera pixels before virtual content renders, preventing the opaque card from erasing its own evidence.
+- 15 automated tests pass, including portrait/landscape projection bounds, tube clearance, static pose under camera movement, source/texture integrity and render order.
+- Desktop 1280 × 720 photo replay acquired the existing print reference and automatically displayed the virtual card continuously for over 50 seconds with positive tube evidence.
+- Switching to the digital empty card retained image tracking, yielded zero dark rows, hid the virtual card and reset the gate. The virtual card therefore did not keep itself latched through its own pixels.
+- A separate 390 × 844 desktop viewport test, letterboxing the entire landscape photograph into a simulated portrait video, did not acquire at the two tested replay scales. It is not a real phone camera test; do not describe portrait live recognition or readability as verified. The printed target data were not modified to fit this artificial case.
+- Fine print remains small when the complete long card is fitted to a landscape viewport. This is a layout-density limit, not missing source text; no automatic rewrite, crop, or typography replacement was applied.
+
+The earlier botanical checks below remain historical evidence for the shared tracking spine, not a claim that botanical content is still the current default.
+
+## Earlier botanical increment: implemented
 
 - Original QR route `/v3/`; existing print unchanged.
 - Pinned, unmodified 8th Wall Engine 1.0.0 and Three.js 0.160.1, same-origin hosting.

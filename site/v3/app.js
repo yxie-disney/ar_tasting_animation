@@ -1,13 +1,14 @@
 import {ExperienceState,scaleFromTarget} from './tracking.js';
-import {createGarnish} from './garnish.js';
+import {createTastingCard} from './tasting-card.js';
 import {createOccupancyProbe} from './occupancy.js';
 
 const $=s=>document.querySelector(s),state=new ExperienceState();
 let targetSpecs=[],activeTarget=null;
 let scene,camera,renderer,anchor,garnish,probe,starting=false,running=false,lastProbe=0;
+let cardTexture;
 let current={visible:false},evidence=null,acquisitions=0,lastPose=null;
 let stage='loading',scanStage='waiting',cpuKeys=[];
-const debug={get stage(){return stage},get scanStage(){return scanStage},get cpuKeys(){return cpuKeys},get state(){return current},get evidence(){return evidence},get acquisitions(){return acquisitions},get pose(){return lastPose},get camera(){return camera},get anchor(){return anchor},get renderer(){return renderer}};
+const debug={get stage(){return stage},get scanStage(){return scanStage},get cpuKeys(){return cpuKeys},get state(){return current},get evidence(){return evidence},get acquisitions(){return acquisitions},get pose(){return lastPose},get camera(){return camera},get anchor(){return anchor},get renderer(){return renderer},get content(){return garnish}};
 // Read-only diagnostics are available to development tooling, never a consumer control.
 window.__noterday=debug;
 
@@ -29,7 +30,7 @@ function init(){
   const resize=()=>{renderer.setPixelRatio(Math.min(devicePixelRatio,1.5,1440/Math.max(innerWidth,innerHeight)));renderer.setSize(innerWidth,innerHeight);};
   resize();addEventListener('resize',resize);
   anchor=new THREE.Group();anchor.visible=false;scene.add(anchor);
-  garnish=createGarnish(THREE);anchor.add(garnish.group);
+  garnish=createTastingCard(THREE,cardTexture,renderer);anchor.add(garnish.group);
   scene.add(new THREE.HemisphereLight(0xfff4dd,0x34422d,2.0));
   const light=new THREE.DirectionalLight(0xffeed5,2.1);light.position.set(-1,3,4);scene.add(light);
   probe=createOccupancyProbe(THREE,renderer,camera,anchor);
@@ -58,11 +59,11 @@ function update({processCpuResult}={}){
   const t=performance.now();current=state.tick(t);
   // The card pose stays measurable while the garnish is hidden awaiting tube evidence.
   anchor.visible=true;garnish.group.visible=current.visible;
-  if(current.visible){garnish.update(current.progressMs/1000);hint('');}
+  if(current.visible){garnish.alignOnce(anchor,camera);garnish.update(current.progressMs/1000);hint('');}
   else if(!current.image)hint('让酒管与卡片一起入镜');
   else hint('');
 }
-function afterRender(){
+function sampleCameraBeforeContent(){
   const t=performance.now();if(!probe||t-lastProbe<220||!current.image)return;
   lastProbe=t;
   try{evidence=probe.sample();state.evidence(evidence.present,t);}catch(error){console.warn('Occupancy sample unavailable',error.message);state.evidence(false,t);}
@@ -72,13 +73,17 @@ async function start(){
   try{
     await Promise.race([new Promise(resolve=>window.XR8?.XrController?resolve():addEventListener('xrloaded',resolve,{once:true})),new Promise((_,reject)=>setTimeout(()=>reject(Error('XR engine timeout')),45000))]);
     targetSpecs=await(await fetch('targets.json')).json();
+    cardTexture=await new THREE.TextureLoader().loadAsync(new URL('assets/tasting-card/jiadi-cabernet-franc.webp',import.meta.url).href);
     const targets=await Promise.all(targetSpecs.map(async spec=>{const response=await fetch(spec.file);if(!response.ok)throw Error('Target not available');const target=await response.json();target.imagePath=new URL(target.imagePath,document.baseURI).href;return target;}));
     // This experience keeps the broad, existing card in view. Image tracking does
     // not require the consumer to grant motion sensors or perform a SLAM scan.
     stage='engine-ready';XR8.XrController.configure({disableWorldTracking:true,imageTargetData:targets});
     XR8.addCameraPipelineModules([
-      XR8.GlTextureRenderer.pipelineModule(),XR8.Threejs.pipelineModule(),XR8.XrController.pipelineModule(),
-      {name:'noterday-garnish',onStart:init,onUpdate:update,onRender:afterRender,onException:fail,
+      XR8.GlTextureRenderer.pipelineModule(),
+      // Camera evidence must be sampled BEFORE the virtual card covers it.
+      {name:'noterday-camera-evidence',onRender:sampleCameraBeforeContent},
+      XR8.Threejs.pipelineModule(),XR8.XrController.pipelineModule(),
+      {name:'noterday-garnish',onStart:init,onUpdate:update,onException:fail,
        onCameraStatusChange:({status})=>{stage='camera-'+status;if(status==='hasStream')setTimeout(playCamera,0);if(status==='failed')fail(Error('Camera permission denied'));},
        listeners:[{event:'reality.imageloading',process:()=>scanStage='loading'},{event:'reality.imagescanning',process:()=>scanStage='scanning'},{event:'reality.imagefound',process:pose},{event:'reality.imageupdated',process:pose},{event:'reality.imagelost',process:({detail:d})=>{if(d.name===activeTarget)state.lost();}}]}
     ]);

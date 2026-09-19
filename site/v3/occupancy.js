@@ -1,6 +1,6 @@
 import {classifyOccupancy} from './tracking.js';
 
-// Reads only the central corridor after XR8/Three.js render. This shares the
+// Reads the camera background BEFORE virtual content is rendered. This shares the
 // exact displayed camera projection, including rotation and cover-cropping.
 // No second camera stream, frame upload, or screen-coordinate calibration.
 export function createOccupancyProbe(THREE,renderer,camera,anchor){

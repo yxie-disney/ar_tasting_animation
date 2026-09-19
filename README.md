@@ -1,15 +1,66 @@
-# NOTERDAY AR tasting animation
+# NOTERDAY AR — 先看这三个地方
 
-当前实现：原纸上 `/v3/` 入口 → 相机权限 → 自动图像定位及宽松有管判断 → 藤蔓生长动画。没有手动点选瓶身或确认播放。尚未完成真实手机、微信和移动视角验收。
+1. **看手机里的实际效果：** [扫描原二维码后的页面](https://yxie-disney.github.io/ar_tasting_animation/v3/)。相机启动提示和 AR 是同一页的两个状态；无需另找“动画网站”。
+2. **看将来要印的东西：** [实体印刷母版说明](assets/printed-card/README.md)。当前沿用手里的插画底卡和二维码，**不用重印**。
+3. **看这轮虚拟卡内容：** [嘉地·品丽珠完整卡面](site/v3/assets/tasting-card/jiadi-cabernet-franc.webp)。它来自原始已转曲 SVG，白底、原色、原字形；**这是显示贴图，不是让你打印的新卡**。
 
-当前实物基准：**用户已打印的卡片横放、试管平放其上，以用户照片中的自然斜俯视位置扫码和观看**。不重印、不改码、不新增托座或止挡。保留纸上二维码入口 `/v3/`；路径名称不代表恢复旧版本产品。
+需要核对原稿时打开 [本地已转曲 SVG](<D:/Dropbox/海南征吉文旅/昨非Noterday/1产品与物料/20260604梭梭沙漠酒店/酒水业务/品鉴卡成品与交付物/嘉地-品丽珠_已转曲.svg>)（仅本地可访问）。
 
-- 已打印卡片原始PNG/SVG已恢复到本地 `assets/printed-card/`。母版不随站点发布；原文件名保留，当前使用方式为横放。
-- [资产与二维码核验记录](assets/printed-card/manifest.json)
-- [物料摘要](PHYSICAL-DESIGN.md) / [执行契约](PROJECT.md)
+下一阶段做动作时再看：[动画制作教程与精细工单](docs/ANIMATION-WORKFLOW.md)。先选角色版本与一个短动作，不把完整 AR 交给一句生图提示词。
 
-`design/` 中此前的布局、托位和概念图不是当前实施依据；不要求用户审核或打印这些文件。当前实体约束以 `PHYSICAL-DESIGN.md` 为准。
+## Filegraph：按体验找文件，不按目录猜职责
 
-`npm test` 检查状态、目标资源和消费者页面；`npm install --ignore-scripts && npm run build` 准备同源引擎；`npm run serve` 本地运行。GitHub Actions发布 `site/`。私有照片回放仅由本地开发服务器提供，不发布照片或调试页面。
+```text
+你手中的实体卡＋横放试管
+│
+├─【人看：印刷物】assets/printed-card/
+│    ├─ README.md                 ← 哪份才是母版、何时需要重印
+│    └─ 嘉地-品丽珠_立牌01.svg/png ← 本地完整母版；旧名“立牌”，现为横放
+│         │                         （母版不上传 GitHub）
+│         └─【机器用】site/v3/image-targets/ ＋ targets.json
+│              识别用的灰度裁片和空间映射；不要打印，不必逐个点开
+│
+└─ 扫现有二维码 → /v3/           ← 稳定入口；路径不是让你管理版本
+     │
+     ├─【人看：扫码提示】同一网页的启动/相机权限状态
+     │    └─【工程】index.html 的 #entry ＋ style.css
+     │
+     └─ 自动定位＋自动有管判断 → 立体虚拟品鉴卡
+          │
+          ├─【人看：内容】assets/tasting-card/jiadi-cabernet-franc.webp
+          │      ↑
+          │   本地「品鉴卡成品与交付物/嘉地-品丽珠_已转曲.svg」
+          │   这是虚拟卡内容源，和上面的实体插画底卡不是同一文件
+          │
+          ├─【工程：空间呈现】tasting-card.js
+          │   卡片厚度、悬浮高度、初始阅读朝向；静态，不自动旋转
+          │
+          └─【工程：体验协调】app.js
+               ├─ tracking.js   自动触发、宽限、丢失/恢复
+               └─ occupancy.js  在虚拟内容绘制之前判断真实管体
+```
 
-验证范围及未验证项见 [验证记录](tests/verification.md)。原始品牌母版不覆盖、不上传；Git历史可追溯。
+**你的审核范围：** 印刷改稿时看完整母版；改提示时看实际网页；改虚拟内容时看卡面和手机效果；做动作时看短片与三维验收。你不需要读识别数据或用代码想象效果。
+
+## 这轮做了什么、没做什么
+
+- 保留已跑通的识别/自动触发骨架，内容换成**原画静态 3D 薄卡**。位置与朝向固定在卡片坐标中；手机移动产生视差，不是贴在屏幕上的弹窗，也不是自动跟随镜头转向的广告牌。
+- 原稿文字已转曲，保留字形、版式和插画。确定性转换为白底 sRGB、4096px 高的无损 WebP，材质不受场景灯光压暗。没有让生成模型重画，没有擅改品牌色。
+- 原稿是细长、信息密集的印刷卡。提高贴图分辨率不能无限放大手机上的小字；完整入镜优先，真实手机可读性需要看实际画面。若要将正文重排成手机阅读版，另做明确的内容/版式决定。
+- 实体底卡与 QR 没变。只换虚拟内容，不会让你重新打印。
+- 前一轮藤蔓代码 `garnish.js` 保留为实现参考，但当前入口不加载它；不是让你在几个版本间选。
+
+## 纯机器/工程文件：正常情况下你不用点
+
+| 文件/目录 | 用途 | 什么时候才需要看 |
+| --- | --- | --- |
+| `site/v3/image-targets/`、`targets.json` | 引擎定位参考、物理映射 | 工程人员排查识别；不是印刷物 |
+| `site/v3/assets/tasting-card/source.json` | 原稿与贴图哈希、转换记录 | 排查错稿/版本 |
+| `tools/` | 生成参考图/贴图、准备依赖、本地测试服务 | 工程人员复现 |
+| `tests/` | 自动检查、私有照片回放、验证记录 | 需要知道测过什么时看 [verification.md](tests/verification.md) |
+| `site/vendor/`、`node_modules/` | 引擎与依赖，自动准备 | 不手改 |
+| `.github/workflows/pages.yml` | 测试、构建、发布 | 发布故障时工程人员看 |
+
+GitHub `main` 是代码与部署 SOT；本地 Dropbox 是原始品牌美术 SOT。相机画面本地处理，现场照片与测试面板不发布。此前 `design/` 内的布局/托位概念文件不是本轮输入，不要求你审核。
+
+工程复现：`npm install --ignore-scripts` → `npm test` → `npm run build` → `npm run serve`。物理约束见 [PHYSICAL-DESIGN.md](PHYSICAL-DESIGN.md)，项目契约见 [PROJECT.md](PROJECT.md)。
