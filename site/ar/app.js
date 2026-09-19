@@ -1,11 +1,11 @@
-import {ExperienceState,scaleFromTarget,occupancyEvidence} from './tracking.js?release=20260919-stage-locked';
-import {createTastingCard} from './tasting-card.js?release=20260919-stage-locked';
-import {createOccupancyProbe} from './occupancy.js?release=20260919-stage-locked';
+import {ExperienceState,scaleFromTarget,occupancyEvidence} from './tracking.js?release=20260919-five-frames';
+import {createSlideshow,loadSlideAssets} from './slideshow.js?release=20260919-five-frames';
+import {createOccupancyProbe} from './occupancy.js?release=20260919-five-frames';
 
 const $=s=>document.querySelector(s),state=new ExperienceState({worldEnabled:true});
 let targetSpecs=[],activeTarget=null;
 let scene,camera,renderer,anchor,garnish,probe,starting=false,running=false,lastProbe=0;
-let cardTexture;
+let slideAssets;
 let imageOnlyFallback=false;
 let current={visible:false},evidence=null,acquisitions=0,lastPose=null;
 let stage='loading',scanStage='waiting',cpuKeys=[];
@@ -31,7 +31,7 @@ function init(){
   const resize=()=>{renderer.setPixelRatio(Math.min(devicePixelRatio,1.5,1440/Math.max(innerWidth,innerHeight)));renderer.setSize(innerWidth,innerHeight);};
   resize();addEventListener('resize',resize);
   anchor=new THREE.Group();anchor.visible=false;scene.add(anchor);
-  garnish=createTastingCard(THREE,cardTexture,renderer);anchor.add(garnish.group);
+  garnish=createSlideshow(THREE,slideAssets,renderer);anchor.add(garnish.group);
   scene.add(new THREE.HemisphereLight(0xfff4dd,0x34422d,2.0));
   const light=new THREE.DirectionalLight(0xffeed5,2.1);light.position.set(-1,3,4);scene.add(light);
   probe=createOccupancyProbe(THREE,renderer,camera,anchor);
@@ -75,7 +75,7 @@ async function start(){
   try{
     await Promise.race([new Promise(resolve=>window.XR8?.XrController?resolve():addEventListener('xrloaded',resolve,{once:true})),new Promise((_,reject)=>setTimeout(()=>reject(Error('XR engine timeout')),45000))]);
     targetSpecs=await(await fetch('targets.json')).json();
-    cardTexture=await new THREE.TextureLoader().loadAsync(new URL('assets/tasting-card/jiadi-cabernet-franc.webp',import.meta.url).href);
+    slideAssets??=await loadSlideAssets(THREE);
     const targets=await Promise.all(targetSpecs.map(async spec=>{const response=await fetch(spec.file);if(!response.ok)throw Error('Target not available');const target=await response.json();target.imagePath=new URL(target.imagePath,document.baseURI).href;return target;}));
     // Image targets establish the print pose; real SLAM carries that pose while
     // the viewer reads above the paper. No stale camera-relative freeze fallback.

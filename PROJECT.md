@@ -18,11 +18,11 @@ One implementation: `site/ar/`. The already printed `/v3/` URL only redirects to
 - Broad dark occupancy in the known tube corridor is secondary evidence, not general object recognition. Sustained presence triggers; unknown visibility does not revoke a confirmed scene; observable absence expires the grace period. Invalid world pose must not masquerade as tracking.
 - The full original virtual card remains upright on the fixed far side, with unchanged image bytes on both faces. A known-layout depth-only tube proxy protects the real object; it is not live segmentation.
 - User approved size/viewing space. Mobile world continuation and broad device compatibility remain separate verification items.
-- Next content is **flavor-plant garnish**, explicitly selected by the user. Produce actual model/animation assets using the locked stage; do not reinstate the discarded ingredient-orbit or vine demo, add physical materials, or treat a concept image/video as a completed 3D asset.
+- Current user-approved scope supersedes the plant/GLB route: five existing transparent Feifei scans paired with five unmodified tasting-card PNGs. Hard-cut each second, moving only Feifei to the next of five equal tube-segment centres; wrap after five seconds. Fixed background-card transform. No transitions, generation, rewritten copy, music, or character articulation.
 - Illustration, modeling, motion authoring, runtime integration and publishing are separate deliverables. Pipeline choice and code/integration are assistant responsibilities. User approves aesthetic content; specialist modeling/rigging is required if assets cannot pass inspection, not hidden behind another generative prompt.
 
 ## Completion rules
 
-Animation delivery requires editable source, a real animated GLB, and a preview rendered from that same GLB. Verify motion after export, stage bounds, real-tube visibility, mobile load/render cost and actual AR composition. A generated MP4 alone is not a rotatable 3D animation.
+For this iteration, deliver the original raster assets, replaceable frame manifest and shared playback code. Verify atomic card/character/station changes, 1-second boundaries and 5-to-1 wrap, unmodified stage, alpha edges, source identity and actual browser rendering. GLB, vectorization and a video generator are NOT prerequisites for these textured 3D planes.
 
-Existing static experience stays published until replacement content is accepted. Preserve official engine/Three.js licenses. Never upload private scene photographs or whole brand source folders as part of deployment.
+Preserve official engine/Three.js licenses. Publish only the ten selected display PNGs and runtime; never upload private scene photographs, PSD/PDF originals or whole brand source folders.

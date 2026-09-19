@@ -6,7 +6,7 @@
 
 1. **实际体验：** [打开 AR](https://yxie-disney.github.io/ar_tasting_animation/ar/)。现有纸上二维码仍有效，无需重印。
 2. **实体品鉴卡：** [印刷母版说明](assets/printed-card/README.md)。这是纸上的物料。
-3. **动画制作：** [平台选择与第一条植物动画工单](docs/ANIMATION-WORKFLOW.md)。下一步先做风味植物 garnish，不做朏朏。
+3. **当前内容：** 五张现有朏朏＋五张完整品鉴卡，每秒同时换图、朏朏向右跳一格，五秒循环。没有转场或新插画。对应关系见 [五帧清单](site/ar/assets/slides/manifest.json)。
 
 ## 按用途看文件
 
@@ -17,7 +17,10 @@
 
 site/ar/                         当前唯一应用
 ├─ index.html + style.css         【人看】扫码后的权限/启动提示
-├─ assets/tasting-card/*.webp     【人看】完整原图，当前静态虚拟卡内容
+├─ assets/slides/                【人看】feifei-1…5.png 是朏朏；card-1…5.png 是背景卡
+│  └─ manifest.json              【内容编辑】五帧配对；以后换画只改这里和图片
+├─ slideshow.js                 【工程】同一时钟驱动五帧硬切与五个站位
+├─ assets/tasting-card/*.webp     【机器/回归】此前已验收静态卡的原图基线
 ├─ stage.js                      【工程】已锁定的共用舞台；动画也用它
 ├─ tasting-card.js               【工程】静态卡的3D摆位、双面和遮挡
 ├─ app.js                        【工程】相机、定位、内容的协调
@@ -25,7 +28,7 @@ site/ar/                         当前唯一应用
 └─ targets.json + image-targets/  【纯机器】定位数据；绝不是印刷物
 
 docs/STAGE.md                    【人看】锁定了什么、动画必须遵守什么
-docs/ANIMATION-WORKFLOW.md       【人看】去哪个平台、怎么做、带回什么
+docs/ANIMATION-WORKFLOW.md       【交接】当前五帧范围；没有外部平台前置要求
 PROJECT.md                      【交接】当前任务边界和责任
 tests/                          【纯机器/工程】回归检查与本地回放，不发布
 tools/                          【纯机器/工程】转换、依赖准备、本地服务
@@ -33,7 +36,7 @@ site/vendor/                    【纯机器】构建生成的引擎与许可，
 .github/workflows/pages.yml      【纯机器】测试、构建、发布
 ```
 
-当前静态卡仍在线，动画制作期间不替换为占位演示。完成的动画应复用同一个舞台、识别和二维码；通过内容验收后才替换消费者入口。
+当前实现采用用户指定的五帧硬切 prototype：背景卡的坐标、朝向和尺寸不变；朏朏在试管后、卡片前。内容全部预加载后开始，不加播放按钮。此阶段验证循环和空间关系，不把任意角色/酒款配对当作正式品牌关系，也不以一秒停留满足全文阅读。
 
 没有并列的版本目录。历史仅在 Git 中；`site/v3/index.html` 是为现有纸上二维码保留的极小跳转文件，不能删除，也不承载旧逻辑。旧布局、概念图和未采用的程序化藤蔓已移除。
 

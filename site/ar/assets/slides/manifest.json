@@ -1,0 +1,10 @@
+{
+  "note": "Five arbitrary existing-card pairings for the approved hard-cut prototype, not a claim that these characters represent these SKUs. Images copied unchanged from local originals.",
+  "frames": [
+    {"name":"力士 / 嘉地·品丽珠","character":"assets/slides/feifei-1.png","card":"assets/slides/card-1.png"},
+    {"name":"妙音鸟 / 海悦仁和·一山一水黑皮诺","character":"assets/slides/feifei-2.png","card":"assets/slides/card-2.png"},
+    {"name":"岩画 / 留世·锦羽","character":"assets/slides/feifei-3.png","card":"assets/slides/card-3.png"},
+    {"name":"螭吻 / 贺兰晴雪·加贝兰霞多丽","character":"assets/slides/feifei-4.png","card":"assets/slides/card-4.png"},
+    {"name":"角盔 / 迦南美地·桃之夭夭","character":"assets/slides/feifei-5.png","card":"assets/slides/card-5.png"}
+  ]
+}

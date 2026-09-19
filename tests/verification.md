@@ -25,3 +25,12 @@ Cross-device mobile performance, world-tracking continuation during reading, dif
 ## Reproduction
 
 `npm test`, `npm run build`, `npm run serve`. Local-only material test: `/_test/card-material.html`. With the private scene path supplied through `NOTERDAY_SCENE`, use `/_test/replay` for real-engine replay. Source photographs are never copied into `site/`.
+# Five-frame hard-cut update — 2026-09-19
+
+- Ten selected PNGs compared by SHA-256 against the local originals: byte-identical. No source edits. All five cards share 1683×3720; all five characters retain alpha.
+- `stage.js` unchanged. Background card remains 144×318.28877 scene units, position [55,-18,194.144385], upright. Character layer X=34.75 is between tube and card; height=80, bottom=35, original aspect preserved.
+- 35 Node tests pass, including atomic frame/map/position changes, 1000ms boundaries, 5→1 wrap, left-to-right five centres and unchanged card transform.
+- Private browser WebGL harness rendered all five production-texture pairs; all GL errors 0. Reviewed full images, white paper card backing and transparent character silhouettes. Synthetic camera is a render check, not a real-phone measurement.
+- Local actual-photo camera replay acquires `print-near`, confirms tube occupancy and advances the shared timeline. After switching to empty-paper fixture, occupancy becomes false and content hides. Existing image-only replay cannot validate mobile SLAM.
+- The historical photo points down at the paper: the locked large upright card extends beyond that replay's top edge. No stage resize was made to hide this limitation; real-phone framing remains the previously approved user setup.
+- This verifies hard-cut playback and integration, not final art direction, one-second reading comfort or cross-device production performance.

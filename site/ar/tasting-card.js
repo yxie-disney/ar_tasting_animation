@@ -2,7 +2,7 @@
 // The paper locates the scene; it does NOT determine the reading plane.
 // Paper-local +Z is up; +X is the far artwork wing in the approved QR-side view.
 // Placement is a property of this printed layout, not the first camera frame.
-import {STAGE} from './stage.js?release=20260919-stage-locked';
+import {STAGE} from './stage.js?release=20260919-five-frames';
 export const CARD_SPEC=Object.freeze({...STAGE,thicknessMm:1.2});
 export function createTastingCard(THREE,texture,renderer){
  const group=new THREE.Group(),card=new THREE.Group();group.add(card);
