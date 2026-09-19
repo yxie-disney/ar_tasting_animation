@@ -28,7 +28,7 @@ test('entry point and local modules share an explicit release cache key',async()
  const release=html.match(/app\.js\?release=([\w-]+)/)?.[1];
  assert.ok(release);
  const imports=[...app.matchAll(/from '\.\/([^']+)'/g)].map(m=>m[1]);
- assert.equal(imports.length,3);
+ assert.equal(imports.length,4);
  for(const file of imports){assert.equal(new URL(file,'https://local/').searchParams.get('release'),release);await fs.access('site/ar/'+file.split('?')[0]);}
  const occupancy=await fs.readFile('site/ar/occupancy.js','utf8');
  assert.equal(new URL(occupancy.match(/from '\.\/([^']+)'/)[1],'https://local/').searchParams.get('release'),release);

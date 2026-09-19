@@ -1,11 +1,13 @@
-import {ExperienceState,scaleFromTarget,occupancyEvidence} from './tracking.js?release=20260919-five-frames';
-import {createSlideshow,loadSlideAssets} from './slideshow.js?release=20260919-five-frames';
-import {createOccupancyProbe} from './occupancy.js?release=20260919-five-frames';
+import {ExperienceState,scaleFromTarget,occupancyEvidence} from './tracking.js?release=20260919-feifei-relief';
+import {createSlideshow,loadSlideAssets} from './slideshow.js?release=20260919-feifei-relief';
+import {createOccupancyProbe} from './occupancy.js?release=20260919-feifei-relief';
+import {PaperPoseFilter} from './pose-filter.js?release=20260919-feifei-relief';
 
 const $=s=>document.querySelector(s),state=new ExperienceState({worldEnabled:true});
 let targetSpecs=[],activeTarget=null;
 let scene,camera,renderer,anchor,garnish,probe,starting=false,running=false,lastProbe=0;
 let slideAssets;
+let poseFilter;
 let imageOnlyFallback=false;
 let current={visible:false},evidence=null,acquisitions=0,lastPose=null;
 let stage='loading',scanStage='waiting',cpuKeys=[];
@@ -31,6 +33,7 @@ function init(){
   const resize=()=>{renderer.setPixelRatio(Math.min(devicePixelRatio,1.5,1440/Math.max(innerWidth,innerHeight)));renderer.setSize(innerWidth,innerHeight);};
   resize();addEventListener('resize',resize);
   anchor=new THREE.Group();anchor.visible=false;scene.add(anchor);
+  poseFilter=new PaperPoseFilter(THREE);
   garnish=createSlideshow(THREE,slideAssets,renderer);anchor.add(garnish.group);
   scene.add(new THREE.HemisphereLight(0xfff4dd,0x34422d,2.0));
   const light=new THREE.DirectionalLight(0xffeed5,2.1);light.position.set(-1,3,4);scene.add(light);
@@ -49,10 +52,11 @@ function pose({detail:d}){
   const quaternion=new THREE.Quaternion(d.rotation.x,d.rotation.y,d.rotation.z,d.rotation.w);
   if(spec.rotation)quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,0,1),spec.rotation));
   position.sub(new THREE.Vector3(spec.offset[0],spec.offset[1],0).multiplyScalar(scale).applyQuaternion(quaternion));
-  // Smooth jitter only while continuously tracking; never ease from an obsolete pose.
-  if(wasFresh){anchor.position.lerp(position,.5);anchor.quaternion.slerp(quaternion,.5);anchor.scale.lerp(new THREE.Vector3(scale,scale,scale),.5);}
-  else{anchor.position.copy(position);anchor.quaternion.copy(quaternion);anchor.scale.setScalar(scale);}
-  lastPose={target:d.name,position:position.toArray(),rotation:d.rotation,scale};
+  // Filter the common anchor, not each visual layer independently. Otherwise
+  // the foreground character and background card would visibly swim apart.
+  const filtered=poseFilter.sample({position,quaternion,scale,t,fresh:wasFresh});
+  anchor.position.copy(filtered.position);anchor.quaternion.copy(filtered.quaternion);anchor.scale.setScalar(filtered.scale);
+  lastPose={target:d.name,t,position:position.toArray(),rotation:d.rotation,scale};
 }
 function update({processCpuResult}={}){
   cpuKeys=Object.keys(processCpuResult||{});

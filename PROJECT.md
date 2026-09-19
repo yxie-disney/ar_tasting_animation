@@ -23,6 +23,8 @@ One implementation: `site/ar/`. The already printed `/v3/` URL only redirects to
 
 ## Completion rules
 
+Current relief iteration preserves the above timing, original images and stage. It adds a continuous original-texture shallow relief (not separately extracted layers), pinned-base local breathing, existing-gold-only illumination, and common-anchor adaptive pose smoothing. No hidden artwork generation, whole-character depth bobbing or extra device-orientation tilt. Verify original front/back appearance, actual WebGL shader output and motion response; do not label desktop replay as resolution of the user's mobile depth complaint.
+
 For this iteration, deliver the original raster assets, replaceable frame manifest and shared playback code. Verify atomic card/character/station changes, 1-second boundaries and 5-to-1 wrap, unmodified stage, alpha edges, source identity and actual browser rendering. GLB, vectorization and a video generator are NOT prerequisites for these textured 3D planes.
 
 Preserve official engine/Three.js licenses. Publish only the ten selected display PNGs and runtime; never upload private scene photographs, PSD/PDF originals or whole brand source folders.

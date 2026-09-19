@@ -5,6 +5,22 @@ const ctx=source.getContext('2d');let fixture='scene';let zoom=1;let requests=0;
 const images={};const ready=Promise.all(['scene','card'].map(name=>new Promise((resolve,reject)=>{
  const image=new Image();image.onload=()=>{images[name]=image;resolve();};image.onerror=reject;image.src=name==='scene'?'/_test/scene.jpg':'/_test/card.png';
 })));
+const poseSamples=[];let poseTimestamp=-1;
+function poseNoise(){
+ const d=window.__noterday;
+ if(d?.pose&&d.pose.t!==poseTimestamp&&d.state.visible){
+  poseTimestamp=d.pose.t;poseSamples.push({raw:d.pose.position,filtered:d.anchor.position.toArray(),scale:d.pose.scale});
+  if(poseSamples.length>180)poseSamples.shift();
+ }
+ requestAnimationFrame(poseNoise);
+}
+requestAnimationFrame(poseNoise);
+function jitter(){
+ if(poseSamples.length<30)return null;
+ const scale=poseSamples.reduce((s,p)=>s+p.scale,0)/poseSamples.length;
+ const rms=key=>{const mean=[0,1,2].map(a=>poseSamples.reduce((s,p)=>s+p[key][a],0)/poseSamples.length);return Math.sqrt(poseSamples.reduce((s,p)=>s+p[key].reduce((q,x,a)=>q+(x-mean[a])**2,0),0)/poseSamples.length)/scale;};
+ return {samples:poseSamples.length,rawPositionRmsMm:rms('raw'),filteredPositionRmsMm:rms('filtered')};
+}
 // Explicit startup fault injection verifies automatic image-only fallback.
 // It is NOT evidence that real SLAM works in this desktop/photo replay.
 let worldSessionFaults=0;
@@ -39,5 +55,5 @@ addEventListener('DOMContentLoaded',()=>{
   const points=[[-1,-1],[-1,1],[1,-1],[1,1]].map(([x,y])=>new THREE.Vector3(x*width/2,y*height/2,0).applyMatrix4(virtual.matrixWorld).project(d.camera));
   return {scale:virtual.scale.x,position:virtual.position.toArray(),paperUp:new THREE.Vector3(0,1,0).applyQuaternion(virtual.quaternion).toArray(),viewer:d.anchor.worldToLocal(d.camera.getWorldPosition(new THREE.Vector3())).toArray(),corners:points.map(p=>p.toArray()),fullyVisible:points.every(p=>Math.abs(p.x)<1&&Math.abs(p.y)<1&&p.z>-1&&p.z<1)};
  })():null;
- panel.querySelector('#test-report').textContent=JSON.stringify({fixture,requests,frameCount,slide:d?.content?.frameIndex,worldSessionFaults,stage:d?.stage,scanStage:d?.scanStage,worldEnabled:d?.worldEnabled,acquisitions:d?.acquisitions,state:d?.state,evidence:d?.evidence,target:d?.pose?.target,corners,whitePoint:d?.pose?project(0,96):null,reading},null,2);},500);
+ panel.querySelector('#test-report').textContent=JSON.stringify({fixture,requests,frameCount,slide:d?.content?.frameIndex,jitter:jitter(),worldSessionFaults,stage:d?.stage,scanStage:d?.scanStage,worldEnabled:d?.worldEnabled,acquisitions:d?.acquisitions,state:d?.state,evidence:d?.evidence,target:d?.pose?.target,corners,whitePoint:d?.pose?project(0,96):null,reading},null,2);},500);
 });

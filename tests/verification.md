@@ -1,5 +1,15 @@
 # Current verification
 
+## Original-texture relief update — 2026-09-19
+
+- 41 automated tests pass: five bounded relief surfaces, unchanged UVs, pinned base/root, one-second switching, fixed stage, existing-gold-only region masks, production Three r160 shader chunks and adaptive pose-filter response.
+- Private actual WebGL harness `/_test/relief.html`: all five straight-on orthographic flat-versus-relief comparisons have zero changed pixels with breathing/glow disabled. Back-versus-front comparisons also have zero changed pixels. This is an isolated orthographic material check, not a claim that perspective views never change.
+- Oblique views and opposite breathing phases produce visible pixel differences on all five originals; all sampled WebGL errors are zero. Glow changes 1,576 pixels on the second character's existing fittings in the test shot and zero on the other four (RGB difference threshold >3/255).
+- Fixed actual-photo engine replay: one acquisition, occupancy confirmed, continuous five-frame playback. One 180-sample window measured raw position RMS 0.381mm versus filtered 0.240mm in the configured paper frame. This is a desktop replay measurement, not real-device accuracy or proof that the reported mobile depth instability is resolved.
+- Synthetic ±1mm jitter test reduces variance compared with the previous fixed 0.5 interpolation; deliberate movement remains responsive and genuinely new acquisitions snap to their new pose. Tracking validity/hiding policy is unchanged.
+- Original PNGs, stage, QR, five-frame timing and card transforms remain unchanged. No separate cutout layers, reconstructed hidden artwork, device-orientation overlay, particles or complete 3D model were created.
+- Local build command could not run because installed package dependencies were absent; browser tests use the already pinned local vendor files. The existing GitHub deployment workflow independently installs pinned dependencies, runs tests and builds before publishing; deployment success must be checked separately.
+
 ## Accepted by user
 
 The two-thirds-size static card and its present viewing space are accepted as the future animation stage. User reports camera-to-card distance approximately30cm. This is physical-user feedback, not calibrated camera intrinsics. Configuration is locked in `site/ar/stage.js`.

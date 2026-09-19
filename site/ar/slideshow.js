@@ -1,5 +1,6 @@
-import {STAGE} from './stage.js?release=20260919-five-frames';
-import {createTastingCard} from './tasting-card.js?release=20260919-five-frames';
+import {STAGE} from './stage.js?release=20260919-feifei-relief';
+import {createTastingCard} from './tasting-card.js?release=20260919-feifei-relief';
+import {RELIEF,createReliefGeometry,createReliefMaterial} from './feifei-relief.js?release=20260919-feifei-relief';
 
 // Five equal tube segments, using their centres in the approved viewer's
 // left-to-right direction. All dimensions share the existing paper frame.
@@ -14,7 +15,7 @@ export function frameAt(seconds){
 export function stationY(index){return STAGE.centerY-(index-2)*STAGE.tubeLengthMm/SLIDESHOW.count;}
 
 export async function loadSlideAssets(THREE){
- const response=await fetch(new URL('assets/slides/manifest.json?release=20260919-five-frames',import.meta.url));
+ const response=await fetch(new URL('assets/slides/manifest.json?release=20260919-feifei-relief',import.meta.url));
  if(!response.ok)throw Error('Slide manifest unavailable');
  const manifest=await response.json();
  if(manifest.frames.length!==SLIDESHOW.count)throw Error('Exactly five frames required');
@@ -44,16 +45,25 @@ export function createSlideshow(THREE,frames,renderer){
  }
  const model=createTastingCard(THREE,frames[0].card,renderer);
  const character=new THREE.Group();character.quaternion.copy(model.card.quaternion);model.group.add(character);
- const material=new THREE.MeshBasicMaterial({map:frames[0].character,transparent:true,alphaTest:.01,depthWrite:true,toneMapped:false});
- // Two outward-facing planes keep the original readable from both sides.
- const geometry=new THREE.PlaneGeometry(1,1);
+ const uniforms={reliefAmount:{value:1},breathAmount:{value:0},glowPhase:{value:0},glowStrength:{value:RELIEF.glowStrength}};
+ const material=createReliefMaterial(THREE,frames[0].character,uniforms);
+ const geometries=frames.map((_,i)=>createReliefGeometry(THREE,i));
+ // Shallow continuous relief uses original texture UVs on both sides. The
+ // missing art behind a separated hand/prop is never hallucinated or exposed.
+ const geometry=geometries[0];
  const front=new THREE.Mesh(geometry,material),back=new THREE.Mesh(geometry,material);
  front.position.z=.01;back.position.z=-.01;back.rotation.y=Math.PI;character.add(front,back);
  let frameIndex=-1;
  function update(seconds){
-  const next=frameAt(seconds);if(next===frameIndex)return;
+  const t=Number.isFinite(seconds)?Math.max(0,seconds):0;
+  uniforms.breathAmount.value=RELIEF.breathMm*Math.sin(2*Math.PI*t/RELIEF.periodSeconds);
+  // Sweep stays over the existing fittings even during their one-second slot;
+  // a global five-second phase would miss them on every repeated cycle.
+  uniforms.glowPhase.value=4.2+.7*Math.sin(2*Math.PI*t/3.6);
+  const next=frameAt(t);if(next===frameIndex)return;
   const frame=frames[next],image=frame.character.image;
   material.map=frame.character;
+  front.geometry=geometries[next];back.geometry=geometries[next];
   model.card.children[0].material[4].map=frame.card;
   model.card.children[0].material[5].map=frame.card;
   character.scale.set(SLIDESHOW.characterHeightMm*image.width/image.height,SLIDESHOW.characterHeightMm,1);
@@ -61,5 +71,5 @@ export function createSlideshow(THREE,frames,renderer){
   frameIndex=next;
  }
  update(0);
- return {...model,character,update,get aligned(){return model.aligned;},get frameIndex(){return frameIndex;}};
+ return {...model,character,update,reliefUniforms:uniforms,get aligned(){return model.aligned;},get frameIndex(){return frameIndex;}};
 }
