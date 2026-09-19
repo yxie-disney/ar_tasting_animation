@@ -9,7 +9,7 @@ const sharp=require(process.env.SHARP_MODULE||'sharp');
 const source=process.argv[2];
 if(!source)throw Error('Pass the approved tasting-card SVG path.');
 const bytes=await fs.readFile(source);
-const output='site/v3/assets/tasting-card';
+const output='site/ar/assets/tasting-card';
 await fs.mkdir(output,{recursive:true});
 const texture=await sharp(bytes,{density:144}).resize({height:4096}).flatten({background:'#ffffff'}).toColourspace('srgb').webp({lossless:true,effort:6}).toBuffer();
 await fs.writeFile(output+'/jiadi-cabernet-franc.webp',texture);

@@ -15,7 +15,7 @@ http.createServer(async(req,res)=>{
  try{
    const url=new URL(req.url,'http://localhost'),pathname=decodeURIComponent(url.pathname);
    if(pathname==='/_test/replay'){
-     const html=(await fs.readFile(path.join(site,'v3/index.html'),'utf8')).replace('<head>','<head><base href="/v3/"><script src="/_test/mock-camera.js"></script>');
+     const html=(await fs.readFile(path.join(site,'ar/index.html'),'utf8')).replace('<head>','<head><base href="/ar/"><script src="/_test/mock-camera.js"></script>');
      res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});res.end(html);return;
    }
    let file=fixtures[pathname];

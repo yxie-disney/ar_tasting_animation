@@ -17,12 +17,12 @@ for(const spec of specs){
  const crop=sharp(await image.clone().extract(box).png().toBuffer());
  const png=await crop.resize({height:480}).grayscale().png().toBuffer();
  const output=await sharp(png).metadata();
- await fs.writeFile(`site/v3/image-targets/${spec.name}.png`,png);
+ await fs.writeFile(`site/ar/image-targets/${spec.name}.png`,png);
  const data={name:spec.name,type:'PLANAR',imagePath:`image-targets/${spec.name}.png`,properties:{left:0,top:0,width:output.width,height:output.height,isRotated:false,originalWidth:output.width,originalHeight:output.height}};
- await fs.writeFile(`site/v3/image-targets/${spec.name}.json`,JSON.stringify(data,null,2)+'\n');
+ await fs.writeFile(`site/ar/image-targets/${spec.name}.json`,JSON.stringify(data,null,2)+'\n');
  targets.push({name:spec.name,widthMm:w,offset:[x+w/2-90,135-y-h/2],file:`image-targets/${spec.name}.json`});
 }
 targets.push({name:'noterday-vertical-01',widthMm:180,offset:[0,0],file:'image-targets/noterday-vertical-01.json'});
-const existing=JSON.parse(await fs.readFile('site/v3/targets.json','utf8').catch(()=>'[]'));
-await fs.writeFile('site/v3/targets.json',JSON.stringify([...existing.filter(t=>t.name.startsWith('print-')), ...targets],null,2)+'\n');
+const existing=JSON.parse(await fs.readFile('site/ar/targets.json','utf8').catch(()=>'[]'));
+await fs.writeFile('site/ar/targets.json',JSON.stringify([...existing.filter(t=>t.name.startsWith('print-')), ...targets],null,2)+'\n');
 console.log(targets);

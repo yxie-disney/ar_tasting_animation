@@ -2,10 +2,8 @@
 // The paper locates the scene; it does NOT determine the reading plane.
 // Paper-local +Z is up; +X is the far artwork wing in the approved QR-side view.
 // Placement is a property of this printed layout, not the first camera frame.
-export const CARD_SPEC=Object.freeze({
- widthMm:144,heightMm:144*2480/1122,thicknessMm:1.2,
- baseHeightMm:35,centerX:55,centerY:-18,tubeLengthMm:215,tubeRadiusMm:14.5
-});
+import {STAGE} from './stage.js?release=20260919-stage-locked';
+export const CARD_SPEC=Object.freeze({...STAGE,thicknessMm:1.2});
 export function createTastingCard(THREE,texture,renderer){
  const group=new THREE.Group(),card=new THREE.Group();group.add(card);
  texture.colorSpace=THREE.SRGBColorSpace;
@@ -21,7 +19,7 @@ export function createTastingCard(THREE,texture,renderer){
  const body=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),[side,side,side,side,face,face]);
  card.add(body);
  card.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(
-  new THREE.Vector3(0,-1,0),new THREE.Vector3(0,0,1),new THREE.Vector3(-1,0,0)
+  new THREE.Vector3(...STAGE.right),new THREE.Vector3(...STAGE.up),new THREE.Vector3(...STAGE.front)
  ));
  card.position.set(CARD_SPEC.centerX,CARD_SPEC.centerY,CARD_SPEC.baseHeightMm+h/2);
  // Camera video has no scene depth. This invisible, known-layout tube proxy

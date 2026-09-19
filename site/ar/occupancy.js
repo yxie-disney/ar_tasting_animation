@@ -1,4 +1,4 @@
-import {classifyOccupancy} from './tracking.js?release=20260919-card-two-thirds';
+import {classifyOccupancy} from './tracking.js?release=20260919-stage-locked';
 
 // Reads the camera background BEFORE virtual content is rendered. This shares the
 // exact displayed camera projection, including rotation and cover-cropping.

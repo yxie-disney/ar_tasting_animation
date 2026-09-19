@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
-import {createTastingCard,CARD_SPEC} from '../site/v3/tasting-card.js';
+import {createTastingCard,CARD_SPEC} from '../site/ar/tasting-card.js';
 let THREE;
 try{THREE=await import('three');}catch{
  const context={console:{warn(){},log(){}}};vm.runInNewContext(await fs.readFile('site/vendor/three.min.js','utf8'),context);THREE=context.THREE;
@@ -20,7 +20,7 @@ function setup(aspect,{distance=.4,elevation=45,azimuth=180,roll=0,anchorRotatio
  return {anchor,camera,texture,model};
 }
 test('original artwork is a lossless full-aspect texture, not regenerated content',async()=>{
- const dir='site/v3/assets/tasting-card/';const source=JSON.parse(await fs.readFile(dir+'source.json'));
+ const dir='site/ar/assets/tasting-card/';const source=JSON.parse(await fs.readFile(dir+'source.json'));
  assert.equal(source.height,4096);assert.ok(Math.abs(source.width/source.height-1122/2480)<.001);
  assert.equal(createHash('sha256').update(await fs.readFile(dir+'jiadi-cabernet-franc.webp')).digest('hex'),source.textureSha256);
  const {texture,model}=setup(9/16);assert.equal(texture.colorSpace,THREE.SRGBColorSpace);assert.equal(model.card.children[0].material[4].toneMapped,false);
@@ -157,7 +157,7 @@ test('phone movement changes perspective without moving or billboarding the card
  assert.ok(world.clone().project(camera).distanceTo(before)>.001);
 });
 test('real-camera evidence is sampled before opaque virtual content',async()=>{
- const app=await fs.readFile('site/v3/app.js','utf8');
+ const app=await fs.readFile('site/ar/app.js','utf8');
  const background=app.indexOf('XR8.GlTextureRenderer.pipelineModule()'),probe=app.indexOf("name:'noterday-camera-evidence'"),content=app.indexOf('XR8.Threejs.pipelineModule()');
  assert.ok(background<probe&&probe<content);
  assert.doesNotMatch(app,/import .*createGarnish/);

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {ExperienceState,classifyOccupancy,scaleFromTarget,occupancyEvidence} from '../site/v3/tracking.js';
+import {ExperienceState,classifyOccupancy,scaleFromTarget,occupancyEvidence} from '../site/ar/tracking.js';
 test('empty card never starts',()=>{const s=new ExperienceState();for(let t=0;t<3000;t+=150){s.image(t);s.evidence(false,t);assert.equal(s.tick(t).visible,false);}});
 test('persistent broad tube evidence starts without a click',()=>{const s=new ExperienceState();for(let t=0;t<=600;t+=150){s.image(t);s.evidence(true,t);s.tick(t);}assert.equal(s.tick(610).visible,true);});
 test('brief evidence loss retains timeline; extended removal stops',()=>{const s=new ExperienceState();for(let t=0;t<=750;t+=150){s.image(t);s.evidence(true,t);s.tick(t);}s.image(1200);s.evidence(false,1200);assert.equal(s.tick(1200).visible,true);s.image(2600);s.evidence(false,2600);assert.equal(s.tick(2600).visible,false);});

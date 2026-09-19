@@ -1,9 +1,9 @@
 // Private WebGL regression only: use the production geometry/material factory.
 // Intentionally isolate face rendering from image tracking and scene placement.
-import {createTastingCard,CARD_SPEC} from '/v3/tasting-card.js';
+import {createTastingCard,CARD_SPEC} from '/ar/tasting-card.js';
 const output=document.querySelector('#result');
 try{
- const texture=await new THREE.TextureLoader().loadAsync('/v3/assets/tasting-card/jiadi-cabernet-franc.webp');
+ const texture=await new THREE.TextureLoader().loadAsync('/ar/assets/tasting-card/jiadi-cabernet-franc.webp');
  const results=[];
  for(const [id,sign] of [['front',1],['back',-1]]){
   const renderer=new THREE.WebGLRenderer({canvas:document.getElementById(id),antialias:true,preserveDrawingBuffer:true});

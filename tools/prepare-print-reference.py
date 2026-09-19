@@ -28,7 +28,7 @@ H, mask = cv2.findHomography(src, dst, cv2.RANSAC, 4)
 if H is None or mask.sum() < 50:
     raise RuntimeError('Unable to establish a reliable artwork homography')
 reference = cv2.warpPerspective(b, np.linalg.inv(H), (720, 1080))
-out = Path('site/v3')
+out = Path('site/ar')
 targets = []
 for name, (x,y,w,h) in [('print-near',(2,94,67,132)), ('print-far',(110,42,68,160))]:
     patch = cv2.resize(reference[y*4:(y+h)*4, x*4:(x+w)*4], (round(w/h*480),480))

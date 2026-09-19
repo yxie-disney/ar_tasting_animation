@@ -14,5 +14,5 @@ Integration reference: 8th Wall official image-target examples and documented ca
 https://github.com/8thwall/aframe-image-targets-example
 https://8thwall.org/docs/api/engine/xrcontroller/configure
 
-The procedural vine, leaf, grape and flower geometry is original project code.
-No ARTECHOUSE or other commercial project's artwork or source code is included.
+The tasting-card artwork is provided by NOTERDAY and is not an open asset pack.
+No other commercial AR project's artwork or source code is included.
