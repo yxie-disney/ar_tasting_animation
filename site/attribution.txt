@@ -1,0 +1,18 @@
+NOTERDAY AR garnish
+
+8th Wall XR Engine 1.0.0, unmodified distribution
+Copyright © 2026 Niantic Spatial, Inc. All rights reserved.
+Licensed under the XR Engine License Agreement, including its disclaimer of warranties.
+License text: vendor/xr/LICENSE
+Upstream: https://github.com/8thwall/engine
+
+Three.js 0.160.1, MIT License
+License text: vendor/THREE-LICENSE
+Upstream: https://github.com/mrdoob/three.js
+
+Integration reference: 8th Wall official image-target examples and documented camera pipeline.
+https://github.com/8thwall/aframe-image-targets-example
+https://8thwall.org/docs/api/engine/xrcontroller/configure
+
+The procedural vine, leaf, grape and flower geometry is original project code.
+No ARTECHOUSE or other commercial project's artwork or source code is included.

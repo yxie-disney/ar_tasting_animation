@@ -1,0 +1,14 @@
+{
+  "name": "garden-far",
+  "type": "PLANAR",
+  "imagePath": "image-targets/garden-far.png",
+  "properties": {
+    "left": 0,
+    "top": 0,
+    "width": 204,
+    "height": 480,
+    "isRotated": false,
+    "originalWidth": 204,
+    "originalHeight": 480
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "print-far",
+  "type": "PLANAR",
+  "imagePath": "image-targets/print-far.png",
+  "properties": {
+    "left": 0,
+    "top": 0,
+    "width": 204,
+    "height": 480,
+    "originalWidth": 204,
+    "originalHeight": 480,
+    "isRotated": false
+  }
+}

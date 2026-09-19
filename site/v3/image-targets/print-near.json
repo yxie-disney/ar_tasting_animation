@@ -1,0 +1,14 @@
+{
+  "name": "print-near",
+  "type": "PLANAR",
+  "imagePath": "image-targets/print-near.png",
+  "properties": {
+    "left": 0,
+    "top": 0,
+    "width": 244,
+    "height": 480,
+    "originalWidth": 244,
+    "originalHeight": 480,
+    "isRotated": false
+  }
+}

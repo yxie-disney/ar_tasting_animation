@@ -1,79 +1,42 @@
-# NOTERDAY AR garnish — 重建执行契约
+# NOTERDAY AR garnish — current execution contract
 
-状态：设计重置；没有已验收的 AR 产品。用户已明确批准旧线上体验下线及旧实现清理。最新物料决定见 [PHYSICAL-DESIGN.md](PHYSICAL-DESIGN.md)：采用完整大平面目标＋机械定距的组合背卡，不依赖30–50 cm下的窄酒标识别。不创建 v4/v5 产品文件夹。
+## Outcome and fixed inputs
 
-## 1. 交付目标与不可转嫁的责任
+Consumer scans the existing printed QR, permits the camera if the browser requires it, and sees garnish automatically beside the physical wine tube. No bottle registration, endpoint taps, manual placement, confirmation/play button, or consumer diagnostic controls.
 
-消费者扫码，完成浏览器必要权限/启动动作，对准真实酒管，自动看到与酒管贴合、在自然观看距离内完整可见的 garnish。不得登记瓶位置、点瓶底瓶盖、拖动模型、输入尺寸或保存调试记录。
+Use the user's existing print and horizontal tube layout, with a natural oblique view intended at 30–50 cm. The tube is 215 × Ø29 mm. Do not request another print, new QR, upright stand, saddle, or stop. The recovered master is nominally 180 × 270 mm (270 × 180 when used horizontally); this is not a new physical measurement. See [PHYSICAL-DESIGN.md](PHYSICAL-DESIGN.md).
 
-真实基准：215 mm 高、29 mm 直径；打印物料贴于小夹板，顶部金属夹可能遮挡；试管贴靠板面；相机约 50 cm；不是把手机贴纸面。沿用该验证场景，不从截图推测精确毫米坐标。不把支持任意摆放/任意离板角度/任意移动默认为已交付能力。
+Stable entry: https://yxie-disney.github.io/ar_tasting_animation/v3/
 
-“空卡不触发、合理试管可触发、无须 SKU 真伪认证”仍保留；如改变，必须显式取得产品决定，不能因技术方便偷偷删除。
+The pictured substitute SKU is acceptable. The card/URL selects this experience; tube authenticity and fine-print OCR are not required. Empty card must not play.
 
-## 2. 已查明可复用什么
+## Implemented spine
 
-- 当前官方可运行工程骨架：[A-Frame Image Targets](https://github.com/8thwall/aframe-image-targets-example)。已读 src/app.js、src/index.html：目标配置和命名目标下的内容挂载可以复用。示例自带的手势、视频点击、关闭世界追踪配置不是我们的产品需求，不能盲抄。
-- 直接饮料参照：[three.js Curved Image Targets](https://github.com/8thwall/archive/tree/main/apps/examples/curved-threejs)，说明明确是圆柱酒标上的视频内容；有打印标签示例。
-- 空间追踪参照：[Curved Targets + SLAM](https://github.com/8thwall/archive/tree/main/apps/examples/curved-slam)，已读说明与事件驱动内容代码。复用曲面目标事件/空间关系模式，不复用南瓜美术或把示例世界坐标偏移当成我们的瓶身坐标。
-- 上述 archive 是历史项目，迁移按[当前官方说明](https://8thwall.org/docs/migration/self-hosted)：当前引擎二进制、显式目标配置、相应加载模块；先验证再引用，不假称旧工程无需修改即可生产部署。
-- [官方目标指南](https://8thwall.org/docs/engine/guides/image-targets)：平面/圆柱/圆锥目标、SLAM 配合、QR 参数选择目标；特征多样性、灰度对比、非重复纹理、哑光印刷。曲面目标识别已知印刷图，不是通用圆柱物体检测。
-- 商业参照：[Post Pop AR Cocktail Coasters](https://www.postpopstudios.com/immersive-technology/augmented-reality-cocktail-coasters)。能借鉴二维码入口、物料承载体验的产品组织；杯垫上的虚拟饮料不证明高瘦实体管周围的定位能力。没有核实到可直接复制的“29 mm 管径、50 cm、昨非完整 garnish”成品工程。
-- 源码公开不等于全部 MIT；正式复用时逐项记录源码、模型、纹理与引擎许可及归属，不搬商业案例美术。
+1. Existing QR opens the stable HTTPS page. It is not the primary spatial tracker.
+2. Unmodified 8th Wall Engine 1.0.0 tracks unobscured artwork regions or the complete card. Target offsets map all references to one card coordinate system.
+3. Local framebuffer samples check broad, sustained dark occupancy in the pale tube corridor. At least 450 ms confirmation is required. This inexpensive evidence fits the pictured dark wine tube; it does not claim arbitrary tube detection or continuous bottle-pose estimation.
+4. Two botanical stems grow along the tube, with unfolding leaves, small grape clusters and flowers. The label corridor stays clear. Geometry is original Three.js work, not a commercial case's copied assets or orbiting ingredient sprites.
+5. Brief evidence loss gets 1.7 seconds of grace. Loss of image pose hides geometry immediately and pauses the timeline; reacquisition can resume. Sustained absence resets the timeline. No unsupported world-anchor persistence is claimed.
 
-## 3. 当前物料与技术决定
+Image-only tracking is deliberately selected for this fixed card-in-frame experience. The application does not request motion sensors or make a consumer perform a SLAM scan. A browser-required camera-start gesture is the only optional button.
 
-采用侧置120×160 mm完整平面目标与试管机械定距的180×270 mm背卡，具体尺寸、方案比较、相对位置、presence边界与用户介入点见 [PHYSICAL-DESIGN.md](PHYSICAL-DESIGN.md)。不把窄正标识别作为消费者入口的前提。复用官方平面图像追踪工程，必要的占位判断单独验证，不自研通用物体姿态识别，也不以人工校准补洞。
+## Reuse and responsibilities
 
-## 4. 谁能变、谁不能变
+- Official image-target event/scene pattern: https://github.com/8thwall/aframe-image-targets-example
+- Current engine configuration: https://8thwall.org/docs/api/engine/xrcontroller/configure
+- Target guidance: https://8thwall.org/docs/engine/guides/image-targets
+- Product reference, not a code/art source: https://www.postpopstudios.com/immersive-technology/augmented-reality-cocktail-coasters
 
-| 层级 | 固定要求 | 可变部分 / 责任人 |
-| --- | --- | --- |
-| 消费体验 | 约50 cm完整观看；无手动定位；动画围绕实物 | 不以技术便利改变，由项目负责人守住 |
-| 酒管 | 215 × Ø29 mm、真实外观与品牌真实性 | 不默认换瓶或永久覆盖正标 |
-| 印刷载体 | 量产/现场可合理使用，不只是实验室夹具 | 卡片方向、版式、图案、QR位置可为体验改；新增套标/托卡需明确物料决定 |
-| 追踪 | 输出可信空间位置，不伪装自动识别 | 8th Wall原生平面或曲面，按真实距离验证选择 |
-| 美术 | 在已经划定的遮挡区、可见区、灰度特征和尺寸约束内创作 | 题材、色调、笔触、疏密由美术任务与用户审美意见决定 |
-| 动画 | 有开始、展开、停留、收束；不遮蔽实物主体 | 元素、节奏、空间路径单独设计；不是把切出的食材循环旋转 |
+GitHub is code/deployment SOT. Original print masters stay local; reduced tracking crops are published. The user's scene photograph stays local and is not deployed. Dependencies are version-pinned and their licenses are preserved. Recognition reference preparation, procedural animation, application integration and deployment are separate implementation responsibilities; success of one does not imply acceptance of the others.
 
-## 5. 印刷品与代码的接口
+## Evidence and remaining gate
 
-每个 SKU 的发布清单必须绑定：入口 URL、目标图片及版本、真实印刷尺寸/曲率、目标到瓶底/瓶轴的变换、动画资产及其比例/轴向、体验状态规则。测量与标定由制作阶段完成，不在消费者页面完成。
+The actual engine acquired the supplied scene in local video replay, occupancy automatically started animation, digital empty-card replay stopped it, and re-entering the scene at a smaller frame size reacquired and restarted it. Print-reference calibration used the same photo: this is an integration check, not independent accuracy evidence. See [tests/verification.md](tests/verification.md).
 
-二维码只选 SKU/打开网页；引擎读取对应目标资源求姿态；该姿态结合已知物理关系形成酒管坐标；动画作为酒管坐标下的内容播放。3D 遮挡代理使用已知管径/高度；不把单张视频平面宣传成全视角三维环绕。
+Next gate is real-phone use of this same QR/print at the intended view: initial acquisition, movement, empty physical card, removal/re-entry and lighting. iOS Safari, Android Chrome and WeChat behavior are not interchangeable and have not been measured. Final animation aesthetics and mobile frame rate are also not yet accepted. No production-readiness claim follows from a successful deployment or replay.
 
-更换卡面/标签的特征区须重编译目标并同步印刷文件；只改动画无需重印。静态二维码入口保持稳定，内容可更新。首期采用静态 HTTPS 发布与 SKU 清单，不先造账户系统/CMS/云端视觉后台。实际手机浏览器兼容和微信入口属于发布验收，不拿桌面预览代替。
+If this gate fails, inspect the concrete failure and correct the implementation; do not add consumer calibration, silently treat card-only as tube-present, ask for a new print by default, or publish another decorative layout instead of fixing the runtime.
 
-## 6. 分工与阶段产物
+## Collaboration contract
 
-| 阶段 | 执行责任 / 产物 | 人工介入 | 通过后才允许做什么 |
-| --- | --- | --- | --- |
-| 技术原型 | 工程任务：迁移官方示例，提交来源与改动清单、真实距离测试入口、测试表 | 开发测试者打印一次、拍真实场景；不是消费者点击标定 | 选择生产追踪载体 |
-| 系统与物料 | 系统设计任务：尺寸图、装配关系、可见区/遮挡区、SKU资产清单 | 只有新增套标/固定结构等产品选择需用户确认 | 发出确定的美术 brief |
-| 美术 | 专门生图任务：独立构图，明确留白与追踪要求；独立检查再做毫米排版 | 询问题材/风格/氛围偏好，同时列明不能牺牲的技术区 | 冻结打印母版与对应目标 |
-| 动画 | 独立动效任务：先故事板/短片预演，再分层或3D资产与时间线 | 用户看可视化片段决定审美，不读代码想象效果 | 接入实时 AR |
-| 集成 | 工程任务：锚点、自动触发、时间线、遮挡、丢失/恢复、性能 | 真实手机复测 | 发布候选 |
-| 部署与验收 | 工程操作任务：构建、许可/归属、HTTPS、资源一致性、回滚 | 只有账户所有者才能完成的授权才升级，提供明确原因和最短操作 | 对外产品入口 |
-
-每阶段必须有进入条件、可看产物、检查结果及下一步决定。阶段可以做未完成的内部试验，但不把它发成消费者体验。调试记录只在开发入口，不在成品页面。
-
-## 7. 先提出的验收门槛（目标，不是已测成绩）
-
-- 50 cm、完整215 mm管体与预定garnish空间同时入镜，不要求凑近来获得初始锁定。
-- 初始锁定20次至少18次在资源加载完后3秒内成功；同时记录冷启动总时长，不能藏掉下载成本。
-- 正面、左右约20°、顶部夹遮挡、正常室内与靠窗场景。至少iOS Safari和Android Chrome；微信内场景单列。
-- 连续20秒缓慢移动，特效不明显离开实物；瓶底和瓶口都要检查，暂定可见偏移不超过约5 mm等效尺寸作为工程筛选门槛。
-- 无管/空卡不启动；非同SKU的合理试管可以接受。曲面路线若使用SKU特定正标，需明确支持集合；不能把“容忍误触发”误说成能检测所有陌生标签。
-- 暂时遮挡/离镜后的恢复不要求用户重标定；SLAM不是独立移动酒管的万能追踪，动态物体的能力另验。
-- 只有同一套“生产可接受物料+最终美术+动画+真实手机”联合通过，才算交付，不以静态脚本点击、图像合成或部署200响应替代。
-
-## 8. 能力边界与停损
-
-我可以承担资料/源码核查、架构、独立生图任务、可编程2.5D动效、集成、部署和自动测试；这些不构成对最终质量的预先保证。
-
-我不能在没有真实手机与实体物料证据时保证追踪，也不能把生图工具当成可保证产出电影级动画/精确三维资产的工具。需要实体装配与手机录像的阶段由现场人执行清楚的测试步骤；若已确认的动效要求超出现有工具能力，交付具体分镜、分层资产与规格给动效/3D制作人员，不能用旋转图标替代。
-
-若平面目标的观看距离或槽内presence不能通过真实场景验证，报告失败条件与证据，不以消费者点击或默认有管替代。两项必须解决后才投入最终动画集成；若无法解决，明确需要专门WebAR工程协作，不能继续承诺成功。
-
-## 9. 当前下一步
-
-用户已经明确授权清空旧实现并下线，原始品牌资产和Git历史保留。下一制作单元是 PHYSICAL-DESIGN.md 所述物料的前/侧视装配设计及手机观看构图；不是要求用户再试窄酒标。随后分别完成技术样机、专门美术、独立动画和集成验收，不混成一次终极产出。
+Lead with the product outcome and make the engineering choice. Do not transfer architecture work to the user through lists of concerns. Preserve fixed inputs; distinguish observations, assumptions and verified results. Do not conflate illustration, animation, system design and deployment into an unsupported promise. Human input is needed for genuine physical-device evidence and aesthetic decisions, not to invent the technical path or repair routine tooling. No version-count theater, speculative extra materials, or claims of success without appropriate checks.

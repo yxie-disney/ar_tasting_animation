@@ -1,0 +1,14 @@
+{
+  "name": "garden-near",
+  "type": "PLANAR",
+  "imagePath": "image-targets/garden-near.png",
+  "properties": {
+    "left": 0,
+    "top": 0,
+    "width": 244,
+    "height": 480,
+    "isRotated": false,
+    "originalWidth": 244,
+    "originalHeight": 480
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "status": "existing_print_restored_not_new_artwork",
+  "restoredOn": "2026-09-18",
+  "files": {
+    "png": {
+      "path": "嘉地-品丽珠_立牌01.png",
+      "widthPx": 2126,
+      "heightPx": 3189,
+      "sha256": "465b05be25619a66d1ea851d92103b00e7825aaaff2e3a7b6273fda471fb41e3"
+    },
+    "svg": {
+      "path": "嘉地-品丽珠_立牌01.svg",
+      "sha256": "76dc0e0c2f541baa38ada8dc2bcc3d2f28fdd305905e28e5c15315e30cff0e01"
+    }
+  },
+  "originalArtworkSizeMm": {"width": 180, "height": 270},
+  "physicalPrintSizeMeasuredThisTurn": false,
+  "placement": "Use the existing print and tube laid flat as shown in the user's reference photograph. No new fixtures or artwork layout.",
+  "reprintRequired": false,
+  "qr": {
+    "url": "https://yxie-disney.github.io/ar_tasting_animation/v3/",
+    "preserveEntryUrl": true,
+    "decodedFromRestoredPng": true,
+    "decodedFromScenePhotograph": false,
+    "newExperiencePublished": false
+  },
+  "verification": {
+    "exactBackupBytesRestored": true,
+    "liveTrackingAt30To50CmVerified": false,
+    "oldManualCalibrationRestored": false
+  }
+}

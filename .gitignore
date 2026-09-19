@@ -3,3 +3,11 @@ dist/
 .env
 .env.*
 !.env.example
+
+# Keep the current rebuild design visible despite legacy local excludes.
+!/design/
+!/design/**
+/site/vendor/
+/tests/private/
+/assets/printed-card/*.png
+/assets/printed-card/*.svg
