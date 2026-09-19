@@ -1,6 +1,12 @@
 // A real, thin 3D card carrying the unchanged artwork, not a screen overlay.
-// Its reading orientation is captured once; moving the phone reveals parallax.
-export const CARD_SPEC=Object.freeze({widthMm:108,heightMm:108*2480/1122,thicknessMm:1.2,liftMm:68,centerY:-18,viewerOffsetMm:30});
+// The paper locates the scene; it does NOT determine the reading plane.
+// Card-local +Z is above the paper. Capture the viewer's side once, then keep
+// the portrait card upright BEHIND the tube as the phone moves.
+export const CARD_SPEC=Object.freeze({
+ widthMm:108,heightMm:108*2480/1122,thicknessMm:1.2,
+ baseHeightMm:12,centerY:-18,tubeLengthMm:215,tubeRadiusMm:14.5,
+ rearGapMm:10,minScale:.3,viewportMargin:.9
+});
 export function createTastingCard(THREE,texture,renderer){
  const group=new THREE.Group(),card=new THREE.Group();group.add(card);
  texture.colorSpace=THREE.SRGBColorSpace;
@@ -12,44 +18,44 @@ export function createTastingCard(THREE,texture,renderer){
  const back=new THREE.MeshBasicMaterial({color:0xfffdf8,toneMapped:false});
  const {widthMm:w,heightMm:h,thicknessMm:d}=CARD_SPEC;
  const body=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),[side,side,side,side,face,back]);
- card.add(body);card.position.set(0,CARD_SPEC.centerY,CARD_SPEC.liftMm);
+ card.add(body);
  let aligned=false;
- const qAnchor=new THREE.Quaternion(),qCamera=new THREE.Quaternion();
  function alignOnce(anchor,camera){
   if(aligned)return;
   anchor.updateMatrixWorld(true);camera.updateMatrixWorld(true);
-  anchor.getWorldQuaternion(qAnchor);camera.getWorldQuaternion(qCamera);
-  // A small viewer-side offset gives the tall card headroom in the same view;
-  // it does not alter the physical tube placement or tracking target.
-  const towardViewer=anchor.worldToLocal(camera.getWorldPosition(new THREE.Vector3()));towardViewer.z=0;towardViewer.normalize().multiplyScalar(CARD_SPEC.viewerOffsetMm);
-  card.position.set(towardViewer.x,CARD_SPEC.centerY+towardViewer.y,CARD_SPEC.liftMm);
-  const relative=qAnchor.invert().multiply(qCamera);
-  const normal=new THREE.Vector3(0,0,1).applyQuaternion(relative);
-  // Tilt at most 25 degrees from the physical card; keep every corner above
-  // the tube instead of letting a tall camera-facing card intersect the table.
-  const angle=Math.acos(THREE.MathUtils.clamp(normal.z,-1,1));
-  if(angle>25*Math.PI/180){const axis=new THREE.Vector3(-normal.y,normal.x,0).normalize();normal.set(0,0,1).applyAxisAngle(axis,25*Math.PI/180);}
-  const up=new THREE.Vector3(0,1,0).applyQuaternion(relative).projectOnPlane(normal).normalize();
-  const right=new THREE.Vector3().crossVectors(up,normal).normalize();up.crossVectors(normal,right).normalize();
+  const tubeCenter=new THREE.Vector3(0,CARD_SPEC.centerY,0);
+  const normal=anchor.worldToLocal(camera.getWorldPosition(new THREE.Vector3())).sub(tubeCenter);
+  normal.z=0;
+  if(normal.lengthSq()<1e-6)normal.set(-1,0,0);
+  normal.normalize();
+  // Card up is the physical paper's normal, NEVER camera up or paper Y.
+  // This remains correct when the phone is held in portrait or rolled.
+  const up=new THREE.Vector3(0,0,1);
+  const right=new THREE.Vector3().crossVectors(up,normal).normalize();
   card.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(right,up,normal));
-  // Fit the full original portrait card in the initial viewport. Then freeze
-  // its physical dimensions/orientation; no camera-following billboard effect.
-  const center=card.getWorldPosition(new THREE.Vector3()).applyMatrix4(camera.matrixWorldInverse);
-  const distance=Math.abs(center.z),scale=anchor.getWorldScale(new THREE.Vector3()).x;
-  const vertical=2*distance/Math.abs(camera.projectionMatrix.elements[5]);
-  const horizontal=2*distance/Math.abs(camera.projectionMatrix.elements[0]);
-  card.scale.setScalar(Math.max(.65,Math.min(1.35,.78*vertical/(h*scale),.8*horizontal/(w*scale))));
+  // Conservative tube footprint support along the viewing direction. The
+  // WHOLE virtual card is behind its far edge, including at oblique azimuths.
+  const tubeExtent=Math.abs(normal.x)*CARD_SPEC.tubeRadiusMm+Math.abs(normal.y)*CARD_SPEC.tubeLengthMm/2;
+  const setback=tubeExtent+CARD_SPEC.rearGapMm+d/2;
+  card.position.copy(tubeCenter).addScaledVector(normal,-setback);
+  // Fit around a fixed bottom edge, without laying the card down, shifting it
+  // toward the viewer, cropping artwork, or shrinking it without a lower bound.
   const corner=new THREE.Vector3();
-  for(let attempt=0;attempt<28;attempt++){
-   const halfDepth=(Math.abs(right.z)*w+Math.abs(up.z)*h)*card.scale.x/2;
-   card.position.z=Math.max(CARD_SPEC.liftMm,29+14+halfDepth);
+  function placeAtScale(scale){
+   card.scale.setScalar(scale);
+   card.position.z=CARD_SPEC.baseHeightMm+h*scale/2;
    card.updateWorldMatrix(true,false);
-   const fits=[[-1,-1],[-1,1],[1,-1],[1,1]].every(([x,y])=>{
-    corner.set(x*w/2,y*h/2,0).applyMatrix4(card.matrixWorld).project(camera);
-    return Math.abs(corner.x)<.9&&Math.abs(corner.y)<.9&&corner.z<1;
-   });
-   if(fits)break;
-   card.scale.multiplyScalar(.94);
+  }
+  function fits(){
+   for(const x of [-1,1])for(const y of [-1,1])for(const z of [-1,1]){
+    corner.set(x*w/2,y*h/2,z*d/2).applyMatrix4(card.matrixWorld).project(camera);
+    if(Math.abs(corner.x)>=CARD_SPEC.viewportMargin||Math.abs(corner.y)>=CARD_SPEC.viewportMargin||corner.z<=-1||corner.z>=1)return false;
+   }
+   return true;
+  }
+  placeAtScale(1);
+  while(!fits()&&card.scale.x>CARD_SPEC.minScale){
+   placeAtScale(Math.max(CARD_SPEC.minScale,card.scale.x*.96));
   }
   aligned=true;
  }

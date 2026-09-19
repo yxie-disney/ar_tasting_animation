@@ -1,11 +1,23 @@
 # Verification — existing printed card, automatic garnish
 
-## Current increment: static floating tasting card
+## Current correction: upright reading card behind the tube
+
+The user's real-phone screenshot rejected the previous near-horizontal card. That was a product-geometry error: tests checked visibility and height above the paper, but did not check the correct reading plane or front/back relationship. The previous layout is not an accepted baseline.
+
+- The horizontal physical tube, print, QR, original artwork and automatic tracking/occupancy pipeline are unchanged.
+- Virtual card local up equals paper +Z; its front normal lies in the paper plane and faces the initial viewer. The whole thin card is behind the tube's far edge by at least 10mm, with its bottom 12mm above paper. Phone roll does not determine card orientation. The original horizontal typesetting remains unchanged.
+- Initial viewport fitting changes uniform scale around a fixed bottom edge, never orientation or placement side. Scale is bounded between 0.3 and 1 of the 108 × 238.7mm source-proportional card; this is not a claim that tiny body text is readable at every resulting size. Once aligned, the pose and scale are fixed relative to the print.
+- 17 automated tests pass. Added assertions cover upright paper normal, viewer-facing front, all eight box corners behind the entire tube footprint, fixed bottom height, seven viewing azimuths, phone roll, rotated world anchors, and unchanged pose/scale after camera motion. Projection tests exercise 54 synthetic combinations of portrait/landscape aspect, 30/40/50cm distance, 35/45/60-degree elevation and three oblique azimuths. These are geometric tests, not physical-device recognition results.
+- Actual-engine local replay of the original clean scene photograph at 1280 × 720 acquired `print-near`, automatically showed the upright card, and kept it visible for over 110 seconds. The real-photo projection exposed clipping at an earlier minimum scale; corrected bounded fitting yielded scale 0.332, all four face corners inside the viewport, and paper-up [0, 0, 1] within floating-point tolerance. Visual inspection confirmed normal-reading artwork behind—not covering—the horizontal tube.
+- Digital empty-card replay retained image pose, produced zero dark rows, hid the virtual card, and reset the gate. No calibration or playback button was introduced.
+- The user's latest AR screenshot is failure evidence, not a tracking target or replay input. No new phone recording of this corrected layout has been captured; portrait live readability and movement remain unverified on the device.
+
+## Previous static-card increment: shared assets/pipeline, rejected layout
 
 - Uses the approved outlined tasting-card SVG as-is, rendered on white in sRGB to a 1853 × 4096 lossless WebP. Artwork, glyphs and text are not regenerated or rearranged.
-- A thin 3D card is initially oriented for reading, tilted at most 25 degrees from the physical plane, then fixed in card-local coordinates. Corners are kept above the tube; initial projected bounds are fitted without cropping the artwork. Camera motion changes perspective, not the card's own pose.
+- The previous implementation limited tilt to 25 degrees from the paper and placed the card above the tube. **Rejected by real-phone feedback; replaced by the perpendicular, behind-tube layout above.**
 - The original image targets, QR, tube gate and grace state are preserved. The probe now samples camera pixels before virtual content renders, preventing the opaque card from erasing its own evidence.
-- 15 automated tests pass, including portrait/landscape projection bounds, tube clearance, static pose under camera movement, source/texture integrity and render order.
+- The previous 15 tests passed projection bounds, tube clearance, fixed pose, source/texture integrity and render order. They missed the required reading-plane relationship and therefore did not establish usability.
 - Desktop 1280 × 720 photo replay acquired the existing print reference and automatically displayed the virtual card continuously for over 50 seconds with positive tube evidence.
 - Switching to the digital empty card retained image tracking, yielded zero dark rows, hid the virtual card and reset the gate. The virtual card therefore did not keep itself latched through its own pixels.
 - A separate 390 × 844 desktop viewport test, letterboxing the entire landscape photograph into a simulated portrait video, did not acquire at the two tested replay scales. It is not a real phone camera test; do not describe portrait live recognition or readability as verified. The printed target data were not modified to fit this artificial case.
