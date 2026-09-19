@@ -8,7 +8,16 @@ test('printed QR endpoint contains no manual positioning or debug controls',asyn
  assert.equal(buttons.length,1);
  assert.equal(buttons[0][1].trim(),'开启相机');
  assert.match(html,/id="start" hidden/);
- assert.match(html,/src="app.js"/);
+ assert.match(html,/src="app.js\?release=[\w-]+"/);
+});
+
+test('entry point and local modules share an explicit release cache key',async()=>{
+ const html=await fs.readFile('site/v3/index.html','utf8'),app=await fs.readFile('site/v3/app.js','utf8');
+ const release=html.match(/app\.js\?release=([\w-]+)/)?.[1];
+ assert.ok(release);
+ const imports=[...app.matchAll(/from '\.\/([^']+)'/g)].map(m=>m[1]);
+ assert.equal(imports.length,3);
+ for(const file of imports){assert.equal(new URL(file,'https://local/').searchParams.get('release'),release);await fs.access('site/v3/'+file.split('?')[0]);}
 });
 test('every configured target and its image exist',async()=>{
  const specs=JSON.parse(await fs.readFile('site/v3/targets.json','utf8'));
@@ -17,6 +26,7 @@ test('every configured target and its image exist',async()=>{
 });
 test('private test harness is not a published page',async()=>{
  await assert.rejects(fs.access('site/tests/mock-camera.js'));
+ for(const file of ['card-material.html','card-material.js'])await assert.rejects(fs.access('site/'+file));
  const app=await fs.readFile('site/v3/app.js','utf8');
  assert.doesNotMatch(app,/getUserMedia\s*=|_test\/|Image_2026|C:\\/);
 });

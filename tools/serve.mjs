@@ -7,7 +7,9 @@ const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=
 const fixtures={
  '/_test/scene.jpg':process.env.NOTERDAY_SCENE,
  '/_test/card.png':path.resolve(root,'assets/printed-card/嘉地-品丽珠_立牌01.png'),
- '/_test/mock-camera.js':path.resolve(root,'tests/mock-camera.js')
+ '/_test/mock-camera.js':path.resolve(root,'tests/mock-camera.js'),
+ '/_test/card-material.html':path.resolve(root,'tests/card-material.html'),
+ '/_test/card-material.js':path.resolve(root,'tests/card-material.js')
 };
 http.createServer(async(req,res)=>{
  try{

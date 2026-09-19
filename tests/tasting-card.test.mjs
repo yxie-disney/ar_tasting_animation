@@ -25,6 +25,28 @@ test('original artwork is a lossless full-aspect texture, not regenerated conten
  assert.equal(createHash('sha256').update(await fs.readFile(dir+'jiadi-cabernet-franc.webp')).digest('hex'),source.textureSha256);
  const {texture,model}=setup(9/16);assert.equal(texture.colorSpace,THREE.SRGBColorSpace);assert.equal(model.card.children[0].material[4].toneMapped,false);
 });
+
+test('both broad faces show the complete original artwork, readable from either side',()=>{
+ const {texture,model}=setup(9/16),body=model.card.children[0];
+ const {geometry,material}=body;
+ for(const [materialIndex,viewZ] of [[4,1000],[5,-1000]]){
+  assert.equal(material[materialIndex].map,texture,`face ${materialIndex} must not be a blank backing`);
+  assert.equal(material[materialIndex].toneMapped,false);
+  // Inspect each actual BoxGeometry face from outside, not a DoubleSide plane
+  // whose back shows mirrored text. UV right/up must remain screen right/up.
+  const camera=new THREE.PerspectiveCamera(55,9/16,.1,10000);
+  camera.position.set(0,0,viewZ);camera.lookAt(0,0,0);camera.updateMatrixWorld(true);
+  const group=geometry.groups.find(g=>g.materialIndex===materialIndex);
+  const vertices=new Map();
+  for(let i=group.start;i<group.start+group.count;i++){
+   const index=geometry.index.getX(i),uv=new THREE.Vector2().fromBufferAttribute(geometry.attributes.uv,index);
+   vertices.set(`${uv.x},${uv.y}`,new THREE.Vector3().fromBufferAttribute(geometry.attributes.position,index).project(camera));
+  }
+  assert.equal(vertices.size,4,'each face retains all four artwork corners');
+  for(const v of [0,1])assert.ok(vertices.get(`1,${v}`).x>vertices.get(`0,${v}`).x,'text reads left to right');
+  for(const u of [0,1])assert.ok(vertices.get(`${u},1`).y>vertices.get(`${u},0`).y,'artwork is upright');
+ }
+});
 test('reading plane is upright, faces the viewer, and is entirely behind the horizontal tube',()=>{
  const {widthMm:w,heightMm:h,thicknessMm:d}=CARD_SPEC;
  for(const azimuth of [0,45,90,160,180,210,270]){

@@ -1,6 +1,6 @@
-import {ExperienceState,scaleFromTarget} from './tracking.js';
-import {createTastingCard} from './tasting-card.js';
-import {createOccupancyProbe} from './occupancy.js';
+import {ExperienceState,scaleFromTarget} from './tracking.js?release=20260918-two-sided';
+import {createTastingCard} from './tasting-card.js?release=20260918-two-sided';
+import {createOccupancyProbe} from './occupancy.js?release=20260918-two-sided';
 
 const $=s=>document.querySelector(s),state=new ExperienceState();
 let targetSpecs=[],activeTarget=null;

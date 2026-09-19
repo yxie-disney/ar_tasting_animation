@@ -1,6 +1,15 @@
 # Verification — existing printed card, automatic garnish
 
-## Current: full original artwork at a fixed large size
+## Current: blank reverse face corrected; geometry and original asset unchanged
+
+- The user's phone showed a large blank card. Inspection found artwork on BoxGeometry face 4 (+Z) but a solid off-white material on face 5 (−Z). A new regression test failed specifically on the missing reverse texture. The private WebGL harness reproduced a normal front and completely blank reverse with the original production factory. This is a confirmed code defect consistent with the screenshot, not a measurement of which face that phone frame rendered.
+- Both broad faces now share the unchanged original texture. BoxGeometry's separate outward UVs keep text upright and left-to-right from either side; this is not a mirrored DoubleSide plane. Size, placement, fixed orientation, artwork bytes, tracking, occupancy and printed QR are unchanged.
+- 20 automated tests pass. The added test verifies both material maps and every corner's reading direction from opposing cameras. Existing geometry and source-hash tests still pass.
+- Browser WebGL visual inspection of `/_test/card-material.html` shows the complete original on both faces, including the same flower, title, icons, notes and awards. Each face rendered 78,656 colored pixels, versus zero on the old reverse face; both renderers reported no GL error. This private test isolates the real production material/geometry and is not a phone-tracking validation or a new deliverable card. It is outside the published `site/` directory.
+- The entry module and its local imports now use the same explicit release cache key. A release-query page link can bypass the earlier cached HTML for immediate verification; the printed QR route remains unchanged. GitHub Pages may still cache unversioned HTML, and publication is not evidence that an already-open phone tab has reloaded.
+- No new physical-device capture has been obtained for this fix. Desktop rendering establishes the removed blank-face defect, not complete mobile usability.
+
+## Previous: full original artwork at a fixed large size
 
 - User explicitly requests a large, faithful projection to inspect virtual-space boundaries, not a redesigned mobile card. The entire original texture is unchanged; nominal card size is 216 × 477.4mm, approximately six times the width and height of the rejected 0.332-scale replay result.
 - Removed the viewport-fitting loop and minimum-scale policy. Card geometry and scale are independent of camera distance, aspect ratio and off-screen corners. Off-screen edges are expected, not a reason to shrink the card or rewrite its content.

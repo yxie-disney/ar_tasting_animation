@@ -15,9 +15,11 @@ export function createTastingCard(THREE,texture,renderer){
  texture.magFilter=THREE.LinearFilter;
  const face=new THREE.MeshBasicMaterial({map:texture,toneMapped:false});
  const side=new THREE.MeshBasicMaterial({color:0xe7dfd4,toneMapped:false});
- const back=new THREE.MeshBasicMaterial({color:0xfffdf8,toneMapped:false});
  const {widthMm:w,heightMm:h,thicknessMm:d}=CARD_SPEC;
- const body=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),[side,side,side,side,face,back]);
+ // Both broad faces carry the original image. BoxGeometry supplies outward
+ // UVs per face, so the reverse reads normally rather than mirroring text.
+ // Never expose a blank backing when the viewer sees the opposite side.
+ const body=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),[side,side,side,side,face,face]);
  card.add(body);
  let aligned=false;
  function alignOnce(anchor,camera){
