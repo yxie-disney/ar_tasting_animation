@@ -45,19 +45,30 @@ test('reading plane is upright, faces the viewer, and is entirely behind the hor
   }
  }
 });
-for(const aspect of [16/9,9/16])test(`full upright portrait card fits intended oblique 30–50 cm views (${aspect})`,()=>{
- const {widthMm:w,heightMm:h,thicknessMm:d}=CARD_SPEC;
+for(const aspect of [16/9,9/16])test(`full original card retains fixed large dimensions, not viewport-fit (${aspect})`,()=>{
+ assert.equal(CARD_SPEC.widthMm,216);
+ assert.ok(Math.abs(CARD_SPEC.heightMm/CARD_SPEC.widthMm-2480/1122)<1e-12);
  for(const distance of [.3,.4,.5])for(const elevation of [35,45,60])for(const azimuth of [160,180,200]){
-  const {camera,model}=setup(aspect,{distance,elevation,azimuth}),card=model.card;
-  assert.ok(card.scale.x>=CARD_SPEC.minScale&&card.scale.x<=1);
-  for(const x of [-1,1])for(const y of [-1,1])for(const z of [-1,1]){
-   const p=new THREE.Vector3(x*w/2,y*h/2,z*d/2).applyMatrix4(card.matrixWorld).project(camera);
-   assert.ok(Math.abs(p.x)<.9&&Math.abs(p.y)<.9&&p.z>-1&&p.z<1,JSON.stringify({distance,elevation,azimuth,aspect,scale:card.scale.x,corner:p.toArray()}));
-  }
-  const top=new THREE.Vector3(0,h/2,0).applyMatrix4(card.matrixWorld).project(camera);
-  const bottom=new THREE.Vector3(0,-h/2,0).applyMatrix4(card.matrixWorld).project(camera);
-  assert.ok(top.y>bottom.y,'portrait artwork top must appear above its bottom, not sideways');
+  const {model}=setup(aspect,{distance,elevation,azimuth}),card=model.card;
+  assert.equal(card.scale.x,1);assert.equal(card.scale.y,1);assert.equal(card.scale.z,1);
+  assert.equal(card.children[0].geometry.parameters.width,216);
+  assert.equal(card.children[0].geometry.parameters.height,CARD_SPEC.heightMm);
+  assert.equal(card.position.z,CARD_SPEC.baseHeightMm+CARD_SPEC.heightMm/2);
  }
+});
+
+test('off-screen edges do not trigger shrinkage, hiding, or artwork cropping',()=>{
+ const {camera,texture,model}=setup(9/16),card=model.card;
+ const {widthMm:w,heightMm:h}=CARD_SPEC;
+ const points=[[-1,-1],[-1,1],[1,-1],[1,1]].map(([x,y])=>new THREE.Vector3(x*w/2,y*h/2,0).applyMatrix4(card.matrixWorld).project(camera));
+ assert.ok(points.some(p=>Math.abs(p.x)>1||Math.abs(p.y)>1||p.z<-1||p.z>1),'fixture intentionally exceeds viewport');
+ assert.equal(card.scale.x,1);assert.equal(card.visible,true);assert.equal(model.group.visible,true);
+ assert.equal(texture.repeat.x,1);assert.equal(texture.repeat.y,1);
+ assert.equal(texture.offset.x,0);assert.equal(texture.offset.y,0);assert.equal(texture.rotation,0);
+ const uv=card.children[0].geometry.attributes.uv.array;
+ assert.equal(Math.min(...uv),0);assert.equal(Math.max(...uv),1);
+ const before=card.matrix.clone();camera.aspect=16/9;camera.updateProjectionMatrix();model.alignOnce(model.group.parent,camera);
+ assert.ok(card.matrix.equals(before),'viewport change cannot resize the card');
 });
 
 test('phone roll and world-anchor rotation cannot lay the card down or change its viewer-side placement',()=>{

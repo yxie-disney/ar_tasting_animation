@@ -1,6 +1,14 @@
 # Verification — existing printed card, automatic garnish
 
-## Current correction: upright reading card behind the tube
+## Current: full original artwork at a fixed large size
+
+- User explicitly requests a large, faithful projection to inspect virtual-space boundaries, not a redesigned mobile card. The entire original texture is unchanged; nominal card size is 216 × 477.4mm, approximately six times the width and height of the rejected 0.332-scale replay result.
+- Removed the viewport-fitting loop and minimum-scale policy. Card geometry and scale are independent of camera distance, aspect ratio and off-screen corners. Off-screen edges are expected, not a reason to shrink the card or rewrite its content.
+- Upright paper normal, behind-tube placement, original aspect ratio, full texture UVs, fixed bottom position and no camera-following rotation are preserved. Image targets, QR, tube gate and camera-evidence render order are unchanged.
+- 18 automated tests pass, including fixed dimensions across 54 synthetic view combinations, intentional out-of-frame projection without shrinkage or hiding, full-source texture/UV integrity, viewport changes and phone movement. These prove the requested geometry/asset behavior, not phone readability or persistent tracking outside the physical target.
+- Actual-engine 1280 × 720 replay acquired `print-near` and retained positive tube evidence for over 60 seconds with scale exactly 1. Visual review showed the enlarged card's lower/awards region above the tube while the upper artwork extended beyond the view. This is the intentionally large complete plane, not a cropped/recomposed asset and not a claim that the whole original is readable in one frame. The previous small card is not restored to force full visibility.
+
+## Previous upright correction: orientation retained, small viewport-fit rejected
 
 The user's real-phone screenshot rejected the previous near-horizontal card. That was a product-geometry error: tests checked visibility and height above the paper, but did not check the correct reading plane or front/back relationship. The previous layout is not an accepted baseline.
 
