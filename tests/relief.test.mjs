@@ -6,7 +6,10 @@ import {RELIEF,REGIONS,regionWeights,createReliefGeometry,createReliefMaterial} 
 import {PaperPoseFilter} from '../site/ar/pose-filter.js';
 import {createSlideshow,SLIDESHOW} from '../site/ar/slideshow.js';
 import {STAGE} from '../site/ar/stage.js';
-const context={console:{warn(){},log(){}}};vm.runInNewContext(await fs.readFile('site/vendor/three.min.js','utf8'),context);const THREE=context.THREE;
+let THREE;
+try{THREE=await import('three');}catch{
+ const context={console:{warn(){},log(){}}};vm.runInNewContext(await fs.readFile('site/vendor/three.min.js','utf8'),context);THREE=context.THREE;
+}
 
 test('all five continuous reliefs retain original UVs, bounded thickness and pinned feet',()=>{
  assert.equal(REGIONS.length,5);
