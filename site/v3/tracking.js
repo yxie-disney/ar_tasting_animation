@@ -1,25 +1,36 @@
 export class ExperienceState {
-  constructor(){this.reset();}
-  reset(){this.lastImage=-Infinity;this.lastWorld=-Infinity;this.worldNormal=false;this.lastPositive=-Infinity;this.firstPositive=null;this.latched=false;this.progressMs=0;this.lastTick=null;this.lastSample=-Infinity;}
-  image(t){this.lastImage=t;}
-  lost(){this.lastImage=-Infinity;}
-  world(status,t){this.worldNormal=status==='NORMAL';this.lastWorld=t;}
+  constructor({worldEnabled=false}={}){this.worldEnabled=worldEnabled;this.reset();}
+  reset(){this.lastImage=-Infinity;this.imageTracked=false;this.imageSerial=0;this.invalidWorldImageSerial=0;this.lastWorld=-Infinity;this.worldNormal=false;this.worldAnchored=false;this.lastPositive=-Infinity;this.firstPositive=null;this.latched=false;this.progressMs=0;this.lastTick=null;this.lastSample=-Infinity;this.lastEvidence=null;}
+  image(t){this.lastImage=t;this.imageTracked=true;this.imageSerial++;}
+  lost(){this.imageTracked=false;this.lastEvidence=null;this.firstPositive=null;}
+  world(status,t){this.worldNormal=status==='NORMAL';this.lastWorld=t;if(!this.worldNormal){this.worldAnchored=false;this.invalidWorldImageSerial=this.imageSerial;}}
   evidence(present,t){
-    this.lastSample=t;
-    if(present){this.lastPositive=t;if(this.firstPositive===null)this.firstPositive=t;if(t-this.firstPositive>=450)this.latched=true;}
-    else if(t-this.lastPositive>250)this.firstPositive=null;
+    if(t-this.lastSample>500)this.firstPositive=null;
+    this.lastSample=t;this.lastEvidence=present;
+    if(present===true){this.lastPositive=t;if(this.firstPositive===null)this.firstPositive=t;if(t-this.firstPositive>=450)this.latched=true;}
+    else if(present===null||t-this.lastPositive>250)this.firstPositive=null;
   }
   tick(t){
     const dt=this.lastTick===null?0:Math.min(100,t-this.lastTick);this.lastTick=t;
-    const image=t-this.lastImage<350;
-    const world=this.worldNormal&&t-this.lastWorld<500&&t-this.lastImage<2200;
+    const image=this.imageTracked&&t-this.lastImage<350;
+    const worldFresh=this.worldEnabled&&this.worldNormal&&t-this.lastWorld<500;
+    if(!worldFresh){this.worldAnchored=false;this.invalidWorldImageSerial=this.imageSerial;}
+    if(image&&worldFresh&&this.imageSerial>this.invalidWorldImageSerial)this.worldAnchored=true;
+    const world=worldFresh&&this.worldAnchored;
     const anchor=image||world;
-    if(t-this.lastPositive>1700){this.latched=false;this.firstPositive=null;}
+    // Out of view is UNKNOWN, not evidence the tube was removed. Keep an
+    // already-confirmed experience only while a real image/world pose exists.
+    if(this.lastEvidence===false&&t-this.lastPositive>1700){this.latched=false;this.firstPositive=null;}
     const visible=anchor&&this.latched;
     if(visible)this.progressMs+=dt;
     if(!this.latched&&t-this.lastPositive>4000)this.progressMs=0;
     return {image,world,anchor,visible,latched:this.latched,progressMs:this.progressMs};
   }
+}
+
+export function occupancyEvidence(result){
+  if(result?.present===true)return true;
+  return result?.reason==='no-tube-evidence'?false:null;
 }
 
 // Classifies changed, dark, elongated occupancy in the card's existing pale strip.

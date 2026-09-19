@@ -1,4 +1,4 @@
-import {classifyOccupancy} from './tracking.js';
+import {classifyOccupancy} from './tracking.js?release=20260919-reading-space';
 
 // Reads the camera background BEFORE virtual content is rendered. This shares the
 // exact displayed camera projection, including rotation and cover-cropping.

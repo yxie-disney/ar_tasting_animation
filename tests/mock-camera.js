@@ -5,6 +5,14 @@ const ctx=source.getContext('2d');let fixture='scene';let zoom=1;let requests=0;
 const images={};const ready=Promise.all(['scene','card'].map(name=>new Promise((resolve,reject)=>{
  const image=new Image();image.onload=()=>{images[name]=image;resolve();};image.onerror=reject;image.src=name==='scene'?'/_test/scene.jpg':'/_test/card.png';
 })));
+// Explicit startup fault injection verifies automatic image-only fallback.
+// It is NOT evidence that real SLAM works in this desktop/photo replay.
+let worldSessionFaults=0;
+if(new URLSearchParams(location.search).has('world-session-failure'))addEventListener('xrloaded',()=>{
+ const run=XR8.run,compatible=XR8.XrDevice.isDeviceBrowserCompatible;
+ XR8.XrDevice.isDeviceBrowserCompatible=args=>worldSessionFaults?compatible(args):true;
+ XR8.run=options=>{if(!worldSessionFaults){worldSessionFaults++;return Promise.reject(Error('No valid session manager to handle this session.'));}return run(options);};
+},{once:true});
 function draw(){
  frameCount++;
  ctx.fillStyle='#c5c0b5';ctx.fillRect(0,0,W,H);
@@ -31,5 +39,5 @@ addEventListener('DOMContentLoaded',()=>{
   const points=[[-1,-1],[-1,1],[1,-1],[1,1]].map(([x,y])=>new THREE.Vector3(x*width/2,y*height/2,0).applyMatrix4(virtual.matrixWorld).project(d.camera));
   return {scale:virtual.scale.x,position:virtual.position.toArray(),paperUp:new THREE.Vector3(0,1,0).applyQuaternion(virtual.quaternion).toArray(),viewer:d.anchor.worldToLocal(d.camera.getWorldPosition(new THREE.Vector3())).toArray(),corners:points.map(p=>p.toArray()),fullyVisible:points.every(p=>Math.abs(p.x)<1&&Math.abs(p.y)<1&&p.z>-1&&p.z<1)};
  })():null;
- panel.querySelector('#test-report').textContent=JSON.stringify({fixture,requests,frameCount,stage:d?.stage,scanStage:d?.scanStage,acquisitions:d?.acquisitions,state:d?.state,evidence:d?.evidence,target:d?.pose?.target,corners,whitePoint:d?.pose?project(0,96):null,reading},null,2);},500);
+ panel.querySelector('#test-report').textContent=JSON.stringify({fixture,requests,frameCount,worldSessionFaults,stage:d?.stage,scanStage:d?.scanStage,worldEnabled:d?.worldEnabled,acquisitions:d?.acquisitions,state:d?.state,evidence:d?.evidence,target:d?.pose?.target,corners,whitePoint:d?.pose?project(0,96):null,reading},null,2);},500);
 });

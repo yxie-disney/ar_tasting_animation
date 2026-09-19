@@ -1,14 +1,15 @@
-import {ExperienceState,scaleFromTarget} from './tracking.js?release=20260918-two-sided';
-import {createTastingCard} from './tasting-card.js?release=20260918-two-sided';
-import {createOccupancyProbe} from './occupancy.js?release=20260918-two-sided';
+import {ExperienceState,scaleFromTarget,occupancyEvidence} from './tracking.js?release=20260919-reading-space';
+import {createTastingCard} from './tasting-card.js?release=20260919-reading-space';
+import {createOccupancyProbe} from './occupancy.js?release=20260919-reading-space';
 
-const $=s=>document.querySelector(s),state=new ExperienceState();
+const $=s=>document.querySelector(s),state=new ExperienceState({worldEnabled:true});
 let targetSpecs=[],activeTarget=null;
 let scene,camera,renderer,anchor,garnish,probe,starting=false,running=false,lastProbe=0;
 let cardTexture;
+let imageOnlyFallback=false;
 let current={visible:false},evidence=null,acquisitions=0,lastPose=null;
 let stage='loading',scanStage='waiting',cpuKeys=[];
-const debug={get stage(){return stage},get scanStage(){return scanStage},get cpuKeys(){return cpuKeys},get state(){return current},get evidence(){return evidence},get acquisitions(){return acquisitions},get pose(){return lastPose},get camera(){return camera},get anchor(){return anchor},get renderer(){return renderer},get content(){return garnish}};
+const debug={get stage(){return stage},get scanStage(){return scanStage},get cpuKeys(){return cpuKeys},get worldEnabled(){return state.worldEnabled},get state(){return current},get evidence(){return evidence},get acquisitions(){return acquisitions},get pose(){return lastPose},get camera(){return camera},get anchor(){return anchor},get renderer(){return renderer},get content(){return garnish}};
 // Read-only diagnostics are available to development tooling, never a consumer control.
 window.__noterday=debug;
 
@@ -56,7 +57,8 @@ function pose({detail:d}){
 function update({processCpuResult}={}){
   cpuKeys=Object.keys(processCpuResult||{});
   if(!anchor)return;
-  const t=performance.now();current=state.tick(t);
+  const t=performance.now(),worldStatus=processCpuResult?.reality?.trackingStatus;
+  if(worldStatus)state.world(worldStatus,t);current=state.tick(t);
   // The card pose stays measurable while the garnish is hidden awaiting tube evidence.
   anchor.visible=true;garnish.group.visible=current.visible;
   if(current.visible){garnish.alignOnce(anchor,camera);garnish.update(current.progressMs/1000);hint('');}
@@ -64,9 +66,9 @@ function update({processCpuResult}={}){
   else hint('');
 }
 function sampleCameraBeforeContent(){
-  const t=performance.now();if(!probe||t-lastProbe<220||!current.image)return;
+  const t=performance.now();if(!probe||t-lastProbe<220||!current.anchor)return;
   lastProbe=t;
-  try{evidence=probe.sample();state.evidence(evidence.present,t);}catch(error){console.warn('Occupancy sample unavailable',error.message);state.evidence(false,t);}
+  try{evidence=probe.sample();state.evidence(occupancyEvidence(evidence),t);}catch(error){console.warn('Occupancy sample unavailable',error.message);state.evidence(null,t);}
 }
 async function start(){
   if(starting||running)return;starting=true;$('#start').disabled=true;
@@ -75,9 +77,13 @@ async function start(){
     targetSpecs=await(await fetch('targets.json')).json();
     cardTexture=await new THREE.TextureLoader().loadAsync(new URL('assets/tasting-card/jiadi-cabernet-franc.webp',import.meta.url).href);
     const targets=await Promise.all(targetSpecs.map(async spec=>{const response=await fetch(spec.file);if(!response.ok)throw Error('Target not available');const target=await response.json();target.imagePath=new URL(target.imagePath,document.baseURI).href;return target;}));
-    // This experience keeps the broad, existing card in view. Image tracking does
-    // not require the consumer to grant motion sensors or perform a SLAM scan.
-    stage='engine-ready';XR8.XrController.configure({disableWorldTracking:true,imageTargetData:targets});
+    // Image targets establish the print pose; real SLAM carries that pose while
+    // the viewer reads above the paper. No stale camera-relative freeze fallback.
+    // NORMAL world tracking is required for persistence, otherwise image-only.
+    // Use the engine's mobile-world compatibility check, not user-agent guesses.
+    // Desktop/no-motion devices retain image tracking rather than failing startup.
+    state.worldEnabled=!imageOnlyFallback&&XR8.XrDevice.isDeviceBrowserCompatible({allowedDevices:XR8.XrConfig.device().MOBILE});
+    stage='engine-ready';XR8.XrController.configure({disableWorldTracking:!state.worldEnabled,imageTargetData:targets});
     XR8.addCameraPipelineModules([
       XR8.GlTextureRenderer.pipelineModule(),
       // Camera evidence must be sampled BEFORE the virtual card covers it.
@@ -89,7 +95,16 @@ async function start(){
     ]);
     const canvas=$('#camera');canvas.width=innerWidth;canvas.height=innerHeight;
     await XR8.run({canvas,allowedDevices:XR8.XrConfig.device().ANY,cameraConfig:{direction:XR8.XrConfig.camera().BACK}});
-  }catch(error){fail(error);}
+  }catch(error){
+    // Some in-app browsers pass the preflight but cannot create a motion/SLAM
+    // session. Fall back once without adding a placement UI or retry loop.
+    if(state.worldEnabled&&!imageOnlyFallback&&/No valid session manager|MISSING_DEVICE_ORIENTATION|DENY_DEVICE_ORIENTATION/.test(String(error))){
+      imageOnlyFallback=true;XR8.stop();XR8.clearCameraPipelineModules();
+      state.reset();activeTarget=null;anchor=null;starting=false;running=false;
+      return start();
+    }
+    fail(error);
+  }
 }
 $('#start').addEventListener('click',()=>{if(starting&&!running)playCamera();else start();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){state.reset();if(garnish)garnish.group.visible=false;} });

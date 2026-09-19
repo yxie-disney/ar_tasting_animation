@@ -18,6 +18,8 @@ test('entry point and local modules share an explicit release cache key',async()
  const imports=[...app.matchAll(/from '\.\/([^']+)'/g)].map(m=>m[1]);
  assert.equal(imports.length,3);
  for(const file of imports){assert.equal(new URL(file,'https://local/').searchParams.get('release'),release);await fs.access('site/v3/'+file.split('?')[0]);}
+ const occupancy=await fs.readFile('site/v3/occupancy.js','utf8');
+ assert.equal(new URL(occupancy.match(/from '\.\/([^']+)'/)[1],'https://local/').searchParams.get('release'),release);
 });
 test('every configured target and its image exist',async()=>{
  const specs=JSON.parse(await fs.readFile('site/v3/targets.json','utf8'));

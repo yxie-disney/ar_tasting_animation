@@ -47,7 +47,7 @@ test('both broad faces show the complete original artwork, readable from either 
   for(const u of [0,1])assert.ok(vertices.get(`${u},1`).y>vertices.get(`${u},0`).y,'artwork is upright');
  }
 });
-test('reading plane is upright, faces the viewer, and is entirely behind the horizontal tube',()=>{
+test('reading plane is upright on the fixed FAR side, independent of first acquisition direction',()=>{
  const {widthMm:w,heightMm:h,thicknessMm:d}=CARD_SPEC;
  for(const azimuth of [0,45,90,160,180,210,270]){
   const {anchor,camera,model}=setup(9/16,{azimuth}),card=model.card;
@@ -55,32 +55,29 @@ test('reading plane is upright, faces the viewer, and is entirely behind the hor
   const normal=new THREE.Vector3(0,0,1).applyQuaternion(card.quaternion);
   assert.ok(up.distanceTo(new THREE.Vector3(0,0,1))<1e-10,'portrait top must follow paper +Z, not lie along the paper');
   assert.ok(Math.abs(normal.z)<1e-10,'reading plane must be perpendicular to paper');
-  const center=new THREE.Vector3(0,CARD_SPEC.centerY,0);
-  const viewer=anchor.worldToLocal(camera.position.clone()).sub(center);viewer.z=0;viewer.normalize();
-  assert.ok(normal.dot(viewer)>.999999,'front artwork must face the viewer');
-  const extent=Math.abs(viewer.x)*CARD_SPEC.tubeRadiusMm+Math.abs(viewer.y)*CARD_SPEC.tubeLengthMm/2;
+  assert.ok(normal.distanceTo(new THREE.Vector3(-1,0,0))<1e-10,'front faces the approved QR-side view, not whichever way the initial frame points');
   for(const x of [-1,1])for(const y of [-1,1])for(const z of [-1,1]){
    const p=new THREE.Vector3(x*w/2,y*h/2,z*d/2).applyMatrix4(card.matrix);
-   assert.ok(p.clone().sub(center).dot(viewer)<=-extent-CARD_SPEC.rearGapMm+1e-8,'all card corners must be behind the tube, never over it');
+   assert.ok(p.x>CARD_SPEC.tubeRadiusMm+35,'all card corners stay on the far side of the physical tube');
    assert.ok(p.z>=CARD_SPEC.baseHeightMm-1e-8,'card must not intersect the paper');
-   if(y===-1)assert.ok(Math.abs(p.z-CARD_SPEC.baseHeightMm)<1e-8,'bottom stays fixed while fitting');
+   if(y===-1)assert.ok(Math.abs(p.z-CARD_SPEC.baseHeightMm)<1e-8,'bottom stays above the real tube');
   }
  }
 });
-for(const aspect of [16/9,9/16])test(`full original card retains fixed large dimensions, not viewport-fit (${aspect})`,()=>{
- assert.equal(CARD_SPEC.widthMm,216);
+for(const aspect of [16/9,9/16])test(`full original card retains explicit smaller dimensions, not viewport-fit (${aspect})`,()=>{
+ assert.equal(CARD_SPEC.widthMm,95);
  assert.ok(Math.abs(CARD_SPEC.heightMm/CARD_SPEC.widthMm-2480/1122)<1e-12);
  for(const distance of [.3,.4,.5])for(const elevation of [35,45,60])for(const azimuth of [160,180,200]){
   const {model}=setup(aspect,{distance,elevation,azimuth}),card=model.card;
   assert.equal(card.scale.x,1);assert.equal(card.scale.y,1);assert.equal(card.scale.z,1);
-  assert.equal(card.children[0].geometry.parameters.width,216);
+  assert.equal(card.children[0].geometry.parameters.width,95);
   assert.equal(card.children[0].geometry.parameters.height,CARD_SPEC.heightMm);
   assert.equal(card.position.z,CARD_SPEC.baseHeightMm+CARD_SPEC.heightMm/2);
  }
 });
 
 test('off-screen edges do not trigger shrinkage, hiding, or artwork cropping',()=>{
- const {camera,texture,model}=setup(9/16),card=model.card;
+ const {camera,texture,model}=setup(9/16,{distance:.15}),card=model.card;
  const {widthMm:w,heightMm:h}=CARD_SPEC;
  const points=[[-1,-1],[-1,1],[1,-1],[1,1]].map(([x,y])=>new THREE.Vector3(x*w/2,y*h/2,0).applyMatrix4(card.matrixWorld).project(camera));
  assert.ok(points.some(p=>Math.abs(p.x)>1||Math.abs(p.y)>1||p.z<-1||p.z>1),'fixture intentionally exceeds viewport');
@@ -91,6 +88,46 @@ test('off-screen edges do not trigger shrinkage, hiding, or artwork cropping',()
  assert.equal(Math.min(...uv),0);assert.equal(Math.max(...uv),1);
  const before=card.matrix.clone();camera.aspect=16/9;camera.updateProjectionMatrix();model.alignOnce(model.group.parent,camera);
  assert.ok(card.matrix.equals(before),'viewport change cannot resize the card');
+});
+
+test('known physical tube writes invisible depth before the virtual card',()=>{
+ const {model}=setup(9/16),tube=model.occluder;
+ assert.equal(tube.parent,model.group);
+ assert.equal(tube.material.colorWrite,false);assert.equal(tube.material.depthWrite,true);assert.equal(tube.material.depthTest,true);
+ assert.ok(tube.renderOrder<model.card.children[0].renderOrder);
+ assert.equal(tube.geometry.parameters.height,215);assert.equal(tube.geometry.parameters.radiusTop,14.5);
+ assert.equal(tube.position.z,14.5);assert.equal(tube.position.y,CARD_SPEC.centerY);
+});
+
+test('portrait reading frame at 40–50cm retains the full card, tube and near artwork band',()=>{
+ // Explicit synthetic camera, not a measured phone lens or a recognition test.
+ // Unlike the old tests, include BOTH the physical scene and virtual content.
+ for(const distance of [.4,.5])for(const elevation of [30,45,60]){
+  const anchor=new THREE.Group();anchor.scale.setScalar(.001);
+  const camera=new THREE.PerspectiveCamera(70,9/16,.001,10),e=elevation*Math.PI/180;
+  camera.position.set(-distance*Math.cos(e),CARD_SPEC.centerY*.001,distance*Math.sin(e));camera.up.set(0,0,1);
+  camera.lookAt(.02,CARD_SPEC.centerY*.001,.08);camera.updateMatrixWorld(true);
+  const model=createTastingCard(THREE,new THREE.Texture(),{capabilities:{getMaxAnisotropy:()=>8}});anchor.add(model.group);model.alignOnce();anchor.updateMatrixWorld(true);
+  const points=[];
+  for(const x of [-1,1])for(const y of [-1,1])points.push(new THREE.Vector3(x*CARD_SPEC.widthMm/2,y*CARD_SPEC.heightMm/2,0).applyMatrix4(model.card.matrixWorld));
+  for(const y of [-125.5,89.5])for(let a=0;a<Math.PI*2;a+=Math.PI/16)points.push(new THREE.Vector3(14.5*Math.cos(a),y,14.5+14.5*Math.sin(a)).applyMatrix4(anchor.matrixWorld));
+  for(const x of [-88,-21])for(const y of [-130,80])points.push(new THREE.Vector3(x,y,0).applyMatrix4(anchor.matrixWorld));
+  for(const p of points){p.project(camera);assert.ok(Math.abs(p.x)<.98&&Math.abs(p.y)<.98&&p.z>-1&&p.z<1,`scene must share the reading frame: ${distance}m / ${elevation}°`);}
+ }
+});
+
+test('from the approved near-side view no tasting-card surface lies in front of tube surface rays',()=>{
+ let checked=0;
+ for(const distance of [.3,.4,.5])for(const elevation of [20,35,45,60])for(const azimuth of [160,180,200]){
+  const {anchor,camera,model}=setup(9/16,{distance,elevation,azimuth});
+  for(const y of [-100,-50,0,50,100])for(let a=0;a<Math.PI*2;a+=Math.PI/12){
+   const p=new THREE.Vector3(14.5*Math.cos(a),CARD_SPEC.centerY+y,14.5+14.5*Math.sin(a)).applyMatrix4(anchor.matrixWorld);
+   const ray=new THREE.Raycaster(camera.position,p.clone().sub(camera.position).normalize());
+   const hits=ray.intersectObject(model.card.children[0],false);
+   assert.ok(!hits.length||hits[0].distance>camera.position.distanceTo(p),'card cannot sit between camera and the physical tube');checked++;
+  }
+ }
+ assert.ok(checked>4000);
 });
 
 test('phone roll and world-anchor rotation cannot lay the card down or change its viewer-side placement',()=>{
