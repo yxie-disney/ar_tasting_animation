@@ -1,0 +1,12 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>朏朏 · 五套真实切片</title>
+<style>body{margin:24px;background:#f3f4f0;color:#163026;font:16px/1.6 system-ui}h1{font-size:25px;margin-bottom:4px}h2{font-size:19px}p{max-width:1050px}.notice{color:#8c3626}.controls{display:flex;gap:18px;flex-wrap:wrap;align-items:center}button,select,input{font:inherit}button,select{padding:5px 10px}a{color:#146b4b}#layers{display:flex;gap:15px;flex-wrap:wrap}figure{margin:0;width:190px}figure img{width:190px;height:245px;object-fit:contain;background:repeating-conic-gradient(#c6cfc8 0% 25%,#e6e9e3 0% 50%) 50%/22px 22px}figcaption{min-height:55px;font-size:14px}#render{display:block;width:min(720px,100%);aspect-ratio:1.7}#render canvas{width:100%;height:100%}#summary{white-space:pre-wrap}#overview{display:block;max-width:1464px;width:100%}details{margin:20px 0}label{display:inline-flex;gap:5px;align-items:center}#error{color:#b12635}#depthList{font-size:14px}</style>
+<h1>五套真实切片：23层透明 PNG</h1><p>全部来自现有原图；没有生图或补画。此页是本地中间资产检查，未修改线上AR。<a href="relief.html">新增：妙音鸟连续浅浮雕三态对比</a></p>
+<div class="controls"><label>角色 <select id="frame"></select></label><a href="all-five-layers.png" target="_blank">五套总览</a><a href="README.md" target="_blank">坐标与缺口说明</a><a id="ora" href="#">分层编辑文件 .ora</a></div>
+<h2>实际图层 · 勾选可逐层检查</h2><div id="layers"></div><p id="summary"></p>
+<details><summary>看切口与被遮挡区域</summary><div id="diagnostics" style="display:flex;gap:20px;flex-wrap:wrap"></div></details>
+<h2>真实平面深度试验</h2>
+<div class="controls"><label>深度 <select id="mode"><option value="0">零偏移叠合</option><option value="1">分层Z：-6～+6.4mm</option></select></label><label>侧看 <input type="range" min="-50" max="50" value="0" id="angle"><span id="degrees">0°</span></label><label><input type="checkbox" id="breathe">脚底固定的呼吸试验</label></div>
+<p class="notice">打开深度后，侧看可能露出原画没有的区域。此处故意显示缺口，不用完整原图在后方垫底遮掩。不是已交付的最终AR效果。</p>
+<div id="render"></div><p id="depthList"></p><p id="error" role="status">加载切片…</p>
+<details><summary>展开全部五套切片总览</summary><img id="overview" src="all-five-layers.png" alt="五套角色的原图及全部真实分层"></details>
+<script src="/three.min.js"></script><script type="module" src="preview.js"></script></html>

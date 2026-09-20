@@ -1,0 +1,112 @@
+{
+  "id": "02-miaoyinniao",
+  "name": "妙音鸟",
+  "missing": "酒管和手掌背后的胸腹、翼根被身体遮住的部分、脚下台座都未被原画描绘。分层移动会露出透明缺口；不能假称这些是完整可任意活动的肢体。",
+  "source": "02-miaoyinniao/source.png",
+  "sourceSha256": "1654ebbd31b5e3798794d1dadd3fc8971cef44e775389c664f078ca1f28ebd8e",
+  "canvas": [
+    1405,
+    1866
+  ],
+  "heightMm": 80,
+  "layers": [
+    {
+      "id": "base",
+      "label": "台座与投影",
+      "file": "02-miaoyinniao/base.png",
+      "mask": "02-miaoyinniao/base.mask.png",
+      "zMm": -2,
+      "pixels": 433295,
+      "bbox": [
+        116,
+        1319,
+        1405,
+        1866
+      ],
+      "fullCanvas": [
+        1405,
+        1866
+      ]
+    },
+    {
+      "id": "wings-rear",
+      "label": "左右翅膀",
+      "file": "02-miaoyinniao/wings-rear.png",
+      "mask": "02-miaoyinniao/wings-rear.mask.png",
+      "zMm": -6,
+      "pixels": 188248,
+      "bbox": [
+        44,
+        221,
+        1352,
+        871
+      ],
+      "fullCanvas": [
+        1405,
+        1866
+      ]
+    },
+    {
+      "id": "body",
+      "label": "身体、头冠、尾巴",
+      "file": "02-miaoyinniao/body.png",
+      "mask": "02-miaoyinniao/body.mask.png",
+      "zMm": 0,
+      "pixels": 729475,
+      "bbox": [
+        81,
+        0,
+        1383,
+        1407
+      ],
+      "fullCanvas": [
+        1405,
+        1866
+      ]
+    },
+    {
+      "id": "prop-front",
+      "label": "前方酒管与金饰",
+      "file": "02-miaoyinniao/prop-front.png",
+      "mask": "02-miaoyinniao/prop-front.mask.png",
+      "zMm": 6,
+      "pixels": 249998,
+      "bbox": [
+        0,
+        506,
+        1129,
+        1091
+      ],
+      "fullCanvas": [
+        1405,
+        1866
+      ]
+    },
+    {
+      "id": "grips-front",
+      "label": "前方双手与手镯",
+      "file": "02-miaoyinniao/grips-front.png",
+      "mask": "02-miaoyinniao/grips-front.mask.png",
+      "zMm": 6.4,
+      "pixels": 42532,
+      "bbox": [
+        308,
+        846,
+        846,
+        1102
+      ],
+      "fullCanvas": [
+        1405,
+        1866
+      ]
+    }
+  ],
+  "sourceVisiblePixels": 1643548,
+  "changedVisiblePixels": 0,
+  "changedAlphaPixels": 0,
+  "bodyCompletion": "visible-only, missing occluded pixels",
+  "ora": "02-miaoyinniao/02-miaoyinniao.ora",
+  "reassembled": "02-miaoyinniao/reassembled.png",
+  "contact": "02-miaoyinniao/layers-contact.png",
+  "missingMap": "02-miaoyinniao/body-missing-map.png"
+}

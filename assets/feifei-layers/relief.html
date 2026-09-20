@@ -1,0 +1,13 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>妙音鸟 · 连续浅浮雕三态对比</title>
+<style>
+body{margin:24px;background:#edf0eb;color:#173127;font:16px/1.6 system-ui}h1{font-size:25px}h2{font-size:18px;margin:4px 0}.controls{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin:16px 0}button,input,select{font:inherit}button{padding:6px 12px}#views{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}article{min-width:0}.viewport{aspect-ratio:4/5;background:#536258}.viewport canvas{width:100%;height:100%;display:block}#status{white-space:pre-wrap;background:#fff;padding:16px}#maps{display:flex;gap:24px}#maps canvas{width:180px;height:240px;image-rendering:pixelated}p{max-width:1050px}a{color:#14694b}.note{color:#884124}@media(max-width:650px){#views{grid-template-columns:1fr}.viewport{max-height:70vh}}
+</style>
+<h1 id="title">五套朏朏：连续浅浮雕三态对比</h1>
+<p>复用各自原稿及原切片。先关动效检查 46° 接缝，再看局部呼吸。没有补画、烟雾、背板或面向镜头旋转；此页未替换线上 AR。</p>
+<label>角色 <select id="character"></select></label> · <a href="surfaces.json" target="_blank">全量状态索引（机器数据）</a>
+<div class="controls"><label>侧视角 <input id="angle" type="range" min="-46" max="46" value="46"><output id="degrees">46°</output></label><button id="front">正面</button><button id="side">46°</button><button id="pause">暂停呼吸</button><label>相位 <input id="phase" type="range" min="-1" max="1" step=".01" value="0"></label><button id="audit">运行接缝检查</button><button id="save">保存三态对比 PNG</button></div>
+<div id="views"><article><h2>① 原分离切片</h2><div class="viewport" id="old"></div><p id="legacyDepth">原切片深度。</p></article><article><h2>② 连续浅浮雕 · 静止</h2><div class="viewport" id="still"></div><p>共享接缝；同一固定光照；关闭呼吸。</p></article><article><h2>③ 连续浅浮雕 · 动态</h2><div class="viewport" id="moving"></div><p>身体局部 ±0.28mm；动态法线；整体位置、脚底不动。</p></article></div>
+<p id="status" role="status">加载原始切片与控制场…</p>
+<details><summary>中间产物与实际参数</summary><div id="maps"><figure><canvas id="heightMap"></canvas><figcaption>亮度＝静态隆起；黑色接缝固定</figcaption></figure><figure><canvas id="breathMap"></canvas><figcaption>亮度＝局部呼吸权重</figcaption></figure></div><p>上图读取本角色已导出的控制数据，不替换原画。各切片网格共用这些数据和同一顶点拓扑。</p><p id="parameters"></p><p>每个切片仍独立绘制；颜色读取原图，像素归属读取互斥蒙版，避免切缝处两张半透明贴图重复混合而漏出背景。没有在后面垫一张完整原画。</p><a id="cutLink" href="02-miaoyinniao/layers-contact.png" target="_blank">实际切片</a> · <a href="surface-delivery.md" target="_blank">全量交付与测试边界</a></details>
+<script src="/three.min.js"></script><script type="module" src="relief-preview.js"></script></html>

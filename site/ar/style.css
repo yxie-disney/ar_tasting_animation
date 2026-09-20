@@ -1,6 +1,6 @@
 :root{color-scheme:dark;font-family:system-ui,-apple-system,"PingFang SC",sans-serif;background:#181e17;color:#f4eee1}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}body{position:fixed;inset:0}
-#camera{display:block;position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+#camera{display:block;position:absolute;inset:0;width:100%;height:100%;touch-action:none;isolation:isolate}
 [hidden]{display:none!important}
 #entry{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:32px;text-align:center;background:radial-gradient(ellipse at 50% 80%,#35432c,#181e17 75%)}
 .brand{font-size:12px;letter-spacing:.25em;color:#d5c5a6}h1{font-family:serif;font-weight:400;font-size:34px;letter-spacing:.16em;margin:28px 0 12px}

@@ -5,6 +5,9 @@ dist/
 !.env.example
 
 /site/vendor/
+/site/ar/assets/relief/
 /tests/private/
 /assets/printed-card/*.png
 /assets/printed-card/*.svg
+/assets/feifei-layers/*.zip
+/assets/feifei-layers/**/*.ora

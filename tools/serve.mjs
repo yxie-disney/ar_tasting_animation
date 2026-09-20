@@ -5,6 +5,8 @@ const root=process.cwd(),site=path.resolve(root,'site');
 const port=Number(process.env.PORT||8098);
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.json':'application/json','.css':'text/css','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.wasm':'application/wasm','.svg':'image/svg+xml'};
 const fixtures={
+ '/_test/vertical.html':path.resolve(root,'tests/vertical.html'),
+ '/_test/vertical.js':path.resolve(root,'tests/vertical.js'),
  '/_test/relief.html':path.resolve(root,'tests/relief.html'),
  '/_test/relief.js':path.resolve(root,'tests/relief.js'),
  '/_test/slideshow.html':path.resolve(root,'tests/slideshow.html'),

@@ -1,0 +1,76 @@
+{
+  "id": "01-lishi",
+  "name": "力士",
+  "missing": "试管被耳朵、头顶毛和手掌遮住的部分没有像素；后方试管层不是一支完整的试管。地面层也不含脚下被遮挡区域。",
+  "source": "01-lishi/source.png",
+  "sourceSha256": "196cea6aa422f89788b819ba91b7debf15c57b4a0e408dec557e4fab07ca903a",
+  "canvas": [
+    1252,
+    1436
+  ],
+  "heightMm": 80,
+  "layers": [
+    {
+      "id": "ground",
+      "label": "地面投影",
+      "file": "01-lishi/ground.png",
+      "mask": "01-lishi/ground.mask.png",
+      "zMm": -2,
+      "pixels": 81473,
+      "bbox": [
+        58,
+        1295,
+        1252,
+        1436
+      ],
+      "fullCanvas": [
+        1252,
+        1436
+      ]
+    },
+    {
+      "id": "prop-rear",
+      "label": "后方试管与莲饰",
+      "file": "01-lishi/prop-rear.png",
+      "mask": "01-lishi/prop-rear.mask.png",
+      "zMm": -6,
+      "pixels": 222567,
+      "bbox": [
+        0,
+        0,
+        1240,
+        421
+      ],
+      "fullCanvas": [
+        1252,
+        1436
+      ]
+    },
+    {
+      "id": "body",
+      "label": "身体、双手、服饰",
+      "file": "01-lishi/body.png",
+      "mask": "01-lishi/body.mask.png",
+      "zMm": 0,
+      "pixels": 905535,
+      "bbox": [
+        217,
+        5,
+        1176,
+        1395
+      ],
+      "fullCanvas": [
+        1252,
+        1436
+      ]
+    }
+  ],
+  "sourceVisiblePixels": 1209575,
+  "changedVisiblePixels": 0,
+  "changedAlphaPixels": 0,
+  "bodyCompletion": "visible-only, missing occluded pixels",
+  "ora": "01-lishi/01-lishi.ora",
+  "reassembled": "01-lishi/reassembled.png",
+  "contact": "01-lishi/layers-contact.png",
+  "missingMap": "01-lishi/body-missing-map.png"
+}

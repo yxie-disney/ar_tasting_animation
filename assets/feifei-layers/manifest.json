@@ -1,0 +1,536 @@
+{
+  "status": "extracted-visible-pixels; hidden surfaces NOT reconstructed; NOT deployed",
+  "units": "nominal scene mm, matching existing 80mm character height",
+  "axes": {
+    "characterLocalZ": "positive towards viewer; body=0",
+    "paperFrame": "paper +Z is up; paper +X is away from approved viewer",
+    "mapping": "paperX = 34.75 - characterLocalZ; feet paperZ=35; existing card paperX=55"
+  },
+  "depthsAre": "local preview candidates, NOT applied to production",
+  "frames": [
+    {
+      "id": "01-lishi",
+      "name": "力士",
+      "missing": "试管被耳朵、头顶毛和手掌遮住的部分没有像素；后方试管层不是一支完整的试管。地面层也不含脚下被遮挡区域。",
+      "source": "01-lishi/source.png",
+      "sourceSha256": "196cea6aa422f89788b819ba91b7debf15c57b4a0e408dec557e4fab07ca903a",
+      "canvas": [
+        1252,
+        1436
+      ],
+      "heightMm": 80,
+      "layers": [
+        {
+          "id": "ground",
+          "label": "地面投影",
+          "file": "01-lishi/ground.png",
+          "mask": "01-lishi/ground.mask.png",
+          "zMm": -2,
+          "pixels": 81473,
+          "bbox": [
+            58,
+            1295,
+            1252,
+            1436
+          ],
+          "fullCanvas": [
+            1252,
+            1436
+          ]
+        },
+        {
+          "id": "prop-rear",
+          "label": "后方试管与莲饰",
+          "file": "01-lishi/prop-rear.png",
+          "mask": "01-lishi/prop-rear.mask.png",
+          "zMm": -6,
+          "pixels": 222567,
+          "bbox": [
+            0,
+            0,
+            1240,
+            421
+          ],
+          "fullCanvas": [
+            1252,
+            1436
+          ]
+        },
+        {
+          "id": "body",
+          "label": "身体、双手、服饰",
+          "file": "01-lishi/body.png",
+          "mask": "01-lishi/body.mask.png",
+          "zMm": 0,
+          "pixels": 905535,
+          "bbox": [
+            217,
+            5,
+            1176,
+            1395
+          ],
+          "fullCanvas": [
+            1252,
+            1436
+          ]
+        }
+      ],
+      "sourceVisiblePixels": 1209575,
+      "changedVisiblePixels": 0,
+      "changedAlphaPixels": 0,
+      "bodyCompletion": "visible-only, missing occluded pixels",
+      "ora": "01-lishi/01-lishi.ora",
+      "reassembled": "01-lishi/reassembled.png",
+      "contact": "01-lishi/layers-contact.png",
+      "missingMap": "01-lishi/body-missing-map.png"
+    },
+    {
+      "id": "02-miaoyinniao",
+      "name": "妙音鸟",
+      "missing": "酒管和手掌背后的胸腹、翼根被身体遮住的部分、脚下台座都未被原画描绘。分层移动会露出透明缺口；不能假称这些是完整可任意活动的肢体。",
+      "source": "02-miaoyinniao/source.png",
+      "sourceSha256": "1654ebbd31b5e3798794d1dadd3fc8971cef44e775389c664f078ca1f28ebd8e",
+      "canvas": [
+        1405,
+        1866
+      ],
+      "heightMm": 80,
+      "layers": [
+        {
+          "id": "base",
+          "label": "台座与投影",
+          "file": "02-miaoyinniao/base.png",
+          "mask": "02-miaoyinniao/base.mask.png",
+          "zMm": -2,
+          "pixels": 433295,
+          "bbox": [
+            116,
+            1319,
+            1405,
+            1866
+          ],
+          "fullCanvas": [
+            1405,
+            1866
+          ]
+        },
+        {
+          "id": "wings-rear",
+          "label": "左右翅膀",
+          "file": "02-miaoyinniao/wings-rear.png",
+          "mask": "02-miaoyinniao/wings-rear.mask.png",
+          "zMm": -6,
+          "pixels": 188248,
+          "bbox": [
+            44,
+            221,
+            1352,
+            871
+          ],
+          "fullCanvas": [
+            1405,
+            1866
+          ]
+        },
+        {
+          "id": "body",
+          "label": "身体、头冠、尾巴",
+          "file": "02-miaoyinniao/body.png",
+          "mask": "02-miaoyinniao/body.mask.png",
+          "zMm": 0,
+          "pixels": 729475,
+          "bbox": [
+            81,
+            0,
+            1383,
+            1407
+          ],
+          "fullCanvas": [
+            1405,
+            1866
+          ]
+        },
+        {
+          "id": "prop-front",
+          "label": "前方酒管与金饰",
+          "file": "02-miaoyinniao/prop-front.png",
+          "mask": "02-miaoyinniao/prop-front.mask.png",
+          "zMm": 6,
+          "pixels": 249998,
+          "bbox": [
+            0,
+            506,
+            1129,
+            1091
+          ],
+          "fullCanvas": [
+            1405,
+            1866
+          ]
+        },
+        {
+          "id": "grips-front",
+          "label": "前方双手与手镯",
+          "file": "02-miaoyinniao/grips-front.png",
+          "mask": "02-miaoyinniao/grips-front.mask.png",
+          "zMm": 6.4,
+          "pixels": 42532,
+          "bbox": [
+            308,
+            846,
+            846,
+            1102
+          ],
+          "fullCanvas": [
+            1405,
+            1866
+          ]
+        }
+      ],
+      "sourceVisiblePixels": 1643548,
+      "changedVisiblePixels": 0,
+      "changedAlphaPixels": 0,
+      "bodyCompletion": "visible-only, missing occluded pixels",
+      "ora": "02-miaoyinniao/02-miaoyinniao.ora",
+      "reassembled": "02-miaoyinniao/reassembled.png",
+      "contact": "02-miaoyinniao/layers-contact.png",
+      "missingMap": "02-miaoyinniao/body-missing-map.png"
+    },
+    {
+      "id": "03-yanhua",
+      "name": "岩画",
+      "missing": "披风在身体背后的区域、酒管在手掌背后的区域、人物与酒管脚下台座均缺少原始像素。身体左侧与披风连接处只能提取已经画出的轮廓。",
+      "source": "03-yanhua/source.png",
+      "sourceSha256": "cdf7e0ae581a471bd9533b1385eec301bde4a2d48808e567e9616d8268d96316",
+      "canvas": [
+        1270,
+        1825
+      ],
+      "heightMm": 80,
+      "layers": [
+        {
+          "id": "base",
+          "label": "岩石台座与投影",
+          "file": "03-yanhua/base.png",
+          "mask": "03-yanhua/base.mask.png",
+          "zMm": -2,
+          "pixels": 479970,
+          "bbox": [
+            0,
+            1200,
+            1270,
+            1825
+          ],
+          "fullCanvas": [
+            1270,
+            1825
+          ]
+        },
+        {
+          "id": "cape-rear",
+          "label": "披风可见部分",
+          "file": "03-yanhua/cape-rear.png",
+          "mask": "03-yanhua/cape-rear.mask.png",
+          "zMm": -5,
+          "pixels": 254339,
+          "bbox": [
+            323,
+            620,
+            1181,
+            1357
+          ],
+          "fullCanvas": [
+            1270,
+            1825
+          ]
+        },
+        {
+          "id": "body",
+          "label": "身体与胸前徽章",
+          "file": "03-yanhua/body.png",
+          "mask": "03-yanhua/body.mask.png",
+          "zMm": 0,
+          "pixels": 546039,
+          "bbox": [
+            60,
+            0,
+            1093,
+            1362
+          ],
+          "fullCanvas": [
+            1270,
+            1825
+          ]
+        },
+        {
+          "id": "prop-front",
+          "label": "莲饰竖直酒管",
+          "file": "03-yanhua/prop-front.png",
+          "mask": "03-yanhua/prop-front.mask.png",
+          "zMm": 6,
+          "pixels": 228949,
+          "bbox": [
+            14,
+            165,
+            383,
+            1344
+          ],
+          "fullCanvas": [
+            1270,
+            1825
+          ]
+        },
+        {
+          "id": "grip-front",
+          "label": "握管手掌",
+          "file": "03-yanhua/grip-front.png",
+          "mask": "03-yanhua/grip-front.mask.png",
+          "zMm": 6.4,
+          "pixels": 13810,
+          "bbox": [
+            61,
+            545,
+            184,
+            699
+          ],
+          "fullCanvas": [
+            1270,
+            1825
+          ]
+        }
+      ],
+      "sourceVisiblePixels": 1523107,
+      "changedVisiblePixels": 0,
+      "changedAlphaPixels": 0,
+      "bodyCompletion": "visible-only, missing occluded pixels",
+      "ora": "03-yanhua/03-yanhua.ora",
+      "reassembled": "03-yanhua/reassembled.png",
+      "contact": "03-yanhua/layers-contact.png",
+      "missingMap": "03-yanhua/body-missing-map.png"
+    },
+    {
+      "id": "04-chiwen",
+      "name": "螭吻",
+      "missing": "头饰后脑、酒管背后胸腹和手掌背后的酒液没有可恢复像素。握管手掌在腕部与身体相接，不是可独立大幅移动的完整手臂。",
+      "source": "04-chiwen/source.png",
+      "sourceSha256": "ce76c0df1daf5bfb431f0ba808e78668adc899545119b87ac8f8241944e68b32",
+      "canvas": [
+        1297,
+        1566
+      ],
+      "heightMm": 80,
+      "layers": [
+        {
+          "id": "ground",
+          "label": "地面投影",
+          "file": "04-chiwen/ground.png",
+          "mask": "04-chiwen/ground.mask.png",
+          "zMm": -2,
+          "pixels": 94823,
+          "bbox": [
+            0,
+            1414,
+            1297,
+            1566
+          ],
+          "fullCanvas": [
+            1297,
+            1566
+          ]
+        },
+        {
+          "id": "headdress-rear",
+          "label": "螭吻头饰",
+          "file": "04-chiwen/headdress-rear.png",
+          "mask": "04-chiwen/headdress-rear.mask.png",
+          "zMm": -4,
+          "pixels": 267373,
+          "bbox": [
+            204,
+            0,
+            1114,
+            577
+          ],
+          "fullCanvas": [
+            1297,
+            1566
+          ]
+        },
+        {
+          "id": "body",
+          "label": "身体、披风与服饰",
+          "file": "04-chiwen/body.png",
+          "mask": "04-chiwen/body.mask.png",
+          "zMm": 0,
+          "pixels": 769098,
+          "bbox": [
+            19,
+            416,
+            1236,
+            1530
+          ],
+          "fullCanvas": [
+            1297,
+            1566
+          ]
+        },
+        {
+          "id": "prop-front",
+          "label": "倾斜酒管与莲饰",
+          "file": "04-chiwen/prop-front.png",
+          "mask": "04-chiwen/prop-front.mask.png",
+          "zMm": 6,
+          "pixels": 169456,
+          "bbox": [
+            591,
+            489,
+            1115,
+            1474
+          ],
+          "fullCanvas": [
+            1297,
+            1566
+          ]
+        },
+        {
+          "id": "grip-front",
+          "label": "前方握管手掌",
+          "file": "04-chiwen/grip-front.png",
+          "mask": "04-chiwen/grip-front.mask.png",
+          "zMm": 6.4,
+          "pixels": 19752,
+          "bbox": [
+            829,
+            940,
+            976,
+            1126
+          ],
+          "fullCanvas": [
+            1297,
+            1566
+          ]
+        }
+      ],
+      "sourceVisiblePixels": 1320502,
+      "changedVisiblePixels": 0,
+      "changedAlphaPixels": 0,
+      "bodyCompletion": "visible-only, missing occluded pixels",
+      "ora": "04-chiwen/04-chiwen.ora",
+      "reassembled": "04-chiwen/reassembled.png",
+      "contact": "04-chiwen/layers-contact.png",
+      "missingMap": "04-chiwen/body-missing-map.png"
+    },
+    {
+      "id": "05-jiaokui",
+      "name": "角盔",
+      "missing": "酒管与双手背后的胸腹、角盔覆盖的头顶部没有原始像素。切片不等于恢复了完整身体或完整酒管。",
+      "source": "05-jiaokui/source.png",
+      "sourceSha256": "c96980c65cfd940532fa41934271c00c3d2d56b8a332134b296becce8ecd45f1",
+      "canvas": [
+        1222,
+        1560
+      ],
+      "heightMm": 80,
+      "layers": [
+        {
+          "id": "ground",
+          "label": "地面投影",
+          "file": "05-jiaokui/ground.png",
+          "mask": "05-jiaokui/ground.mask.png",
+          "zMm": -2,
+          "pixels": 76375,
+          "bbox": [
+            50,
+            1362,
+            1222,
+            1560
+          ],
+          "fullCanvas": [
+            1222,
+            1560
+          ]
+        },
+        {
+          "id": "helmet-rear",
+          "label": "角盔与双角",
+          "file": "05-jiaokui/helmet-rear.png",
+          "mask": "05-jiaokui/helmet-rear.mask.png",
+          "zMm": -4,
+          "pixels": 244481,
+          "bbox": [
+            134,
+            0,
+            1119,
+            720
+          ],
+          "fullCanvas": [
+            1222,
+            1560
+          ]
+        },
+        {
+          "id": "body",
+          "label": "身体、披风与服饰",
+          "file": "05-jiaokui/body.png",
+          "mask": "05-jiaokui/body.mask.png",
+          "zMm": 0,
+          "pixels": 585143,
+          "bbox": [
+            0,
+            408,
+            1177,
+            1441
+          ],
+          "fullCanvas": [
+            1222,
+            1560
+          ]
+        },
+        {
+          "id": "prop-front",
+          "label": "横斜酒管与莲饰",
+          "file": "05-jiaokui/prop-front.png",
+          "mask": "05-jiaokui/prop-front.mask.png",
+          "zMm": 6,
+          "pixels": 161582,
+          "bbox": [
+            92,
+            575,
+            962,
+            1146
+          ],
+          "fullCanvas": [
+            1222,
+            1560
+          ]
+        },
+        {
+          "id": "grips-front",
+          "label": "前方双手",
+          "file": "05-jiaokui/grips-front.png",
+          "mask": "05-jiaokui/grips-front.mask.png",
+          "zMm": 6.4,
+          "pixels": 30539,
+          "bbox": [
+            553,
+            919,
+            952,
+            1163
+          ],
+          "fullCanvas": [
+            1222,
+            1560
+          ]
+        }
+      ],
+      "sourceVisiblePixels": 1098120,
+      "changedVisiblePixels": 0,
+      "changedAlphaPixels": 0,
+      "bodyCompletion": "visible-only, missing occluded pixels",
+      "ora": "05-jiaokui/05-jiaokui.ora",
+      "reassembled": "05-jiaokui/reassembled.png",
+      "contact": "05-jiaokui/layers-contact.png",
+      "missingMap": "05-jiaokui/body-missing-map.png"
+    }
+  ]
+}

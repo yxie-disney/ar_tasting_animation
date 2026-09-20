@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+ <title>朏朏 · 五帧动画</title>
+ <script type="importmap">{"imports":{"three":"../vendor/three.module.js"}}</script>
+ <link rel="stylesheet" href="style.css">
+</head>
+<body>
+ <header><span>昨非 NOTERDAY</span><span>动画预览 · 非相机 AR</span></header>
+ <main id="stage" aria-label="朏朏连续浅浮雕动画"></main>
+ <footer>
+  <p id="status" role="status">正在载入五张原画…</p>
+  <div><button id="pause" disabled>暂停</button><label>观察角度 <input id="angle" type="range" min="-46" max="46" value="0"><output id="degrees">0°</output></label></div>
+  <small>五张原画 · 每秒硬切 · 原曲面与动态法线 · Alpha 0.75</small>
+ </footer>
+ <script type="module" src="viewer.js"></script>
+</body>
+</html>

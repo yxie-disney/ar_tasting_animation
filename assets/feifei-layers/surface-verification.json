@@ -1,0 +1,76 @@
+{
+  "scope": "Desktop WebGL only; not mobile AR acceptance",
+  "algorithm": "one shared implementation for all five originals",
+  "sourceArtworkChanged": false,
+  "onlineChanged": false,
+  "frames": [
+    {
+      "id": "01-lishi",
+      "name": "力士",
+      "userAlias": "力士",
+      "components": 3,
+      "maxDepthMm": 2.788235294117647,
+      "renderCases": 15,
+      "seamDifferencePixels": 0,
+      "motionChangedPixels": 8002,
+      "passed": true,
+      "evidence": "01-lishi/surface/gpu-verification.json",
+      "comparison": "01-lishi/surface/comparison.png"
+    },
+    {
+      "id": "02-miaoyinniao",
+      "name": "妙音鸟",
+      "userAlias": "妙音鸟",
+      "components": 5,
+      "maxDepthMm": 2.788235294117647,
+      "renderCases": 15,
+      "seamDifferencePixels": 0,
+      "motionChangedPixels": 3911,
+      "passed": true,
+      "evidence": "02-miaoyinniao/surface/gpu-verification.json",
+      "comparison": "02-miaoyinniao/surface/comparison.png"
+    },
+    {
+      "id": "03-yanhua",
+      "name": "岩画",
+      "userAlias": "岩画",
+      "components": 5,
+      "maxDepthMm": 2.788235294117647,
+      "renderCases": 15,
+      "seamDifferencePixels": 0,
+      "motionChangedPixels": 2942,
+      "passed": true,
+      "evidence": "03-yanhua/surface/gpu-verification.json",
+      "comparison": "03-yanhua/surface/comparison.png"
+    },
+    {
+      "id": "04-chiwen",
+      "name": "螭吻",
+      "userAlias": "螭吻",
+      "components": 5,
+      "maxDepthMm": 2.788235294117647,
+      "renderCases": 15,
+      "seamDifferencePixels": 0,
+      "motionChangedPixels": 5690,
+      "passed": true,
+      "evidence": "04-chiwen/surface/gpu-verification.json",
+      "comparison": "04-chiwen/surface/comparison.png"
+    },
+    {
+      "id": "05-jiaokui",
+      "name": "角盔",
+      "userAlias": "角端",
+      "components": 5,
+      "maxDepthMm": 2.788235294117647,
+      "renderCases": 15,
+      "seamDifferencePixels": 0,
+      "motionChangedPixels": 2819,
+      "passed": true,
+      "evidence": "05-jiaokui/surface/gpu-verification.json",
+      "comparison": "05-jiaokui/surface/comparison.png"
+    }
+  ],
+  "totalComponents": 23,
+  "totalRenderCases": 75,
+  "passed": true
+}

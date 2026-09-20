@@ -1,0 +1,31 @@
+{
+  "scope": "Desktop WebGL, Three.js r160, local relief.html; not phone AR acceptance",
+  "sourceSha256": "1654ebbd31b5e3798794d1dadd3fc8971cef44e775389c664f078ca1f28ebd8e",
+  "reference": "same displaced surface rendered once, versus five exclusively masked components; never used as a backing",
+  "renderTarget": [256,320],
+  "thresholdPerChannel": 2,
+  "maxDepthMm": 2.788235294117647,
+  "maximumHorizontalSlope": 0.7249939292442958,
+  "shaderErrors": 0,
+  "motionChangedPixels": 3911,
+  "motionMaximumChannelDifference": 44,
+  "cases": [
+    {"angle":-46,"phase":-1,"differingPixels":0,"maxChannelDifference":0},
+    {"angle":-46,"phase":0,"differingPixels":0,"maxChannelDifference":0},
+    {"angle":-46,"phase":1,"differingPixels":0,"maxChannelDifference":0},
+    {"angle":-30,"phase":-1,"differingPixels":0,"maxChannelDifference":0},
+    {"angle":-30,"phase":0,"differingPixels":0,"maxChannelDifference":0},
+    {"angle":-30,"phase":1,"differingPixels":0,"maxChannelDifference":0},
+    {"angle":0,"phase":-1,"differingPixels":0,"maxChannelDifference":0},
+    {"angle":0,"phase":0,"differingPixels":0,"maxChannelDifference":0},
+    {"angle":0,"phase":1,"differingPixels":0,"maxChannelDifference":0},
+    {"angle":30,"phase":-1,"differingPixels":0,"maxChannelDifference":0},
+    {"angle":30,"phase":0,"differingPixels":0,"maxChannelDifference":0},
+    {"angle":30,"phase":1,"differingPixels":0,"maxChannelDifference":0},
+    {"angle":46,"phase":-1,"differingPixels":0,"maxChannelDifference":0},
+    {"angle":46,"phase":0,"differingPixels":0,"maxChannelDifference":0},
+    {"angle":46,"phase":1,"differingPixels":0,"maxChannelDifference":0}
+  ],
+  "unitAndRegressionTests": {"passed":46,"failed":0},
+  "notVerified": ["mobile GPU performance","physical tube proxy alignment on phone","subjective liveliness at 30cm","back-side anatomy"]
+}

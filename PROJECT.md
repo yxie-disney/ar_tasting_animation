@@ -1,5 +1,11 @@
 # NOTERDAY AR — execution contract
 
+## Latest override — vertical tie-label production validation
+
+All horizontal-layout requirements below are historical and superseded. The tube stands vertically; its upper tie-label is the planar target. Use MindAR 1.2.5 (not the former 8th Wall runtime), centred label coordinates, +Z towards the viewer. Render five original Feifei assets with their validated shared-seam relief, no tasting-card backgrounds, no horizontal stations, no tube occluder. Normal alpha blending 0.75. One 1000ms interval begins only on targetFound; targetLost clears it and hides synchronously; reacquisition starts frame one. No world persistence or grace period.
+
+Latest priority override: finish the animation BEFORE designing the physical label. Label source/dimensions are NOT a blocker for animation implementation, preview or build. `/animation/` runs the same renderer and playback directly, without MindAR or camera permission. Artwork geometry stays at approved 80mm height / original aspect / <=3mm relief. The later AR adapter only converts millimetres to tracking units and places the stage. No label-driven fit scaling. The unconfigured `/ar/` adapter does not pretend to track a physical target; it is separate from animation acceptance. Do not request label material until the animation is settled.
+
 ## Approved baseline
 
 User approved the current two-thirds-size virtual card as the **physical/visual stage for future animation**, not merely a static-card preference. Approximate camera-to-virtual-card viewing distance: 30cm, reported by the user. Do not reinterpret this as camera-to-paper distance, new physical calibration, a forced camera constraint, or animation depth.

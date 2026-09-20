@@ -22,6 +22,7 @@ jobs:
         with:
           node-version: 22
       - run: npm install --ignore-scripts --no-audit --no-fund
+      - run: npm run prepare:local
       - run: npm test
       - run: npm run build
       - uses: actions/configure-pages@v5

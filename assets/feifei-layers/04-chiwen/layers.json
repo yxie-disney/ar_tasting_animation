@@ -1,0 +1,112 @@
+{
+  "id": "04-chiwen",
+  "name": "螭吻",
+  "missing": "头饰后脑、酒管背后胸腹和手掌背后的酒液没有可恢复像素。握管手掌在腕部与身体相接，不是可独立大幅移动的完整手臂。",
+  "source": "04-chiwen/source.png",
+  "sourceSha256": "ce76c0df1daf5bfb431f0ba808e78668adc899545119b87ac8f8241944e68b32",
+  "canvas": [
+    1297,
+    1566
+  ],
+  "heightMm": 80,
+  "layers": [
+    {
+      "id": "ground",
+      "label": "地面投影",
+      "file": "04-chiwen/ground.png",
+      "mask": "04-chiwen/ground.mask.png",
+      "zMm": -2,
+      "pixels": 94823,
+      "bbox": [
+        0,
+        1414,
+        1297,
+        1566
+      ],
+      "fullCanvas": [
+        1297,
+        1566
+      ]
+    },
+    {
+      "id": "headdress-rear",
+      "label": "螭吻头饰",
+      "file": "04-chiwen/headdress-rear.png",
+      "mask": "04-chiwen/headdress-rear.mask.png",
+      "zMm": -4,
+      "pixels": 267373,
+      "bbox": [
+        204,
+        0,
+        1114,
+        577
+      ],
+      "fullCanvas": [
+        1297,
+        1566
+      ]
+    },
+    {
+      "id": "body",
+      "label": "身体、披风与服饰",
+      "file": "04-chiwen/body.png",
+      "mask": "04-chiwen/body.mask.png",
+      "zMm": 0,
+      "pixels": 769098,
+      "bbox": [
+        19,
+        416,
+        1236,
+        1530
+      ],
+      "fullCanvas": [
+        1297,
+        1566
+      ]
+    },
+    {
+      "id": "prop-front",
+      "label": "倾斜酒管与莲饰",
+      "file": "04-chiwen/prop-front.png",
+      "mask": "04-chiwen/prop-front.mask.png",
+      "zMm": 6,
+      "pixels": 169456,
+      "bbox": [
+        591,
+        489,
+        1115,
+        1474
+      ],
+      "fullCanvas": [
+        1297,
+        1566
+      ]
+    },
+    {
+      "id": "grip-front",
+      "label": "前方握管手掌",
+      "file": "04-chiwen/grip-front.png",
+      "mask": "04-chiwen/grip-front.mask.png",
+      "zMm": 6.4,
+      "pixels": 19752,
+      "bbox": [
+        829,
+        940,
+        976,
+        1126
+      ],
+      "fullCanvas": [
+        1297,
+        1566
+      ]
+    }
+  ],
+  "sourceVisiblePixels": 1320502,
+  "changedVisiblePixels": 0,
+  "changedAlphaPixels": 0,
+  "bodyCompletion": "visible-only, missing occluded pixels",
+  "ora": "04-chiwen/04-chiwen.ora",
+  "reassembled": "04-chiwen/reassembled.png",
+  "contact": "04-chiwen/layers-contact.png",
+  "missingMap": "04-chiwen/body-missing-map.png"
+}

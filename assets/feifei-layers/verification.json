@@ -1,0 +1,52 @@
+[
+  {
+    "name": "力士",
+    "layers": 3,
+    "canvas": [
+      1252,
+      1436
+    ],
+    "changedVisiblePixels": 0,
+    "changedAlphaPixels": 0
+  },
+  {
+    "name": "妙音鸟",
+    "layers": 5,
+    "canvas": [
+      1405,
+      1866
+    ],
+    "changedVisiblePixels": 0,
+    "changedAlphaPixels": 0
+  },
+  {
+    "name": "岩画",
+    "layers": 5,
+    "canvas": [
+      1270,
+      1825
+    ],
+    "changedVisiblePixels": 0,
+    "changedAlphaPixels": 0
+  },
+  {
+    "name": "螭吻",
+    "layers": 5,
+    "canvas": [
+      1297,
+      1566
+    ],
+    "changedVisiblePixels": 0,
+    "changedAlphaPixels": 0
+  },
+  {
+    "name": "角盔",
+    "layers": 5,
+    "canvas": [
+      1222,
+      1560
+    ],
+    "changedVisiblePixels": 0,
+    "changedAlphaPixels": 0
+  }
+]

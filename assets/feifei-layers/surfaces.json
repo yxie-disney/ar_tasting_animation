@@ -1,0 +1,67 @@
+{
+  "algorithm": "shared-continuous-surface-1",
+  "frames": [
+    {
+      "id": "01-lishi",
+      "name": "力士",
+      "userAlias": "力士",
+      "state": "01-lishi/surface/state.json",
+      "components": 3,
+      "minDepthMm": 0,
+      "maxDepthMm": 2.788235294117647,
+      "seamErrors": 0,
+      "maxHorizontalSlope": 0.7124675812817143,
+      "frontmostPaperX": 31.961764705882352
+    },
+    {
+      "id": "02-miaoyinniao",
+      "name": "妙音鸟",
+      "userAlias": "妙音鸟",
+      "state": "02-miaoyinniao/surface/state.json",
+      "components": 5,
+      "minDepthMm": 0,
+      "maxDepthMm": 2.788235294117647,
+      "seamErrors": 0,
+      "maxHorizontalSlope": 0.7249939292442958,
+      "frontmostPaperX": 31.961764705882352
+    },
+    {
+      "id": "03-yanhua",
+      "name": "岩画",
+      "userAlias": "岩画",
+      "state": "03-yanhua/surface/state.json",
+      "components": 5,
+      "minDepthMm": 0,
+      "maxDepthMm": 2.788235294117647,
+      "seamErrors": 0,
+      "maxHorizontalSlope": 0.7303381194997683,
+      "frontmostPaperX": 31.961764705882352
+    },
+    {
+      "id": "04-chiwen",
+      "name": "螭吻",
+      "userAlias": "螭吻",
+      "state": "04-chiwen/surface/state.json",
+      "components": 5,
+      "minDepthMm": 0,
+      "maxDepthMm": 2.788235294117647,
+      "seamErrors": 0,
+      "maxHorizontalSlope": 0.7272819629008118,
+      "frontmostPaperX": 31.961764705882352
+    },
+    {
+      "id": "05-jiaokui",
+      "name": "角盔",
+      "userAlias": "角端",
+      "state": "05-jiaokui/surface/state.json",
+      "components": 5,
+      "minDepthMm": 0,
+      "maxDepthMm": 2.788235294117647,
+      "seamErrors": 0,
+      "maxHorizontalSlope": 0.7209011264080102,
+      "frontmostPaperX": 31.961764705882352
+    }
+  ],
+  "components": 23,
+  "onlineChanged": false
+}

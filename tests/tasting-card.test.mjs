@@ -156,9 +156,8 @@ test('phone movement changes perspective without moving or billboarding the card
  assert.ok(model.card.scale.equals(scale));
  assert.ok(world.clone().project(camera).distanceTo(before)>.001);
 });
-test('real-camera evidence is sampled before opaque virtual content',async()=>{
+test('deprecated horizontal camera evidence is not loaded by the vertical runtime',async()=>{
  const app=await fs.readFile('site/ar/app.js','utf8');
- const background=app.indexOf('XR8.GlTextureRenderer.pipelineModule()'),probe=app.indexOf("name:'noterday-camera-evidence'"),content=app.indexOf('XR8.Threejs.pipelineModule()');
- assert.ok(background<probe&&probe<content);
- assert.doesNotMatch(app,/import .*createGarnish/);
+ assert.doesNotMatch(app,/XR8|occupancy|createOccupancyProbe|tasting-card|slideshow\.js/);
+ assert.match(app,/createVerticalStage/);
 });

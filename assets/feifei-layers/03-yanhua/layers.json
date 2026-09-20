@@ -1,0 +1,112 @@
+{
+  "id": "03-yanhua",
+  "name": "岩画",
+  "missing": "披风在身体背后的区域、酒管在手掌背后的区域、人物与酒管脚下台座均缺少原始像素。身体左侧与披风连接处只能提取已经画出的轮廓。",
+  "source": "03-yanhua/source.png",
+  "sourceSha256": "cdf7e0ae581a471bd9533b1385eec301bde4a2d48808e567e9616d8268d96316",
+  "canvas": [
+    1270,
+    1825
+  ],
+  "heightMm": 80,
+  "layers": [
+    {
+      "id": "base",
+      "label": "岩石台座与投影",
+      "file": "03-yanhua/base.png",
+      "mask": "03-yanhua/base.mask.png",
+      "zMm": -2,
+      "pixels": 479970,
+      "bbox": [
+        0,
+        1200,
+        1270,
+        1825
+      ],
+      "fullCanvas": [
+        1270,
+        1825
+      ]
+    },
+    {
+      "id": "cape-rear",
+      "label": "披风可见部分",
+      "file": "03-yanhua/cape-rear.png",
+      "mask": "03-yanhua/cape-rear.mask.png",
+      "zMm": -5,
+      "pixels": 254339,
+      "bbox": [
+        323,
+        620,
+        1181,
+        1357
+      ],
+      "fullCanvas": [
+        1270,
+        1825
+      ]
+    },
+    {
+      "id": "body",
+      "label": "身体与胸前徽章",
+      "file": "03-yanhua/body.png",
+      "mask": "03-yanhua/body.mask.png",
+      "zMm": 0,
+      "pixels": 546039,
+      "bbox": [
+        60,
+        0,
+        1093,
+        1362
+      ],
+      "fullCanvas": [
+        1270,
+        1825
+      ]
+    },
+    {
+      "id": "prop-front",
+      "label": "莲饰竖直酒管",
+      "file": "03-yanhua/prop-front.png",
+      "mask": "03-yanhua/prop-front.mask.png",
+      "zMm": 6,
+      "pixels": 228949,
+      "bbox": [
+        14,
+        165,
+        383,
+        1344
+      ],
+      "fullCanvas": [
+        1270,
+        1825
+      ]
+    },
+    {
+      "id": "grip-front",
+      "label": "握管手掌",
+      "file": "03-yanhua/grip-front.png",
+      "mask": "03-yanhua/grip-front.mask.png",
+      "zMm": 6.4,
+      "pixels": 13810,
+      "bbox": [
+        61,
+        545,
+        184,
+        699
+      ],
+      "fullCanvas": [
+        1270,
+        1825
+      ]
+    }
+  ],
+  "sourceVisiblePixels": 1523107,
+  "changedVisiblePixels": 0,
+  "changedAlphaPixels": 0,
+  "bodyCompletion": "visible-only, missing occluded pixels",
+  "ora": "03-yanhua/03-yanhua.ora",
+  "reassembled": "03-yanhua/reassembled.png",
+  "contact": "03-yanhua/layers-contact.png",
+  "missingMap": "03-yanhua/body-missing-map.png"
+}

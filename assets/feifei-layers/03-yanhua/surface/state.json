@@ -1,0 +1,171 @@
+{
+  "id": "03-yanhua",
+  "name": "岩画",
+  "userAlias": "岩画",
+  "status": "generated; browser GPU acceptance recorded separately; not deployed",
+  "source": "03-yanhua/source.png",
+  "sourceSha256": "cdf7e0ae581a471bd9533b1385eec301bde4a2d48808e567e9616d8268d96316",
+  "spec": {
+    "heightMm": 80,
+    "widthMm": 55.67123287671233,
+    "envelopeMm": 3,
+    "taperMm": 6,
+    "periodSeconds": 3.6,
+    "segmentsX": 96,
+    "segmentsY": 128,
+    "cardOriginalWidthMm": 216,
+    "cardScale": 0.8,
+    "characterPaperX": 34.75,
+    "cardPaperX": 55,
+    "feetPaperZ": 35,
+    "tubeRadiusMm": 14.5
+  },
+  "geometry": {
+    "file": "mesh.json",
+    "format": "Three.BufferGeometry JSON",
+    "vertices": 12513,
+    "triangles": 24576
+  },
+  "control": {
+    "file": "control.rgba8",
+    "width": 256,
+    "height": 340,
+    "format": "RGBA8 linear; R=static/3, G=breath/3, B=0, A=255",
+    "rowOrder": "bottom-to-top",
+    "sha256": "3540eebc07d9c724d0cf61b89603da75969e98f87f5863bc2885ea18234fa994"
+  },
+  "ownership": {
+    "file": "ownership.u8",
+    "width": 1270,
+    "height": 1825,
+    "format": "uint8 categorical; 0 transparent, 1..N component",
+    "rowOrder": "bottom-to-top"
+  },
+  "components": [
+    {
+      "id": "base",
+      "peak": 0.25,
+      "breath": 0,
+      "owner": 1,
+      "sourceCut": "03-yanhua/base.png",
+      "geometry": "mesh.json",
+      "localPosition": [
+        0,
+        40,
+        0
+      ],
+      "localScale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "cape-rear",
+      "peak": 1.3,
+      "breath": 0.1,
+      "owner": 2,
+      "sourceCut": "03-yanhua/cape-rear.png",
+      "geometry": "mesh.json",
+      "localPosition": [
+        0,
+        40,
+        0
+      ],
+      "localScale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "body",
+      "peak": 2.5,
+      "breath": 0.28,
+      "owner": 3,
+      "sourceCut": "03-yanhua/body.png",
+      "geometry": "mesh.json",
+      "localPosition": [
+        0,
+        40,
+        0
+      ],
+      "localScale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "prop-front",
+      "peak": 1.7,
+      "breath": 0,
+      "owner": 4,
+      "sourceCut": "03-yanhua/prop-front.png",
+      "geometry": "mesh.json",
+      "localPosition": [
+        0,
+        40,
+        0
+      ],
+      "localScale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "grip-front",
+      "peak": 1.7,
+      "breath": 0,
+      "owner": 5,
+      "sourceCut": "03-yanhua/grip-front.png",
+      "geometry": "mesh.json",
+      "localPosition": [
+        0,
+        40,
+        0
+      ],
+      "localScale": [
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "playback": {
+    "station": 2,
+    "stationPaperY": -18,
+    "frameDurationSeconds": 1,
+    "cycleFrames": 5,
+    "transition": "hard-cut",
+    "rootDepthAnimated": false
+  },
+  "states": [
+    {
+      "id": "separated",
+      "legacyLayerZ": [
+        -2,
+        -5,
+        0,
+        6,
+        6.4
+      ]
+    },
+    {
+      "id": "surface-static",
+      "phase": 0
+    },
+    {
+      "id": "surface-live",
+      "phase": "sin(2*pi*time/3.6)"
+    }
+  ],
+  "numericChecks": {
+    "minDepthMm": 0,
+    "maxDepthMm": 2.788235294117647,
+    "seamErrors": 0,
+    "maxHorizontalSlope": 0.7303381194997683,
+    "frontmostPaperX": 31.961764705882352
+  }
+}
