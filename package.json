@@ -5,9 +5,8 @@
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "build": "node tools/vendor.mjs && node tools/prepare-vertical-assets.mjs",
-    "check:ar-target": "node tools/verify-vertical-target.mjs",
     "prepare:local": "node tools/vendor.mjs && node tools/prepare-vertical-assets.mjs",
     "serve": "node tools/serve.mjs"
   },
-  "dependencies": {}
+  "dependencies": {"@8thwall/engine-binary": "1.0.0", "three": "0.160.1"}
 }

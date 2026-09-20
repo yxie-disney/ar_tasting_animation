@@ -1,5 +1,11 @@
 # NOTERDAY AR — execution contract
 
+## Authoritative correction — 8th Wall, not MindAR (2026-09-19)
+
+Continue the established 8th Wall / XR8 engine and real camera pipeline. The accidental MindAR migration and QR-to-standalone-animation routing are revoked. `/v3/` leads to `/ar/`; `/animation/` is an internal asset viewer only. Retain the validated five-role relief geometry, normals, original textures, alpha0.75 and target-owned 1000ms hard cuts. The adapter converts target scale to metres; the stage offset is fixed at `(0,0,0.015)`. No new consumer controls.
+
+Existing full-card/crop tracking data are available for regression only; they must not be described as a validated new tie-label target. No `.mind` prerequisite. Earlier paragraphs specifying MindAR or making the non-camera viewer the product entry are historical and superseded.
+
 ## Latest override — vertical tie-label production validation
 
 All horizontal-layout requirements below are historical and superseded. The tube stands vertically; its upper tie-label is the planar target. Use MindAR 1.2.5 (not the former 8th Wall runtime), centred label coordinates, +Z towards the viewer. Render five original Feifei assets with their validated shared-seam relief, no tasting-card backgrounds, no horizontal stations, no tube occluder. Normal alpha blending 0.75. One 1000ms interval begins only on targetFound; targetLost clears it and hides synchronously; reacquisition starts frame one. No world persistence or grace period.

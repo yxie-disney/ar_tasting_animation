@@ -158,6 +158,6 @@ test('phone movement changes perspective without moving or billboarding the card
 });
 test('deprecated horizontal camera evidence is not loaded by the vertical runtime',async()=>{
  const app=await fs.readFile('site/ar/app.js','utf8');
- assert.doesNotMatch(app,/XR8|occupancy|createOccupancyProbe|tasting-card|slideshow\.js/);
+ assert.doesNotMatch(app,/occupancy|createOccupancyProbe|tasting-card|slideshow\.js/);
  assert.match(app,/createVerticalStage/);
 });

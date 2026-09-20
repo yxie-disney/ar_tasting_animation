@@ -2,18 +2,18 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import vm from 'node:vm';
-test('printed QR, cached AR URL and root redirect to animation without losing parameters',async()=>{
+test('printed QR and root enter AR without losing parameters',async()=>{
  assert.deepEqual(await fs.readdir('site/v3'),['index.html']);
- for(const [file,base] of [['site/v3/index.html','v3/'],['site/ar/index.html','ar/'],['site/index.html','']]){
+ for(const [file,base] of [['site/v3/index.html','v3/'],['site/index.html','']]){
  const html=await fs.readFile(file,'utf8');
  const script=html.match(/<script>(.*?)<\/script>/s)[1];
  let destination;
  vm.runInNewContext(script,{location:{search:'?release=check',hash:'#scene',replace:value=>{destination=value;}}});
  const url=new URL(destination,'https://local/ar_tasting_animation/'+base);
- assert.equal(url.pathname,'/ar_tasting_animation/animation/');
+ assert.equal(url.pathname,'/ar_tasting_animation/ar/');
  assert.equal(url.search,'?release=check');assert.equal(url.hash,'#scene');
  assert.doesNotMatch(html,/camera|getUserMedia|vendor|app\.js/);
- assert.match(html,/http-equiv="refresh" content="0;url=(\.\.\/)?animation\/"/);
+ assert.match(html,/http-equiv="refresh" content="0;url=(\.\.\/)?ar\/"/);
  }
  await assert.rejects(fs.access('site/ar/garnish.js'));
 });
@@ -29,17 +29,21 @@ test('animation destination loads automatically without camera or positioning co
  assert.doesNotMatch(viewer,/getUserMedia|MindAR|\.mind|vertical-label/);
 });
 
-test('deferred AR adapter uses MindAR but is not loaded by the published entry',async()=>{
+test('AR entry uses the established 8th Wall camera pipeline and fixed metre-space stage',async()=>{
  const html=await fs.readFile('site/ar/index.html','utf8'),app=await fs.readFile('site/ar/app.js','utf8');
  const imports=[...app.matchAll(/from '\.\/([^']+)'/g)].map(m=>m[1]);
- assert.deepEqual(imports,['vertical-stage.js','vertical-playback.js']);
+ assert.deepEqual(imports,['vertical-stage.js','vertical-playback.js','xr8-anchor.js']);
  for(const file of imports)await fs.access('site/ar/'+file);
- assert.match(app,/mindar-image-three/);
- assert.doesNotMatch(html,/app\.js|mindar/);
- assert.doesNotMatch(html+app,/XR8|vendor\/xr|occupancy|createSlideshow|PoseFilter/);
- assert.match(app,/missTolerance: 0/);
- assert.match(app,/anchor\.onTargetFound = playback\.targetFound/);
- assert.match(app,/anchor\.onTargetLost = playback\.targetLost/);
+ assert.match(app,/XR8\.GlTextureRenderer\.pipelineModule/);
+ assert.match(html,/src="app\.js"/);
+ assert.match(html,/vendor\/xr\/xr\.js/);
+ assert.match(html,/id="camera"/);
+ assert.doesNotMatch(html,/location\.replace|animation\/|<button/);
+ assert.match(app,/slideshow\.position\.set\(0, 0, 0\.015\)/);
+ assert.doesNotMatch(app,/startButton|entry-message|playback\.targetFound\(\)/);
+ assert.doesNotMatch(html+app,/MindAR|mindar|\.mind|vertical-label|occupancy/);
+ assert.match(app,/millimetres\.scale\.setScalar\(\.001\)/);
+ for (const event of ['imagefound','imageupdated','imagelost']) assert.ok(app.includes('reality.'+event));
 });
 test('every configured target and its image exist',async()=>{
  const specs=JSON.parse(await fs.readFile('site/ar/targets.json','utf8'));

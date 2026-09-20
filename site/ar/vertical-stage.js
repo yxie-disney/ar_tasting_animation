@@ -40,6 +40,7 @@ export async function createVerticalStage(THREE, renderer) {
     relief.group.name = frame.name;
     relief.group.visible = false;
     relief.materials.forEach(material => {
+      material.transparent = true;
       material.opacity = .75;
       material.blending = THREE.NormalBlending;
       material.depthWrite = false;
