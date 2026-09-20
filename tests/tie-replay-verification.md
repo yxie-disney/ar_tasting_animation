@@ -36,3 +36,15 @@ Automated regression: 63 tests pass, including five-role mesh/depth/normal const
 ## Not established
 
 This replay is not a physical camera trial. The label's actual printed width, acquisition at 30–50 cm, autofocus, glare, motion blur and embedded mobile-browser behaviour still require real-device observation. Millimetre conversion currently uses the source's nominal 180mm print width (crop width ~36.576mm), not a measured new label.
+
+## Orientation follow-up (local checks, runtime unchanged)
+
+Rotated the same supplied photograph in the private replay, without changing the target, artwork or production code. Each direction starts a fresh XR8 session (not tracking carried through a rotation):
+
+| Photo roll | Real found / updated / lost at observation | Visible / timer count |
+| --- | --- | --- |
+| +90 degrees | 1 / 618 / 0 | true / 1 |
+| -90 degrees | 1 / 1103 / 0 | true / 1 |
+| 180 degrees | 1 / 933 / 0 | true / 1 |
+
+All used target `tie-label`, started with 力士, continued the five-frame loop, and reported no runtime errors. This checks in-plane image rotation only; it is not evidence for all oblique viewing angles, mobile sensor orientations or lighting conditions. No new physical print specification follows from these tests.

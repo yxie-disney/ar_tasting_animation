@@ -1,6 +1,7 @@
 // Local photo replay only. Real XR8 detection; never synthesize found events.
 const replay=document.createElement('canvas');replay.width=1280;replay.height=720;
 const context=replay.getContext('2d');
+const rollDegrees=Number(new URLSearchParams(location.search).get('roll')||0);
 const photo=new Image();photo.src='/_test/tie-photo.jpg';
 const fullControl=new URLSearchParams(location.search).has('full-control');
 const targetImage=new Image();targetImage.src=fullControl?'/ar/image-targets/noterday-vertical-01_luminance.png':'/ar/image-targets/tie-label.png';
@@ -8,19 +9,25 @@ if(fullControl){const fetchOriginal=window.fetch;window.fetch=(url,...args)=>Str
 const ready=Promise.all([photo.decode(),targetImage.decode()]);let blank=false,useTarget=false;
 function draw(){
  context.fillStyle='#777';context.fillRect(0,0,replay.width,replay.height);
+ // Blank input must also generate new capture frames, not freeze the last photo.
+ if(blank){context.fillStyle='#888';context.fillRect(Math.floor(performance.now()/10)%1200,0,20,20);}
  const image=useTarget?targetImage:photo;
  if(image.complete&&image.naturalWidth&&!blank){
   const s=Math.min(replay.width/image.naturalWidth,replay.height/image.naturalHeight)*(useTarget?.6:1);
   // A 2-pixel translation models hand motion and forces fresh captureStream frames.
   const t=performance.now()/1000;
-  context.drawImage(image,(replay.width-image.naturalWidth*s)/2+2*Math.sin(t),(replay.height-image.naturalHeight*s)/2+2*Math.cos(t),image.naturalWidth*s,image.naturalHeight*s);
+  context.save();
+  context.translate(replay.width/2+2*Math.sin(t),replay.height/2+2*Math.cos(t));
+  context.rotate(rollDegrees*Math.PI/180);
+  context.drawImage(image,-image.naturalWidth*s/2,-image.naturalHeight*s/2,image.naturalWidth*s,image.naturalHeight*s);
+  context.restore();
  }
  requestAnimationFrame(draw);
 }
 draw();
 Object.defineProperty(navigator.mediaDevices,'enumerateDevices',{value:async()=>[{kind:'videoinput',deviceId:'photo-replay',groupId:'local',label:'Supplied photo, not live camera'}]});
 Object.defineProperty(navigator.mediaDevices,'getUserMedia',{value:async()=>{await ready;return replay.captureStream(30);}});
-const report={found:0,updated:0,lost:0,lastTarget:null,errors:[]};
+const report={rollDegrees,found:0,updated:0,lost:0,lastTarget:null,errors:[]};
 const nativeInterval=window.setInterval,nativeClear=window.clearInterval,playbackTimers=new Set();
 window.setInterval=(callback,delay,...args)=>{const id=nativeInterval(callback,delay,...args);if(delay===1000)playbackTimers.add(id);return id;};
 window.clearInterval=id=>{playbackTimers.delete(id);nativeClear(id);};
@@ -41,10 +48,11 @@ addEventListener('xrloaded',()=>{
 });
 addEventListener('DOMContentLoaded',()=>{
  const panel=document.createElement('section');
- panel.style='position:fixed;z-index:1000;left:0;bottom:0;background:#000b;color:white;padding:8px;font:11px monospace';
- panel.innerHTML='<details><summary>Private photo replay checks</summary><button id="blank-replay">Blank / restore photo</button><button id="target-replay">Photo / target control</button><pre id="replay-report"></pre></details>';
+ panel.style='position:fixed;z-index:1000;left:0;bottom:0;max-height:45vh;max-width:95vw;overflow:auto;background:#000b;color:white;padding:8px;font:11px monospace';
+ panel.innerHTML='<details><summary>Private photo replay checks</summary><button id="blank-replay">Blank / restore photo</button><button id="brief-replay">Brief interruption 500ms</button><button id="target-replay">Photo / target control</button><pre id="replay-report"></pre></details>';
  document.body.append(panel);panel.querySelector('button').onclick=()=>{blank=!blank;};
  panel.querySelector('#target-replay').onclick=()=>{useTarget=!useTarget;};
+ panel.querySelector('#brief-replay').onclick=()=>{blank=true;report.brief={before:report.frame,at:performance.now()};setTimeout(()=>{blank=false;},500);setTimeout(()=>{report.brief.after=report.frame;report.brief.starts=[...report.starts];},900);};
  setInterval(()=>{
   const canvas=document.querySelector('#camera'),rect=canvas.getBoundingClientRect();
   const scene=window.XR8?.Threejs?.xrScene();

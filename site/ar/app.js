@@ -1,9 +1,10 @@
 import {createVerticalStage} from './vertical-stage.js';
 import {createTargetPlayback} from './vertical-playback.js';
 import {createXR8Anchor} from './xr8-anchor.js';
+import {startXR8Session} from './xr8-session.js';
 
 const THREE = window.THREE;
-let playback, tracker, content, stopped = false;
+let playback, tracker, content, stopped = false, running = false;
 const canvas = document.querySelector('#camera');
 function resizeCanvas() {
   canvas.width = Math.max(1, Math.round(canvas.clientWidth));
@@ -12,6 +13,7 @@ function resizeCanvas() {
 
 function stop() {
   stopped = true;
+  tracker?.reset();
   playback?.targetLost();
   window.removeEventListener('resize', resizeCanvas);
   window.XR8?.stop();
@@ -47,11 +49,10 @@ async function start() {
   content.stage.name = 'feifei-stage';
   anchor.visible = false;
   anchor.add(slideshow);
-  tracker = createXR8Anchor(anchor, specs, playback);
-
-  // Image-only tracking: no world-persistence or additional motion permission.
-  XR8.XrController.configure({disableWorldTracking: true, imageTargetData: targets});
-  XR8.addCameraPipelineModules([
+  const modules = worldEnabled => {
+    tracker?.reset();
+    tracker = createXR8Anchor(anchor, specs, playback, {worldEnabled});
+    return [
     XR8.GlTextureRenderer.pipelineModule(),
     XR8.Threejs.pipelineModule(),
     XR8.XrController.pipelineModule(),
@@ -67,21 +68,23 @@ async function start() {
         camera.position.set(0, 2, 0);
         XR8.XrController.updateCameraProjectionMatrix({origin:camera.position, facing:camera.quaternion});
       },
-      onUpdate: () => {
+      onUpdate: ({processCpuResult}) => {
+        tracker.tick(processCpuResult?.reality);
         if (content.stage.visible) content.reliefs[playback.index].update(performance.now() / 1000);
       },
-      onException: error => { stop(); console.error(error); },
+      onException: error => { if(running) stop(); console.error(error); },
       listeners: [
         {event: 'reality.imagefound', process: tracker.found},
         {event: 'reality.imageupdated', process: tracker.updated},
         {event: 'reality.imagelost', process: tracker.lost},
       ],
     },
-  ]);
+    ];
+  };
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
-  await XR8.run({canvas, allowedDevices: XR8.XrConfig.device().ANY,
-    cameraConfig: {direction: XR8.XrConfig.camera().BACK}});
+  await startXR8Session(XR8, {canvas, targets, modules, isStopped:()=>stopped});
+  running = !stopped;
 }
 
 start().catch(error => { stop(); console.error(error); });

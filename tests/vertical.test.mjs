@@ -31,6 +31,14 @@ test('duplicate found is idempotent; lost clears synchronously and reacquires at
 test('1000 acquire/loss cycles never accumulate timers',()=>{
  const f=fixture();for(let i=0;i<1000;i++){f.playback.targetFound();f.playback.targetFound();assert.equal(f.jobs.size,1);f.playback.targetLost();assert.equal(f.jobs.size,0);}
 });
+
+test('suspend clears the timer and retains the frame; stale queued callbacks cannot advance a resumed session',()=>{
+ const f=fixture();f.playback.targetFound();f.tick();f.tick();const queued=[...f.jobs.values()][0];
+ f.playback.suspend();assert.equal(f.jobs.size,0);assert.equal(f.stage.visible,false);
+ f.playback.targetFound();assert.equal(f.playback.index,2);assert.equal(f.jobs.size,1);
+ queued();assert.equal(f.playback.index,2);
+ f.playback.targetLost();f.playback.targetFound();queued();assert.equal(f.playback.index,0);
+});
 test('five measured PNG ratios retain approved 80mm geometry without a target',async()=>{
  for(let i=1;i<=5;i++){
   const bytes=await fs.readFile(`site/ar/assets/slides/feifei-${i}.png`);

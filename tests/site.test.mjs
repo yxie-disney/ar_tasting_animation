@@ -32,7 +32,7 @@ test('animation destination loads automatically without camera or positioning co
 test('AR entry uses the established 8th Wall camera pipeline and fixed metre-space stage',async()=>{
  const html=await fs.readFile('site/ar/index.html','utf8'),app=await fs.readFile('site/ar/app.js','utf8');
  const imports=[...app.matchAll(/from '\.\/([^']+)'/g)].map(m=>m[1]);
- assert.deepEqual(imports,['vertical-stage.js','vertical-playback.js','xr8-anchor.js']);
+ assert.deepEqual(imports,['vertical-stage.js','vertical-playback.js','xr8-anchor.js','xr8-session.js']);
  for(const file of imports)await fs.access('site/ar/'+file);
  assert.match(app,/XR8\.GlTextureRenderer\.pipelineModule/);
  assert.match(html,/src="app\.js"/);
