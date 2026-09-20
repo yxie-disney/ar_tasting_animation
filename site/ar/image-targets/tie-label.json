@@ -1,0 +1,14 @@
+{
+  "name": "tie-label",
+  "type": "PLANAR",
+  "imagePath": "image-targets/tie-label.png",
+  "properties": {
+    "left": 0,
+    "top": 0,
+    "width": 542,
+    "height": 640,
+    "isRotated": false,
+    "originalWidth": 542,
+    "originalHeight": 640
+  }
+}

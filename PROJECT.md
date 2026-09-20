@@ -4,7 +4,7 @@
 
 Continue the established 8th Wall / XR8 engine and real camera pipeline. The accidental MindAR migration and QR-to-standalone-animation routing are revoked. `/v3/` leads to `/ar/`; `/animation/` is an internal asset viewer only. Retain the validated five-role relief geometry, normals, original textures, alpha0.75 and target-owned 1000ms hard cuts. The adapter converts target scale to metres; the stage offset is fixed at `(0,0,0.015)`. No new consumer controls.
 
-Existing full-card/crop tracking data are available for regression only; they must not be described as a validated new tie-label target. No `.mind` prerequisite. Earlier paragraphs specifying MindAR or making the non-camera viewer the product entry are historical and superseded.
+Runtime target: `tie-label`, cropped from the unchanged print master at pixels (45,2640)-(477,3150), normalized to a 542x640 luminance image. Only this target is loaded. The user's authorized photo replay produced real XR8 detection and five-role rendering; it does not establish physical-phone distance/lighting reliability. Nominal target width is 432/2126*180 mm, not a new measurement. See `tests/tie-replay-verification.md`. Earlier full-card targets are regression assets only. No `.mind` prerequisite. All subsequent paragraphs specifying MindAR, horizontal layouts or a non-camera product entry are historical and superseded by this section.
 
 ## Latest override — vertical tie-label production validation
 

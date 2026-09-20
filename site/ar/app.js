@@ -4,10 +4,16 @@ import {createXR8Anchor} from './xr8-anchor.js';
 
 const THREE = window.THREE;
 let playback, tracker, content, stopped = false;
+const canvas = document.querySelector('#camera');
+function resizeCanvas() {
+  canvas.width = Math.max(1, Math.round(canvas.clientWidth));
+  canvas.height = Math.max(1, Math.round(canvas.clientHeight));
+}
 
 function stop() {
   stopped = true;
   playback?.targetLost();
+  window.removeEventListener('resize', resizeCanvas);
   window.XR8?.stop();
 }
 
@@ -37,6 +43,8 @@ async function start() {
   slideshow.position.set(0, 0, 0.015);
   slideshow.add(millimetres);
   const anchor = new THREE.Group();
+  anchor.name = 'feifei-anchor';
+  content.stage.name = 'feifei-stage';
   anchor.visible = false;
   anchor.add(slideshow);
   tracker = createXR8Anchor(anchor, specs, playback);
@@ -50,10 +58,14 @@ async function start() {
     {
       name: 'noterday-feifei',
       onStart: () => {
-        const {scene, renderer} = XR8.Threejs.xrScene();
-        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        const {scene, camera, renderer} = XR8.Threejs.xrScene();
+        // XR8 owns the drawing buffer, viewport and projection together.
+        // Do not overwrite its dimensions or DPR after pipeline initialization.
         renderer.outputColorSpace = THREE.SRGBColorSpace;
         scene.add(anchor);
+        // XR8 responsive scale uses origin.y; zero collapses image poses.
+        camera.position.set(0, 2, 0);
+        XR8.XrController.updateCameraProjectionMatrix({origin:camera.position, facing:camera.quaternion});
       },
       onUpdate: () => {
         if (content.stage.visible) content.reliefs[playback.index].update(performance.now() / 1000);
@@ -66,7 +78,8 @@ async function start() {
       ],
     },
   ]);
-  const canvas = document.querySelector('#camera');
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
   await XR8.run({canvas, allowedDevices: XR8.XrConfig.device().ANY,
     cameraConfig: {direction: XR8.XrConfig.camera().BACK}});
 }

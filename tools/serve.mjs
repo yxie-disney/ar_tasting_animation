@@ -5,6 +5,8 @@ const root=process.cwd(),site=path.resolve(root,'site');
 const port=Number(process.env.PORT||8098);
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.json':'application/json','.css':'text/css','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.wasm':'application/wasm','.svg':'image/svg+xml'};
 const fixtures={
+ '/_test/tie-replay.js':path.resolve(root,'tests/tie-replay.js'),
+ '/_test/tie-photo.jpg':process.env.NOTERDAY_TIE_PHOTO,
  '/_test/vertical.html':path.resolve(root,'tests/vertical.html'),
  '/_test/vertical.js':path.resolve(root,'tests/vertical.js'),
  '/_test/relief.html':path.resolve(root,'tests/relief.html'),
@@ -20,6 +22,10 @@ const fixtures={
 http.createServer(async(req,res)=>{
  try{
    const url=new URL(req.url,'http://localhost'),pathname=decodeURIComponent(url.pathname);
+   if(pathname==='/_test/tie-replay'){
+     const html=(await fs.readFile(path.join(site,'ar/index.html'),'utf8')).replace('<head>','<head><base href="/ar/"><script src="/_test/tie-replay.js"></script>');
+     res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});res.end(html);return;
+   }
    if(pathname==='/_test/replay'){
      const html=(await fs.readFile(path.join(site,'ar/index.html'),'utf8')).replace('<head>','<head><base href="/ar/"><script src="/_test/mock-camera.js"></script>');
      res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});res.end(html);return;

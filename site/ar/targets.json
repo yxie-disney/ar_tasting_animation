@@ -1,49 +1,8 @@
 [
   {
-    "name": "print-near",
-    "widthMm": 67,
-    "offset": [
-      -54.5,
-      -25.0
-    ],
-    "file": "image-targets/print-near.json"
-  },
-  {
-    "name": "print-far",
-    "widthMm": 68,
-    "offset": [
-      54.0,
-      13.0
-    ],
-    "file": "image-targets/print-far.json"
-  },
-  {
-    "name": "garden-near",
-    "widthMm": 67,
-    "rotation": 0,
-    "offset": [
-      -54.5,
-      -25
-    ],
-    "file": "image-targets/garden-near.json"
-  },
-  {
-    "name": "garden-far",
-    "widthMm": 68,
-    "rotation": 0,
-    "offset": [
-      54,
-      13
-    ],
-    "file": "image-targets/garden-far.json"
-  },
-  {
-    "name": "noterday-vertical-01",
-    "widthMm": 180,
-    "offset": [
-      0,
-      0
-    ],
-    "file": "image-targets/noterday-vertical-01.json"
+    "name": "tie-label",
+    "widthMm": 36.57572906867357,
+    "file": "image-targets/tie-label.json",
+    "scaleBasis": "nominal source print at 180mm wide; not a new physical measurement"
   }
 ]
